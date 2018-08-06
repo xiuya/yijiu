@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="home" ref="home">
+        <div id="home" >
         	<div class="topswiper">
         		<!--<swiper loop auto :list="demo06_list" :index="demo06_index" @on-index-change="demo06_onIndexChange"></swiper>-->	
         		<swiper auto loop  :interval="1000" >
@@ -37,7 +37,6 @@
 				</div>
 				<span class="add-car icon iconfont icon-gouwuche" @click='addCar(times)'></span>
             </div>     -->
-           
             <div class="venue" >
             	<flexbox>
      				 	<flexbox-item  v-for="(item,index) in timesSale"  v-if="index<2"  :key="index">
@@ -47,24 +46,20 @@
      				 	<flexbox-item  v-for="(item,index) in venue_img"  v-if="index==2||index==3"  :key="index">
      				 		<img :src="imgUrl+item.img" alt="" @click="goDetails(item.id)"/></flexbox-item>
     			</flexbox>
-    			<!--<flexbox>
-     				 	<flexbox-item><div class="flex-demo">1</div></flexbox-item>
-      					<flexbox-item><div class="flex-demo">2</div></flexbox-item>
-    			</flexbox>-->
             </div>
-            <div class="venue_box">
-            <ul class="hot-list clearfix" ref="hotGoods">
+            <div class="venue_box" ref="hotGoods">
+            <ul class="hot-list clearfix" >
 			    <li v-for='(hot,index) in hotSale' :key="index" @click="goDetails(hot.id)">
-                    <img :src="imgUrl+hot.img" />
+                    <img :src="imgUrl+hot.img"  :onerror="defaultImg"/>
 				    <div class="producttagname" v-if='hot.killendtime'></div>
 				    <div class="placename"  v-if='hot.placename'>{{hot.placename}}</div>
 				    <div class="home-hotinfo">
 					    <p><span >{{hot.storeName}}</span><span>{{hot.name}}</span></p>
 					    <div class="jg">
 						    <span >￥{{hot?parseFloat(hot.price).toFixed(0):0}}</span>
-						    <del >{{hot.oldPrice}}</del>
-						    <span >{{hot.discount}}</span>
-						    <span >{{hot.commentcount}}件起售</span>
+						    <!-- <del >{{hot.oldPrice}}</del> -->
+						    <!-- <span >{{hot.discount}}</span> -->
+						    <span class="fr" style="padding-right:5px;">{{hot.commentcount}}件起售</span>
 					    </div>
 					    <p><span >卖点：</span><span>{{hot.name}}</span></p>
 				    </div>
@@ -89,6 +84,10 @@
                     </tab>
                 </div>
                 
+               </div>
+               <div class="homefootet_search">
+                   <div>搜商品</div>
+                   <div>搜卖家</div>
                </div>
         </div>
     </div>
@@ -118,7 +117,8 @@ data() {
 			venue_img: [],
             hotSale:[],
             timesSale:[],
-            homefooterList:['家居百货','家用电器','食品酒水','服装配饰','美妆个护','母婴用品','数码办公','汽车用品','精选箱包','户外用品']
+            homefooterList:['家居百货','家用电器','食品酒水','服装配饰','美妆个护','母婴用品','数码办公','汽车用品','精选箱包','户外用品'],
+            defaultImg: 'this.src="' + require('@/assets/img/default.png') + '"',
 		}
 	},
 	components: {
@@ -168,10 +168,10 @@ data() {
 		"548de378-65c2-4eef-9aed-b7786443200c":banner8,};
     },
     mounted() {
-       this.$nextTick(()=>{
+    //    this.$nextTick(()=>{
             this.hotScrollTop=this.$refs.hotGoods.offsetTop;
-            // console.log(this.$refs.hotGoods,this.hotScrollTop)
-       })
+            // console.log(document.body.scrollTop,this.hotScrollTop)
+    //    })
     },
     distoryed() {
 
@@ -198,10 +198,11 @@ data() {
     watch:{
         index:function(val,oldval){
            
+            console.log(document.body.scrollTop,this.hotScrollTop, document.querySelector('#home-view').scrollTop)
 
             if(val!=oldval){
-                //  document.body.scrollTop(200);
-                //  this.$refs.home.scrollTop(this.hotScrollTop)
+                 document.querySelector('#home-view').scrollTop=this.hotScrollTop;
+                // this.$refs.hotGoods.scrollToTop=0;
                       switch(val){
                         case 0:this.dataUrl='static/data/index/pf-hotSale1.json';break;
                         case 1:this.dataUrl='static/data/class/gerenhuli/rq.json' ;break;
@@ -240,9 +241,11 @@ data() {
     .hot-list li .home-hotinfo .jg del{font-size:12px;color: #aab0b0; margin-right:3px;}
      .hot-list li .home-hotinfo .jg span:nth-of-type(2){ font-size:12px; color: #be955f; }
      .hot-list li .home-hotinfo .jg span:nth-of-type(3){font-size:12px;color: #ec3f7e;}
-     .homefooter_wrap {position:fixed;left: 0;bottom:50px; color: #848C98; z-index:50;width: 100%;}
+     .homefooter_wrap {position:fixed;left: 0;bottom:50px; color: #848C98; z-index:50;width:85%;}
+     .homefootet_search{position:fixed;right: 0;bottom:50px; color: #848C98; z-index:50;width:15%;
+     text-align: center; ;background: #fff;line-height: 30px;}
 </style>
-<style lang="css">
+    <style>
     .kuaijie .weui-grid__icon{width: 40px !important;}
     #home .topswiper .vux-swiper img,.secswiper .vux-swiper img,.thirdswiper .vux-swiper img,.fourswiper .vux-swiper img{height: 100%;width:100%;} 
     #home .secswiper{height: 180px;}
@@ -256,7 +259,6 @@ data() {
      #home .container img{max-height: 100%;width:100%;}
      #home .container p{width: 47%;position: absolute;left: 50%;top: 10px;color: #141412;font-size: 14px;line-height: 20px;}
      #home .container  .jg{width: 50%;position: absolute;left: 50%;;color: #141412;bottom:10px}
-     /*#home .container .price1{margin-bottom: 16px;}*/
     #home .container .jg .discount {display: inline-block;width: 40px;height: 20px;background: #ef3f7f;font-size: 13px;text-align: center; line-height:20px;color: #fff;}
     .add-car{ position: absolute;z-index: 10;right: 15px; bottom: 15px;width: 28px;height: 28px;line-height: 28px; background: white; border-radius: 50%;text-align: center; color: #ed3a7c;font-size:14px;}
      #home .container .jg .nowprice{font-size: 13px;color:#EF3F7F;}

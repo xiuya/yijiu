@@ -1,7 +1,7 @@
 <template>
     <div id="homeDetail">
     <!--详情主页面-->
-    <div class="details" >
+    <div class="details"  >
         <divider>图文详情</divider>
              <card >
                  <div slot="content" class="card-demo-flex card-demo-content01">
@@ -10,7 +10,7 @@
                     </ul> 
                  </div> 
              </card>    
-        <divider>产品参数</divider>
+        <divider > <div ref='guigInfo'>产品参数</div>   </divider>
              <card >
                  <div slot="content" class="card-demo-flex card-demo-content01">
                     <ul class="chanping">
@@ -21,7 +21,7 @@
                     </ul> 
                  </div> 
              </card>  
-        <divider>卖家信息</divider>
+        <divider > <div ref="buyInfo">卖家信息</div></divider>
              <card >
                  <div slot="content" class="card-demo-flex card-demo-content01">
                     <div v-html="dataDetail.desc"></div>
@@ -41,14 +41,15 @@
                 <span class="addtocar">加入购物车</span>
             </div>
         </div> -->
+        <div class="backicon" @click='goback'></div>
         <div class="detailBottom clearfix">
-            <div class="left buyinfo">
+            <div class="left buyinfo" @click="gobuyInfo">
                 卖家信息
             </div>
-            <div class="left ggcs">
+            <div class="left ggcs" @click="guigInfo">
                 规格参数
             </div>
-            <div class="left pic">
+            <div class="left pic" @click='goxq'>
                 图文详情
             </div>
             <div class="left star">
@@ -75,6 +76,8 @@ export default {
         return {
            dataDetail:{},
            isCollect:false,
+           buydist:0,
+           guigdist:0,
         }
 
     },
@@ -82,6 +85,15 @@ export default {
         Grid, GridItem ,XHeader, XNumber,Group,Swiper, SwiperItem,Divider, Card,AlertModule, Alert
     },
     methods:{
+        gobuyInfo(){
+           document.body.scrollTop=this.buydist;
+        },
+        guigInfo(){
+            document.body.scrollTop=this.guigdist;
+        },
+        goxq(){
+            document.body.scrollTop=0;
+        },
         collectIt(){
 
         },
@@ -115,18 +127,27 @@ export default {
                     AlertModule.hide()
                 }, 3000)
         },
+        goback(){
+            window.history.go(-1);
+        }
 
     },
     created() {
         var goodsdetail='static/data/details/'+this.$route.query.id+'/getProductDetailInfo.json';
         this.$axios.get(goodsdetail)
             .then(res=>{
-                  this.dataDetail=res.data
+                  this.dataDetail=res.data;
                   console.log(this.dataDetail)
+                  this.buydist=this.$refs.buyInfo.offsetTop;
+                    this.guigdist=this.$refs.guigInfo.offsetTop;
+                    console.log(this.buydist,this.guigdist)
       	});
     },
     mounted() {
-        
+        this.$nextTick(()=>{
+                  
+        })
+      
     }
 }
 </script>
@@ -169,7 +190,16 @@ export default {
     color: white;
     background: rgb(102,102,102);
 }  
-.detailBottom>div{width: 20%;line-height: 50px;text-align: center;}  
+.detailBottom>div{width: 20%;line-height: 50px;text-align: center;} 
+.backicon{position: fixed;bottom: 60px;right: 10px;width: 28px;
+height: 28px;  ;border-radius: 50%;background:rgb(102,102,102);} 
+.backicon::after{content: '';
+    border-left: 2px solid #fff;
+    border-top: 2px solid #fff;
+    transform: rotate(-45deg);
+    position: absolute;
+    left: 9px;z-index: 1000;
+    top: 7px;width: 12px;height: 12px;}
 </style>		
 <style>
 strong{font-size: 14px;color:rgb(102,102,102);}
