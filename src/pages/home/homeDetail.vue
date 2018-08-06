@@ -30,7 +30,7 @@
      
 
         <!--添加收藏,添加购物车-->
-        <div class="addbox clearfix">
+        <!-- <div class="addbox clearfix">
             <div class="left clear leftcontent">
                 <div class="left lcon"  @click.native='collectIt' :class='isCollect?"actived":"active"'>
                     <div class="icons iconfont icon-shoucang"></div>
@@ -40,7 +40,7 @@
             <div class="left rightcontent"  @click='addCar'>
                 <span class="addtocar">加入购物车</span>
             </div>
-        </div>
+        </div> -->
         <div class="detailBottom clearfix">
             <div class="left buyinfo">
                 卖家信息
@@ -173,6 +173,5 @@ export default {
 </style>		
 <style>
 strong{font-size: 14px;color:rgb(102,102,102);}
-
 </style>
 

@@ -80,7 +80,7 @@ export default {
 	            data:{//往后台传递的参数
 	                type:"members"},
 	            type:"post",//请求方式
-	            addBtnName:"<span class='iconfont icon-jiahao add-file'><span>",//添加文件按钮名字
+	            addBtnName:"<span class='iconfont icon-icon-jiahao add-file'><span>",//添加文件按钮名字
 	            uploadBtnName:"上传图片",//上传文件按钮名字
 	            delIcon:"×",//删除已选择文件的图标或按钮名字
 	            autoUpload:true,//是否自动上传

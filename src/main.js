@@ -11,15 +11,15 @@ import { ConfirmPlugin } from 'vux'
 import { BrowserInfo } from "@/utils/utils.js"
 import {UploaderPost,Loading,}  from  "@/assets/js/upload.js"
 import axios from 'axios'
-
-const FastClick = require('fastclick')
+// import '@'
+// const FastClick = require('fastclick')
 
 import '@/assets/css/main.less';
 import '@/assets/font/iconfont.css';
 
 
 /* 移除移动端点击延迟 */
-FastClick.attach(document.body)
+// FastClick.attach(document.body)
 
 //router.beforeEach((to, from, next) => {
 //  if (to.meta.auth) { // 判断该路由是否需要登录权限
