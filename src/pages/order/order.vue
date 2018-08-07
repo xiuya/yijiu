@@ -35,6 +35,72 @@
                           </div>
                       </div>
                     </div>
+
+                        <div class="goods_list ">
+                      <div class="count_title clearfix">
+                            <div class="title_left fl">待付款</div>
+                      		<div class="title_right fr">商品名称1225</div>
+                      </div>
+                      <div class="count_up clearfix ">
+                        <div class="left">
+                            <span >下单：</span>
+                            <span >2018-7-24</span>
+                        </div>
+                        <div class="right">
+                            <span>订单号：</span>
+                            <span >abcde-677742455</span>
+                        </div>
+                      </div>
+                      <div class="count_down  clearfix" tapmode="tap-active" >
+                          <div class="left">
+                              <img src="" alt="">
+                          </div>
+                          <div class="center">
+                            <div><span>总款式：</span><span>4款</span></div>
+                            <div><span>总金额：</span><span>￥999</span></div>
+                            <div><span>总数量：</span><span>100套</span></div>
+                            <div><span>卖家：</span><span>卖家名称111</span></div>
+                          </div>
+                          <div class="right">
+                            <a href="#" class="pay_money ">付款</a>
+                            <a href="#" class="pay_cancel">取消订单</a>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="goods_list ">
+                      <div class="count_title clearfix">
+                            <div class="title_left fl">待付款</div>
+                      		<div class="title_right fr">商品名称1225</div>
+                      </div>
+                      <div class="count_up clearfix ">
+                        <div class="left">
+                            <span >下单：</span>
+                            <span >2018-7-24</span>
+                        </div>
+                        <div class="right">
+                            <span>订单号：</span>
+                            <span >abcde-677742455</span>
+                        </div>
+                      </div>
+                      <div class="count_down  clearfix" tapmode="tap-active" >
+                          <div class="left">
+                              <img src="" alt="">
+                          </div>
+                          <div class="center">
+                            <div><span>总款式：</span><span>4款</span></div>
+                            <div><span>总金额：</span><span>￥999</span></div>
+                            <div><span>总数量：</span><span>100套</span></div>
+                            <div><span>卖家：</span><span>卖家名称111</span></div>
+                          </div>
+                          <div class="right">
+                            <a href="#" class="pay_money ">付款</a>
+                            <a href="#" class="pay_cancel">取消订单</a>
+                          </div>
+                      </div>
+                    </div>
+
+
                     <div class="goods_list ">
                       <div class="count_title clearfix">
                             <div class="title_left fl">待发货</div>

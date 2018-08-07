@@ -11,6 +11,8 @@ const homeindex = () =>
     import('@/pages/home/home');
 const homeDetail=()=>
     import('@/pages/home/homeDetail')
+const homeSearch=()=>
+    import('@/pages/home/search');
 /* 订单  */
 const order = () =>
     import('@/pages/order/order');
@@ -138,6 +140,10 @@ export default new Router({
         path: '/home/homeDetail',
         name: 'homeDetail',
         component:homeDetail
+    },{
+        path: '/home/homeSearch',
+        name: 'Search',
+        component:homeSearch
     },
    
     {

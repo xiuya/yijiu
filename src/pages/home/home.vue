@@ -1,24 +1,24 @@
 <template>
     <div>
         <div id="home" >
-        	<div class="topswiper">
+        	<div class="topswiper" :duration='1000'>
         		<!--<swiper loop auto :list="demo06_list" :index="demo06_index" @on-index-change="demo06_onIndexChange"></swiper>-->	
-        		<swiper auto loop  :interval="1000" >
-			      <swiper-item class="black" v-for="(value,index) in swiperdata" :key="index"><img :src="value"  @click="goDetails(index)"/></swiper-item>
+        		<swiper   loop  auto :interval="4000" :duration='1000' ref='topSwiper' v-model="SwipeIndex">
+			      <swiper-item class="black" v-for="(value,index) in swiperdata" :key="index" ><img :src="value"  @click="goDetails(index)"/></swiper-item>
         		</swiper>
         	</div>
 			<div class="secswiper" >
-        		<swiper auto loop :interval="2000" >
-			      <swiper-item class="black" v-for="(key,value) in swiperdatas" :key="value" @click="goDetails(key)"><img :src="key"  @click="goDetails(value)"/></swiper-item>
+        		<swiper auto loop :interval="4000" :duration='1000' v-model="SwipeIndex2">
+			      <swiper-item  class="black" v-for="(key,value) in swiperdata1" :key="value" ><img :src="key"  @click="goDetails(value) "/></swiper-item>
 			    </swiper>
         	</div>
             <div class="thirdswiper container">
-        		<swiper auto loop  :interval="3000">
+        		<swiper auto loop  :interval="4000" :duration='1000' >
 			      <swiper-item class="black" v-for="(key,value) in swiperdatas" :key="value"><img :src="key" @click="goDetails(value)"/></swiper-item>
 			    </swiper>
         	</div>
             <div class="fourswiper container">
-        		<swiper auto loop :interval="4000" >
+        		<swiper auto loop :interval="4000" :duration='1000'>
 			      <swiper-item class="black" v-for="(key,value) in swiperdatas" :key="value"><img :src="key" @click="goDetails(value)"/></swiper-item>
 			    </swiper>
         	</div>
@@ -40,11 +40,13 @@
             <div class="venue" >
             	<flexbox>
      				 	<flexbox-item  v-for="(item,index) in timesSale"  v-if="index<2"  :key="index">
-     				 		<img :src="item.bgimg" alt="" @click="goDetails(item.id)"/></flexbox-item>
+     				 		<img :src="item.bgimg" alt="" @click="goDetails(item.id)"/>
+                        </flexbox-item>
     			</flexbox>
     			<flexbox>
      				 	<flexbox-item  v-for="(item,index) in venue_img"  v-if="index==2||index==3"  :key="index">
-     				 		<img :src="imgUrl+item.img" alt="" @click="goDetails(item.id)"/></flexbox-item>
+     				 		<img :src="imgUrl+item.img" alt="" @click="goDetails(item.id)"/>
+                        </flexbox-item>
     			</flexbox>
             </div>
             <div class="venue_box" ref="hotGoods">
@@ -63,6 +65,7 @@
 					    </div>
 					    <p><span >卖点：</span><span>{{hot.name}}</span></p>
 				    </div>
+                    <span class="add-car icon iconfont icon-gouwuche" @click.stop='addCar(hot)'></span>
                 </li>
             </ul>        
             </div>
@@ -86,8 +89,8 @@
                 
                </div>
                <div class="homefootet_search">
-                   <div>搜商品</div>
-                   <div>搜卖家</div>
+                   <div> <router-link :to="{path:'/home/homeSearch',query:{name:'商品'}}" class="right-icon">搜商品</router-link></div>
+                   <div><router-link :to="{path:'/home/homeSearch',query:{name:'店铺'}}"  class="right-icon">搜卖家</router-link></div>
                </div>
         </div>
     </div>
@@ -102,6 +105,7 @@ import banner5 from '../../../static/data/banner/5/0.jpg'
 import banner6 from '../../../static/data/banner/6/0.jpg'
 import banner7 from '../../../static/data/banner/7/0.jpg'
 import banner8 from '../../../static/data/banner/8/0.jpg'
+// import { setTimeout } from 'timers';
 //console.log(data)
 export default {
     name : 'collectMoney',
@@ -110,15 +114,20 @@ data() {
             index:0,
             demo2: '家居百货',
             dataUrl:'',
+            oneswiper:true,
             hotScrollTop:0,
 			demo06_list: [],
 			swiperdata:{},
 			swiperdatas:{},
+			swiperdata1:{},
 			venue_img: [],
             hotSale:[],
             timesSale:[],
             homefooterList:['家居百货','家用电器','食品酒水','服装配饰','美妆个护','母婴用品','数码办公','汽车用品','精选箱包','户外用品'],
             defaultImg: 'this.src="' + require('@/assets/img/default.png') + '"',
+            flag1:8000,
+            SwipeIndex:0,
+            SwipeIndex2:0,
 		}
 	},
 	components: {
@@ -126,7 +135,8 @@ data() {
 		SwiperItem,
 		Flexbox,
         FlexboxItem,
-         Tab, TabItem
+         Tab, 
+         TabItem
 	},
 	created() {
 		this.$axios.get('static/data/index/xs-hotSale1.json')
@@ -149,7 +159,8 @@ data() {
 			d.storeName = '';
 			this.timesSale.push(d);
 		}
-	    });	
+        });	
+        
         this.$axios.get('static/data/index/pf-hotSale1.json')
             .then(res=>{
       			this.hotSale=res.data
@@ -159,19 +170,47 @@ data() {
 			"a21fbb07-1b03-4e90-80e3-613a67138a23":banner2,
 			"038d3183-c96f-4a7c-9f19-9ad398e40451":	banner3,
 			"82534bf9-1802-4ade-9db8-71e7819c52a2":	banner4,
-		};
-      	this.swiperdatas=
-      	{
-		"07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
-		"a51d5068-83a2-4bfd-b5c7-59f61beb1730":banner6,
-		"804e902c-fe52-479b-a65c-7e196d8687a9":banner7,
-		"548de378-65c2-4eef-9aed-b7786443200c":banner8,};
+        };
+        
+        this.swiperdatas=
+        {
+                    "07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
+                    "a51d5068-83a2-4bfd-b5c7-59f61beb1730":banner6,
+                    "804e902c-fe52-479b-a65c-7e196d8687a9":banner7,
+                    "548de378-65c2-4eef-9aed-b7786443200c":banner8,
+         };
+ 
+  
     },
     mounted() {
-    //    this.$nextTick(()=>{
+
+               this.swiperdata1= {
+                            "07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
+                            "a51d5068-83a2-4bfd-b5c7-59f61beb1730":banner6,
+                            "038d3183-c96f-4a7c-9f19-9ad398e40451":	banner3,
+                            "82534bf9-1802-4ade-9db8-71e7819c52a2":	banner4,
+                            "804e902c-fe52-479b-a65c-7e196d8687a9":banner7,
+                            "548de378-65c2-4eef-9aed-b7786443200c":banner8,
+                };
+         var  _this=this;
+        //  this.$nextTick(()=>{
+            // this.$refs.swiper.xheight = '300px'
+      
+            setTimeout(function(){
+                 _this.SwipeIndex2=0;
+                //   _this.swiperdata1=
+                // {
+                //             "07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
+                //             "a51d5068-83a2-4bfd-b5c7-59f61beb1730":banner6,
+                //             "038d3183-c96f-4a7c-9f19-9ad398e40451":	banner3,
+                //             "82534bf9-1802-4ade-9db8-71e7819c52a2":	banner4,
+                //             "804e902c-fe52-479b-a65c-7e196d8687a9":banner7,
+                //             "548de378-65c2-4eef-9aed-b7786443200c":banner8,
+                // };
+            },1000)
+        //  })   
             this.hotScrollTop=this.$refs.hotGoods.offsetTop;
-            // console.log(document.body.scrollTop,this.hotScrollTop)
-    //    })
+            // this.$refs.topSwiper.setAttribute("auto");
     },
     distoryed() {
 
@@ -191,15 +230,38 @@ data() {
         },
         tapActive(index){
             this.cindex=index;
-        }
+        },
+        addCar(hot){
+                    var date = new Date();
+                    var dataForAddCar={};
+                    dataForAddCar.id=hot.id;
+                    dataForAddCar.name=hot.name;
+                    dataForAddCar.img='http://cn01.alicdn.sasa.com/'+hot.img;
+                    dataForAddCar.storeName=hot.storeName;
+                    dataForAddCar.price=hot.price;
+                    dataForAddCar.title=hot.productTitle;
+                    dataForAddCar.time=date;
+                    console.log(dataForAddCar)
+                localStorage.setItem('addcar',JSON.stringify(dataForAddCar))
+                // this.showModule();
+                // setTimeout(() => {
+                //     AlertModule.hide()
+                // }, 3000)
+                alert("保存成功")
+        },
     },
     filters: {
     },
+     computed: {
+                    // stus(){
+                    //     if(this.SwipeIndex2 == '-1') {
+                    //         return this.user;
+                    //     } 
+                    // }
+   },
     watch:{
         index:function(val,oldval){
-           
             console.log(document.body.scrollTop,this.hotScrollTop, document.querySelector('#home-view').scrollTop)
-
             if(val!=oldval){
                  document.querySelector('#home-view').scrollTop=this.hotScrollTop;
                 // this.$refs.hotGoods.scrollToTop=0;
@@ -220,7 +282,36 @@ data() {
                                 this.hotSale=res.data
                     });
             };
-        }   
+        } ,
+        SwipeIndex2:function(val,oldval){
+            console.log(val,oldval)
+            // if(val==1){
+            //     this.SwipeIndex2=0;
+            // }
+                //    setTimeout(function(){
+                //         this.flag1=true;
+                //         console.log(this.flag1)
+                //     },2000)
+
+                // if(val==true){
+                //     //  this.flag1=true;  
+                //     //  console.log(this.flag1) 
+                //     // alert(112)
+                //       this.swiperdatas=
+                //         {
+                //                     "07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
+                //                     "a51d5068-83a2-4bfd-b5c7-59f61beb1730":banner6,
+                //                     "804e902c-fe52-479b-a65c-7e196d8687a9":banner7,
+                //                     "548de378-65c2-4eef-9aed-b7786443200c":banner8,
+                //         };
+                // }
+        },
+        SwipeIndex:function(val){
+                // console.log(val)
+                // if(val==1){
+                    // this.SwipeIndex2=0;
+                // }
+        }  
     }
 }
 </script>
@@ -242,8 +333,8 @@ data() {
      .hot-list li .home-hotinfo .jg span:nth-of-type(2){ font-size:12px; color: #be955f; }
      .hot-list li .home-hotinfo .jg span:nth-of-type(3){font-size:12px;color: #ec3f7e;}
      .homefooter_wrap {position:fixed;left: 0;bottom:50px; color: #848C98; z-index:50;width:85%;}
-     .homefootet_search{position:fixed;right: 0;bottom:50px; color: #848C98; z-index:50;width:15%;
-     text-align: center; ;background: #fff;line-height: 30px;}
+     .homefootet_search{position:fixed;right: 0;bottom:50px; color: #848C98; z-index:50;width:15%; background: #d1d2d7;border-top-left-radius: 10px;
+     text-align: center; ;line-height: 30px;}
 </style>
     <style>
     .kuaijie .weui-grid__icon{width: 40px !important;}
@@ -260,7 +351,7 @@ data() {
      #home .container p{width: 47%;position: absolute;left: 50%;top: 10px;color: #141412;font-size: 14px;line-height: 20px;}
      #home .container  .jg{width: 50%;position: absolute;left: 50%;;color: #141412;bottom:10px}
     #home .container .jg .discount {display: inline-block;width: 40px;height: 20px;background: #ef3f7f;font-size: 13px;text-align: center; line-height:20px;color: #fff;}
-    .add-car{ position: absolute;z-index: 10;right: 15px; bottom: 15px;width: 28px;height: 28px;line-height: 28px; background: white; border-radius: 50%;text-align: center; color: #ed3a7c;font-size:14px;}
+    .add-car{ position: absolute;z-index: 10;right: 15px; top:118px;width: 28px;height: 28px;line-height: 32px; background: #ccbebe; border-radius: 50%;text-align: center; color: #ed3a7c;font-size:19px;}
      #home .container .jg .nowprice{font-size: 13px;color:#EF3F7F;}
     .container .vux-flexbox{height: 100%;max-width:100%;}
     .venue .vux-flexbox,.venue_box .vux-flexbox{margin-top: 10px;}
@@ -269,6 +360,7 @@ data() {
     .venue_box .vux-flexbox .vux-flexbox-item{height: 200px;background-color: #fff; }
     .homefooter{overflow: scroll;}
     .homefooter .vux-tab{width: 700px;}
+    .homefooter  ::-webkit-scrollbar{height: 0px !important; opacity:0;}
 
 </style>
 
