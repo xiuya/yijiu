@@ -1,6 +1,5 @@
 <template>
 		<div id="my-con1">
-			<div class="fixed-con-lg">
 	            <box gap="15px 15px">
 	                <circleTitle title="统计汇总" class="info" greytitle=true>
 	                    <div class="info-list first-info">支付总金额:<span>50000000万元</span></div>
@@ -13,8 +12,6 @@
 	                    <div class="info-list">登录次数:<span>120次</span></div>
 	                </circleTitle>
 	            </box>
-	           
-	        </div>
 		</div>
 </template>
 

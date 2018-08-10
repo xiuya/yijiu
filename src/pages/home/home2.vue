@@ -2,23 +2,23 @@
     <div>
         <div id="home" >
         	<div class="topswiper" >
-        		<!--<swiper loop auto :list="swiper06_list" :index="swiper06_index" @on-index-change="swiper06_onIndexChange"></swiper>-->	
-        		<swiper   loop  auto :interval="4000" :duration='1000' ref='topSwiper' v-model="swiper0_index"  @on-index-change="swiper0_onIndexChange">
+        		<!--<swiper loop auto :list="demo06_list" :index="demo06_index" @on-index-change="demo06_onIndexChange"></swiper>-->	
+        		<swiper auto  loop  :interval="4000" :duration='1000'   >
 			      <swiper-item class="black" v-for="(value,index) in swiperdata" :key="index" ><img :src="value"  @click="goDetails(index)"/></swiper-item>
         		</swiper>
         	</div>
 			<div class="secswiper" >
-        		<swiper auto loop :interval="4000" :duration='1000' v-model="swiper01_index"  @on-index-change="swiper01_onIndexChange" >
+        		<swiper auto loop :interval="4000" :duration='1000'  v-model="swiper01_index" @on-index-change="demo01_onIndexChange">
 			      <swiper-item  class="black" v-for="(key,value) in swiperdata1" :key="value" ><img :src="key"  @click="goDetails(value) "/></swiper-item>
 			    </swiper>
         	</div>
             <div class="thirdswiper container">
-        		<swiper auto loop :interval="4000" :duration='1000' v-model="swiper02_index" @on-index-change="swiper02_onIndexChange" >
+        		<swiper auto loop  :interval="4000" :duration='1000' >
 			      <swiper-item class="black" v-for="(key,value) in swiperdatas" :key="value"><img :src="key" @click="goDetails(value)"/></swiper-item>
 			    </swiper>
         	</div>
             <div class="fourswiper container">
-        		<swiper  auto loop :interval="4000" :duration='1000' v-model="swiper03_index"  @on-index-change="swiper02_onIndexChange">
+        		<swiper auto loop :interval="4000" :duration='1000'>
 			      <swiper-item class="black" v-for="(key,value) in swiperdatas" :key="value"><img :src="key" @click="goDetails(value)"/></swiper-item>
 			    </swiper>
         	</div>
@@ -69,17 +69,22 @@
                 </li>
             </ul>        
             </div>
-            <!-- <div class="venue"></div> -->
-                    
                <div class="homefooter_wrap">
+                    <!--  <ul class="homefooter clearfix" id="homefooter">
+                        <li class="list_li  index==cindex?'active':''" @click="tapActive(index)" tapmode="tap-active" v-for="(item,index) in homefooterList" :key="index">
+                            <span class="text ">{{item.name}}</span>
+                        </li>
+                        <li class="list_bar">
+                            <div class="list_bar_inner"></div>
+                        </li>
+                    </ul>
+                -->
                 <div class="homefooter">
-                    <!-- <tab  active-color='#2f9cff' v-model="footerindex" >
-                        <tab-item class="vux-center"   v-for="(item, index) in homefooterList" @click=" footer2=item" :selected="footer2===item" :key="index">{{item}}</tab-item>
-                    </tab> -->
-                        <tab :line-width=0 active-color='#fc378c' v-model="index">
-                            <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list2" @click="demo2 = item" :key="index">{{item}}</tab-item>
-                        </tab>
+                    <tab  active-color='#fc378c' v-model="index" :scroll-threshold="2">
+                        <tab-item class="vux-center" :line-width=1 :selected="demo2 === item" v-for="(item, index) in homefooterList" @click="demo2 = item" :key="index">{{item}}</tab-item>
+                    </tab>
                 </div>
+                
                </div>
                <div class="homefootet_search">
                    <div> <router-link :to="{path:'/home/homeSearch',query:{name:'商品'}}" class="right-icon">搜商品</router-link></div>
@@ -90,7 +95,7 @@
 </template>
 
 <script>
-import { Swiper, SwiperItem, Flexbox, FlexboxItem, Tab, TabItem,} from 'vux'
+import { Swiper, SwiperItem, Flexbox, FlexboxItem, Tab, TabItem} from 'vux'
 import banner2 from '../../../static/data/banner/2/0.jpg'
 import banner3 from '../../../static/data/banner/3/0.jpg'
 import banner4 from '../../../static/data/banner/4/0.jpg'
@@ -98,32 +103,32 @@ import banner5 from '../../../static/data/banner/5/0.jpg'
 import banner6 from '../../../static/data/banner/6/0.jpg'
 import banner7 from '../../../static/data/banner/7/0.jpg'
 import banner8 from '../../../static/data/banner/8/0.jpg'
+import { setTimeout } from 'timers';
 // import { setTimeout } from 'timers';
 //console.log(data)
 export default {
     name : 'collectMoney',
 data() {
 		return {
-            footerindex:0,
-            list2:[],
-            index: 0,
+            index:0,
             demo2: '家居百货',
             dataUrl:'',
             oneswiper:true,
             hotScrollTop:0,
-			swiper06_list: [],
+			demo06_list: [],
 			swiperdata:{},
 			swiperdatas:{},
 			swiperdata1:{},
 			venue_img: [],
             hotSale:[],
             timesSale:[],
+            homefooterList:['家居百货','家用电器','食品酒水','服装配饰','美妆个护','母婴用品','数码办公','汽车用品','精选箱包','户外用品'],
             defaultImg: 'this.src="' + require('@/assets/img/default.png') + '"',
             flag1:8000,
-            swiper0_index:0,
+            SwipeIndex:0,
+            SwipeIndex2:0,
+            autoOne:false,
             swiper01_index:-1,
-            swiper02_index:-1,
-            swiper03_index:0,
 		}
 	},
 	components: {
@@ -134,12 +139,6 @@ data() {
          Tab, 
          TabItem
 	},
-    props:{
-            auto1:{
-                type:Boolean,
-                require:true
-            }
-    },
 	created() {
 		this.$axios.get('static/data/index/xs-hotSale1.json')
             .then(res=>{
@@ -147,22 +146,21 @@ data() {
       		});
       	this.$axios.get('static/data/index/limitSale.json').then(res=>{
       		// console.log(res.data)
-		for (var i = 0; i < res.data.length; i++) {
-			var d = {};
-			d.bgimg = 'http://cn01.alicdn.sasa.com/' + res.data[i].bgimg;
-			d.dataname = res.data[i].dataname;
-			d.discount = res.data[i].discount;
-			d.price = res.data[i].price;
-			d.oldprice = res.data[i].oldprice;
-			d.productid = res.data[i].productid;
-			d.id = res.data[i].productid;
-			d.img = 'http://cn01.alicdn.sasa.com/' + res.data[i].iconimg;
-			d.name = res.data[i].dataname;
-			d.storeName = '';
-			this.timesSale.push(d);
-		}
+            for (var i = 0; i < res.data.length; i++) {
+                var d = {};
+                d.bgimg = 'http://cn01.alicdn.sasa.com/' + res.data[i].bgimg;
+                d.dataname = res.data[i].dataname;
+                d.discount = res.data[i].discount;
+                d.price = res.data[i].price;
+                d.oldprice = res.data[i].oldprice;
+                d.productid = res.data[i].productid;
+                d.id = res.data[i].productid;
+                d.img = 'http://cn01.alicdn.sasa.com/' + res.data[i].iconimg;
+                d.name = res.data[i].dataname;
+                d.storeName = '';
+                this.timesSale.push(d);
+            }
         });	
-        
         this.$axios.get('static/data/index/pf-hotSale1.json')
             .then(res=>{
       			this.hotSale=res.data
@@ -173,7 +171,6 @@ data() {
 			"038d3183-c96f-4a7c-9f19-9ad398e40451":	banner3,
 			"82534bf9-1802-4ade-9db8-71e7819c52a2":	banner4,
         };
-        
         this.swiperdatas=
         {
                     "07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
@@ -181,50 +178,39 @@ data() {
                     "804e902c-fe52-479b-a65c-7e196d8687a9":banner7,
                     "548de378-65c2-4eef-9aed-b7786443200c":banner8,
          };
-           this.swiperdata1= {
-                            "07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
-                            "a51d5068-83a2-4bfd-b5c7-59f61beb1730":banner6,
-                            "038d3183-c96f-4a7c-9f19-9ad398e40451":	banner3,
-                            // "82534bf9-1802-4ade-9db8-71e7819c52a2":	banner4,
-                            // "804e902c-fe52-479b-a65c-7e196d8687a9":banner7,
-                            // "548de378-65c2-4eef-9aed-b7786443200c":banner8,
-        };
-        this.list2=['家居百货','家用电器','食品酒水','服装配饰','美妆个护','母婴用品','数码办公','汽车用品','精选箱包','户外用品'];
  
   
     },
     mounted() {
-            this.hotScrollTop=this.$refs.hotGoods.offsetTop;
-            // this.$refs.topSwiper.setAttribute("auto");
+               this.swiperdata1= {
+                            "07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
+                            "a51d5068-83a2-4bfd-b5c7-59f61beb1730":banner6,
+                            "038d3183-c96f-4a7c-9f19-9ad398e40451":	banner3,
+                            "82534bf9-1802-4ade-9db8-71e7819c52a2":	banner4,
+                            "804e902c-fe52-479b-a65c-7e196d8687a9":banner7,
+                            "548de378-65c2-4eef-9aed-b7786443200c":banner8,
+                };
+         var  _this=this;
+         this.$nextTick(()=>{
+            // this.$refs.swiper.xheight = '300px'
+            // setTimeout(function(){
+            //      _this.autoOne=true;
+            // },1000)
+         })   
+        this.hotScrollTop=this.$refs.hotGoods.offsetTop;
     },
     distoryed() {
 
     },
     methods: {
-        swiper0_onIndexChange (index) {//第壹个轮播
-                var _this=this;
-                setTimeout(function(){
-                     _this.swiper0_index = index+1
-                },1000)
-            },
-         swiper01_onIndexChange (index) {//第二个轮播
-                var _this=this;
-                setTimeout(function(){
-                _this.swiper01_index = index+1
-                },1000)
-            },
-       	 swiper02_onIndexChange (index) {//第三个轮播
-                var _this=this;
-                setTimeout(function(){
-                    _this.swiper02_index = index+1
-                },2000)
+        demo01_onIndexChange(index){
+            var _this=this;
+            setTimeout(()=>{
+                _this.swiper01_index = index
+            },1000)
         },
-       
-        swiper03_onIndexChange (index) {//第四个轮播
-                var _this=this;
-                setTimeout(function(){
-                _this.swiper03_index = index+1
-                },3000)
+       	 demo06_onIndexChange (index) {
+	      this.demo06_index = index
         },
         goDetails(id){
                 // console.log(id)
@@ -240,7 +226,7 @@ data() {
         },
         addCar(hot){
                     var date = new Date();
-                    // var price=0,count=0;
+                    var price=0,count=0;
                     var dataForAddCar={};
                     dataForAddCar.id=hot.id;
                     dataForAddCar.name=hot.name;
@@ -266,11 +252,18 @@ data() {
     filters: {
     },
      computed: {
-                 
+         autoSwiper(){
+             return this.autoOne;
+         }
+                    // stus(){
+                    //     if(this.SwipeIndex2 == '-1') {
+                    //         return this.user;
+                    //     } 
+                    // }
    },
     watch:{
         index:function(val,oldval){
-            // console.log(document.body.scrollTop,this.hotScrollTop, document.querySelector('#home-view').scrollTop)
+            console.log(document.body.scrollTop,this.hotScrollTop, document.querySelector('#home-view').scrollTop)
             if(val!=oldval){
                  document.querySelector('#home-view').scrollTop=this.hotScrollTop;
                 // this.$refs.hotGoods.scrollToTop=0;
@@ -292,17 +285,42 @@ data() {
                     });
             };
         } ,
-        swiper01_index:function(val,oldval){
-            // console.log(val,oldval)
-        } ,
-        
+        SwipeIndex2:function(val,oldval){
+            console.log(val,oldval)
+            // if(val==1){
+            //     this.SwipeIndex2=0;
+            // }
+                //    setTimeout(function(){
+                //         this.flag1=true;
+                //         console.log(this.flag1)
+                //     },2000)
+
+                // if(val==true){
+                //     //  this.flag1=true;  
+                //     //  console.log(this.flag1) 
+                //     // alert(112)
+                //       this.swiperdatas=
+                //         {
+                //                     "07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
+                //                     "a51d5068-83a2-4bfd-b5c7-59f61beb1730":banner6,
+                //                     "804e902c-fe52-479b-a65c-7e196d8687a9":banner7,
+                //                     "548de378-65c2-4eef-9aed-b7786443200c":banner8,
+                //         };
+                // }
+        },
+        SwipeIndex:function(val){
+                // console.log(val)
+                // if(val==1){
+                    // this.SwipeIndex2=0;
+                // }
+        }  
     }
 }
 </script>
 
 <style scoped lang="less">
     #home{width: 100%;height: 100%;background:#e3e4e4;}
-    .hot-list{margin-bottom:50px;padding-bottom: 50px;}
+    .hot-list{margin-bottom:50px;}
     .hot-list li:nth-of-type(2n+1){width: 49%;margin-right: 1%;margin-top: 2%;position: relative;float: left;background: #fff;}
     .hot-list li:nth-of-type(2n){width: 49%;margin-left: 1%;margin-top: 2%;position: relative;float: left;background: #fff;}
     .hot-list li img{width: 70%;height:150px; margin: 0 auto;}
@@ -311,6 +329,7 @@ data() {
     .hot-list li .home-hotinfo p{    font-size:12px;height: 47px;color: #010101;line-height: 23px;
     overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;}
      .hot-list li .home-hotinfo p:nth-of-type(2){font-size:12px;height: 23px;color: #010101; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp:1; -webkit-box-orient: vertical;}
+    // .hot-list li .home-hotinfo .jg{margin-top: 6px;}
     .hot-list li .home-hotinfo .jg span:nth-of-type(1){font-size: 14px;color: #ec3f7e; margin-right:3px;}
     .hot-list li .home-hotinfo .jg del{font-size:12px;color: #aab0b0; margin-right:3px;}
      .hot-list li .home-hotinfo .jg span:nth-of-type(2){ font-size:12px; color: #be955f; }
@@ -318,7 +337,6 @@ data() {
      .homefooter_wrap {position:fixed;left: 0;bottom:50px; color: #848C98; z-index:50;width:85%;}
      .homefootet_search{position:fixed;right: 0;bottom:50px; color: #848C98; z-index:50;width:15%; background: #d1d2d7;border-top-left-radius: 10px;
      text-align: center; ;line-height: 30px;}
-     .homefootet_search a{color: #2f9cff;}
 </style>
     <style>
     .kuaijie .weui-grid__icon{width: 40px !important;}
@@ -343,27 +361,8 @@ data() {
     .venue .vux-flexbox .vux-flexbox-item{height: 110px;background-color: #fff; }
     .venue_box .vux-flexbox .vux-flexbox-item{height: 200px;background-color: #fff; }
     /* .homefooter{overflow: scroll;} */
-    .homefooter .vux-tab{width: 700px;}
-    /* .homefooter .vux-tab div{width: 70px !important;} */
+    /* .homefooter .vux-tab{width: 700px;} */
     /* .homefooter  ::-webkit-scrollbar{height: 0px !important; opacity:0;} */
-    .hot-list{background:url(../../assets/img/bg3.png);}
-    #home .vux-tab .vux-tab-item{-webkit-box-flex: 1 !important;-ms-flex: 1 !important;flex: 1 !important;}
-    #home .vux-tab-container{    overflow-x: scroll;overflow-y: hidden;}
-    /* .scrollable::-webkit-scrollbar{height: 1px ;background: #EF3F7F;} */
-       .scrollable::-webkit-scrollbar {/*滚动条整体样式*/
-            width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
-            height: 4px;
-        }
-        .scrollable::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
-            border-radius: 5px;
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            background: rgba(0,0,0,0.2);
-        }
-        .scrollable::-webkit-scrollbar-track {/*滚动条里面轨道*/
-            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            border-radius: 0;
-            background: rgba(0,0,0,0.1);
-        }
-    /* .home-hotinfo{background:url(../../assets/img/bg.png);} */
+
 </style>
 

@@ -5,6 +5,7 @@
             <div class="cart-empty" v-if='!getItems'>
                 购物车空,赶紧去购物去吧.
             </div>
+            <div class="null"></div>
             <div class="shop" v-for='(getItem,index) in getItems' :key='index' v-if='getItems.length>=1'>
                 <!-- 店铺名 -->
                 <div class="shop_name clearfix">
@@ -43,11 +44,6 @@
                     </div>
                </div>
             </div>   
-            
-        
-          
-        </div> 
-
             <div class="cart-footer clearfix" v-if='getItems.length>=1'>
                 <div class="bg-gray" >清空</div>
                 <div><div>收藏</div>999款</div>
@@ -56,6 +52,8 @@
                 <div class="bg-red">结算</div>
                 <div class="bg-green checkall">全选</div>
             </div>   
+      </div> 
+
     </div>
 </template>
 
@@ -111,8 +109,6 @@ export default {
                                             this.countTotal-=1;
                                             this.getItems.splice(j,1);
                                             console.log(this.getItems);
-
-                                            // all[i].price=all[i].count
                                     }
                             }
                     }
@@ -233,13 +229,21 @@ export default {
 }
 </style>
 <style>
-.tag_group .weui-cell {
+/* .tag_group .weui-cell {
   width: 150px;
   float: right;
   padding: 0 !important;
-}
+} */
 .img-box img {
   width: 100%;
   height: 100%;
 }
+
+.container-cart {
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+}
+.null{height: 50px;}
 </style>
+

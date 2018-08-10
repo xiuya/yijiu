@@ -3,7 +3,6 @@
         <!-- <keep-alive> -->
           <router-view  id="home-view"></router-view>
         <!-- </keep-alive> -->
-        <!-- <router-view  id="home-view"></router-view> -->
         <tabbar :navlist="navlist"></tabbar>
     </ViewBox>
 </template>

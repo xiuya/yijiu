@@ -2,7 +2,7 @@
     "name": "vue-vux",
     "version": "1.0.0",
     "description": "A Vue.js project",
-    "author": "coldbreath <13027196096@163.com>",
+    "author": "wangjigen",
     "private": true,
     "scripts": {
         "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 192.168.0.166",

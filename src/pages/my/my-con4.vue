@@ -1,17 +1,9 @@
 <template>
 		<div id="my-con1">
-			<div class="fixed-con-lg">
-	            <box gap="15px 15px">
-	                <circleTitle title="个人信息" class="info" greytitle=true>
-	                 <group label-width="4.5em" label-margin-right="2em" label-align="right">
-						      <x-input title="姓名:" placeholder="" ></x-input>
-						      <x-input title="性别:" placeholder="" ></x-input>
-						      <x-input title="职位:" placeholder="" ></x-input>
-						      <x-input title="电话:" placeholder="" ></x-input>
-					</group>	      
-	                </circleTitle>
-	            </box>
-	            <box gap="15px 15px">
+				<box gap="15px 15px">
+		                        <XButton type="primary" :disabled="btnloading"  @click.native="confirm">{{btnWord}}</XButton>
+		       </box>
+				<box gap="15px 15px">
 	                <circleTitle title="登录信息" class="info" greytitle=true>
 	                 <group label-width="4.5em" label-margin-right="2em" label-align="right">
 						      <x-input title="账户名:" placeholder="" ></x-input>
@@ -22,10 +14,18 @@
 		               
 	                </circleTitle>
 	            </box>
-	   			<box gap="15px 15px">
-		                        <XButton type="primary" :disabled="btnloading"  @click.native="confirm">{{btnWord}}</XButton>
-		       </box>
-	        </div>
+	            <box gap="15px 15px">
+	                <circleTitle title="个人信息" class="info" greytitle=true>
+	                 <group label-width="4.5em" label-margin-right="2em" label-align="right">
+						      <x-input title="姓名:" placeholder="" ></x-input>
+						      <x-input title="性别:" placeholder="" ></x-input>
+						      <x-input title="职位:" placeholder="" ></x-input>
+						      <x-input title="电话:" placeholder="" ></x-input>
+					</group>	      
+	                </circleTitle>
+	            </box>
+	       
+	   		
 		</div>
 </template>
 

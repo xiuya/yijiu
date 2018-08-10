@@ -3,22 +3,22 @@
         <div id="home" >
         	<div class="topswiper" >
         		<!--<swiper loop auto :list="demo06_list" :index="demo06_index" @on-index-change="demo06_onIndexChange"></swiper>-->	
-        		<swiper auto  loop  :interval="4000" :duration='1000'   >
-			      <swiper-item class="black" v-for="(value,index) in swiperdata" :key="index" ><img :src="value"  @click="goDetails(index)"/></swiper-item>
+        		<swiper   loop  auto :interval="4000" :duration='1000' ref='topSwiper' v-model="SwipeIndex" @on-index-change="demo_onIndexChange">
+			      <swiper-item class="black" v-for="(value,index) in swiperdatas" :key="index" ><img :src="value"  @click="goDetails(index)"/></swiper-item>
         		</swiper>
         	</div>
 			<div class="secswiper" >
-        		<swiper auto loop :interval="4000" :duration='1000'  v-model="swiper01_index" @on-index-change="demo01_onIndexChange">
-			      <swiper-item  class="black" v-for="(key,value) in swiperdata1" :key="value" ><img :src="key"  @click="goDetails(value) "/></swiper-item>
+        		<swiper @on-index-change="demo01_onIndexChange" auto loop :interval="4000" :duration='1000' v-model="demo01_index">
+			      <swiper-item  class="black" v-for="(key,value) in swiperdatas" :key="value" ><img :src="key"  @click="goDetails(value) "/></swiper-item>
 			    </swiper>
         	</div>
             <div class="thirdswiper container">
-        		<swiper auto loop  :interval="4000" :duration='1000' >
+        		<swiper @on-index-change="demo02_onIndexChange" auto loop :interval="4000" :duration='1000' v-model="demo02_index" >
 			      <swiper-item class="black" v-for="(key,value) in swiperdatas" :key="value"><img :src="key" @click="goDetails(value)"/></swiper-item>
 			    </swiper>
         	</div>
             <div class="fourswiper container">
-        		<swiper auto loop :interval="4000" :duration='1000'>
+        		<swiper auto loop :interval="4000" :duration='1000' @on-index-change="demo03_onIndexChange"  v-model="demo03_index">
 			      <swiper-item class="black" v-for="(key,value) in swiperdatas" :key="value"><img :src="key" @click="goDetails(value)"/></swiper-item>
 			    </swiper>
         	</div>
@@ -69,6 +69,8 @@
                 </li>
             </ul>        
             </div>
+            <!-- <div class="venue"></div> -->
+                    
                <div class="homefooter_wrap">
                     <!--  <ul class="homefooter clearfix" id="homefooter">
                         <li class="list_li  index==cindex?'active':''" @click="tapActive(index)" tapmode="tap-active" v-for="(item,index) in homefooterList" :key="index">
@@ -103,7 +105,6 @@ import banner5 from '../../../static/data/banner/5/0.jpg'
 import banner6 from '../../../static/data/banner/6/0.jpg'
 import banner7 from '../../../static/data/banner/7/0.jpg'
 import banner8 from '../../../static/data/banner/8/0.jpg'
-import { setTimeout } from 'timers';
 // import { setTimeout } from 'timers';
 //console.log(data)
 export default {
@@ -126,9 +127,9 @@ data() {
             defaultImg: 'this.src="' + require('@/assets/img/default.png') + '"',
             flag1:8000,
             SwipeIndex:0,
-            SwipeIndex2:0,
-            autoOne:false,
-            swiper01_index:-1,
+            demo01_index:-1,
+            demo02_index:-1,
+            demo03_index:-1,
 		}
 	},
 	components: {
@@ -139,6 +140,12 @@ data() {
          Tab, 
          TabItem
 	},
+    props:{
+            auto1:{
+                type:Boolean,
+                require:true
+            }
+    },
 	created() {
 		this.$axios.get('static/data/index/xs-hotSale1.json')
             .then(res=>{
@@ -146,21 +153,22 @@ data() {
       		});
       	this.$axios.get('static/data/index/limitSale.json').then(res=>{
       		// console.log(res.data)
-            for (var i = 0; i < res.data.length; i++) {
-                var d = {};
-                d.bgimg = 'http://cn01.alicdn.sasa.com/' + res.data[i].bgimg;
-                d.dataname = res.data[i].dataname;
-                d.discount = res.data[i].discount;
-                d.price = res.data[i].price;
-                d.oldprice = res.data[i].oldprice;
-                d.productid = res.data[i].productid;
-                d.id = res.data[i].productid;
-                d.img = 'http://cn01.alicdn.sasa.com/' + res.data[i].iconimg;
-                d.name = res.data[i].dataname;
-                d.storeName = '';
-                this.timesSale.push(d);
-            }
+		for (var i = 0; i < res.data.length; i++) {
+			var d = {};
+			d.bgimg = 'http://cn01.alicdn.sasa.com/' + res.data[i].bgimg;
+			d.dataname = res.data[i].dataname;
+			d.discount = res.data[i].discount;
+			d.price = res.data[i].price;
+			d.oldprice = res.data[i].oldprice;
+			d.productid = res.data[i].productid;
+			d.id = res.data[i].productid;
+			d.img = 'http://cn01.alicdn.sasa.com/' + res.data[i].iconimg;
+			d.name = res.data[i].dataname;
+			d.storeName = '';
+			this.timesSale.push(d);
+		}
         });	
+        
         this.$axios.get('static/data/index/pf-hotSale1.json')
             .then(res=>{
       			this.hotSale=res.data
@@ -171,6 +179,7 @@ data() {
 			"038d3183-c96f-4a7c-9f19-9ad398e40451":	banner3,
 			"82534bf9-1802-4ade-9db8-71e7819c52a2":	banner4,
         };
+        
         this.swiperdatas=
         {
                     "07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
@@ -182,6 +191,7 @@ data() {
   
     },
     mounted() {
+
                this.swiperdata1= {
                             "07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
                             "a51d5068-83a2-4bfd-b5c7-59f61beb1730":banner6,
@@ -191,29 +201,45 @@ data() {
                             "548de378-65c2-4eef-9aed-b7786443200c":banner8,
                 };
          var  _this=this;
-         this.$nextTick(()=>{
+        //  this.$nextTick(()=>{
             // this.$refs.swiper.xheight = '300px'
-            // setTimeout(function(){
-            //      _this.autoOne=true;
-            // },1000)
-         })   
-        this.hotScrollTop=this.$refs.hotGoods.offsetTop;
+      
+ 
+        //  })   
+            this.hotScrollTop=this.$refs.hotGoods.offsetTop;
+            // this.$refs.topSwiper.setAttribute("auto");
     },
     distoryed() {
 
     },
     methods: {
-        demo01_onIndexChange(index){
-            var _this=this;
-            setTimeout(()=>{
-                _this.swiper01_index = index
-            },1000)
+        demo_onIndexChange (index) {
+                var _this=this;
+                setTimeout(function(){
+                _this.swiper_index = index+1
+                },0)
+            },
+        demo01_onIndexChange (index) {
+                var _this=this;
+                setTimeout(function(){
+                _this.demo01_index = index+1
+                },2000)
+            },
+       	 demo02_onIndexChange (index) {
+                var _this=this;
+	        setTimeout(function(){
+                _this.demo02_index = index+1
+            },3000)
         },
-       	 demo06_onIndexChange (index) {
-	      this.demo06_index = index
-        },
+         
+        demo03_onIndexChange(index){
+                  var _this=this;
+                setTimeout(function(){
+                _this.demo03_index = index+1
+                },4000)
+        },            
         goDetails(id){
-                // console.log(id)
+                console.log(id)
              this.$router.push({
                 path: '/home/homeDetail',
                 query: {
@@ -226,7 +252,6 @@ data() {
         },
         addCar(hot){
                     var date = new Date();
-                    var price=0,count=0;
                     var dataForAddCar={};
                     dataForAddCar.id=hot.id;
                     dataForAddCar.name=hot.name;
@@ -235,26 +260,18 @@ data() {
                     dataForAddCar.price=hot.price;
                     dataForAddCar.title=hot.productTitle;
                     dataForAddCar.time=date;
-                    dataForAddCar.count=1;
-                    // console.log(dataForAddCar)
-                    var jsonString=localStorage.getItem('addcar')||'[]';
-                     var arr =   JSON.parse(jsonString);
-                    arr.push(dataForAddCar);
-
-                localStorage.setItem('addcar',JSON.stringify(arr));
+                    console.log(dataForAddCar)
+                localStorage.setItem('addcar',JSON.stringify(dataForAddCar))
                 // this.showModule();
                 // setTimeout(() => {
                 //     AlertModule.hide()
                 // }, 3000)
-                alert("加入购物车成功")
+                alert("保存成功")
         },
     },
     filters: {
     },
      computed: {
-         autoSwiper(){
-             return this.autoOne;
-         }
                     // stus(){
                     //     if(this.SwipeIndex2 == '-1') {
                     //         return this.user;
@@ -285,7 +302,7 @@ data() {
                     });
             };
         } ,
-        SwipeIndex2:function(val,oldval){
+        demo01_index:function(val,oldval){
             console.log(val,oldval)
             // if(val==1){
             //     this.SwipeIndex2=0;
@@ -363,6 +380,7 @@ data() {
     .homefooter{overflow: scroll;}
     .homefooter .vux-tab{width: 700px;}
     .homefooter  ::-webkit-scrollbar{height: 0px !important; opacity:0;}
+    #home .vux-tab-container {overflow: auto;}
 
 </style>
 

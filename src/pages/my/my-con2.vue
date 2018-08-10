@@ -1,6 +1,8 @@
 <template>
 		<div id="my-con2">
-			<div class="fixed-con-lg">
+			 				<box gap="15px 15px">
+		                        <XButton type="primary" :disabled="btnloading"  @click.native="confirm">{{btnWord}}</XButton>
+		            </box>
 	            <box gap="15px 15px">
 	                <circleTitle title="企业详情" class="info" greytitle=true>
 	                    	<!--所在城市:<span>深圳</span>-->
@@ -41,10 +43,7 @@
 	                </circleTitle>
 
 	            </box>
-							 	<box gap="15px 15px">
-		                        <XButton type="primary" :disabled="btnloading"  @click.native="confirm">{{btnWord}}</XButton>
-		            </box>
-	        </div>
+							
 		</div>
 </template>
 
@@ -175,7 +174,6 @@ export default {
 <style  scoped>
 #my-con2{width: 100%;height: 100%;background: #d1e9ff;}
 .info-list{font-size: 12px;text-align: left;color: #333;padding-left: 20px;line-height: 30px;}
-
 </style>
 <style>
  

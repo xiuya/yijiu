@@ -1,6 +1,8 @@
 <template>
 		<div id="my-con1">
-			<div class="fixed-con-lg">
+				<box gap="15px 15px">
+		                        <XButton type="primary" :disabled="btnloading"  @click.native="confirm">{{btnWord}}</XButton>
+		        </box>
 	            <box gap="15px 15px">
 	                <circleTitle title="企业简介" class="info" greytitle=true>
 	                 	<group label-width="4.5em" label-margin-right="2em" label-align="right">
@@ -14,10 +16,7 @@
 	                    
 	                </circleTitle>
 	            </box>
-	           	<box gap="15px 15px">
-		                        <XButton type="primary" :disabled="btnloading"  @click.native="confirm">{{btnWord}}</XButton>
-		        </box>
-	        </div>
+	           
 		</div>
 </template>
 

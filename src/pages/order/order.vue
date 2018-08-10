@@ -2,9 +2,8 @@
     <div>
         <div id="order">
         
-            <div class="fixed-con">
               	<div class="container ">
-                    <div class="goods_list ">
+                    <!-- <div class="goods_list ">
                         <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
                             <div class="count_title clearfix">
                                     <div class="title_left fl">待付款</div>
@@ -36,9 +35,9 @@
                                 </div>
                             </div>
                       </router-link>
-                    </div>
+                    </div> -->
 
-                 <div class="goods_list ">
+                 <!-- <div class="goods_list ">
                       <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
                       <div class="count_title clearfix">
                             <div class="title_left fl">待付款</div>
@@ -70,9 +69,9 @@
                           </div>
                       </div>
                       </router-link>
-                    </div>
+                  </div> -->
 
-                    <div class="goods_list ">
+                    <!-- <div class="goods_list ">
                          <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
                       <div class="count_title clearfix">
                             <div class="title_left fl">待付款</div>
@@ -104,7 +103,7 @@
                           </div>
                       </div>
                          </router-link>
-                    </div>
+                    </div> -->
 
 
                     <div class="goods_list ">
@@ -176,7 +175,6 @@
                     </div>
             	</div>
             </div>
-        </div>
     </div>
 </template>
 
@@ -277,8 +275,8 @@ export default {
   color: #fff;
   font-size: 18px;
   line-height: 40px;
-//   background: #000;
-  background:url(../../assets/img/bg3.png)
+  //   background: #000;
+  background: url(../../assets/img/bg3.png);
 }
 .count_status {
   line-height: 30px;
@@ -309,6 +307,10 @@ a.pay_cancel {
 // .container{position: absolute;bottom: 0;width: 100%;}
 .goods_list > a {
   color: #333;
+}
+#order{
+   display: flex;
+    flex-direction: column-reverse;
 }
 </style>
 
