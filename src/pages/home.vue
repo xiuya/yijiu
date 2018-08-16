@@ -1,9 +1,8 @@
 <template>
     <ViewBox>
-        <keep-alive>
+        <!-- <keep-alive> -->
           <router-view  id="home-view"></router-view>
-        </keep-alive>
-        <!-- <router-view  id="home-view"></router-view> -->
+        <!-- </keep-alive> -->
         <tabbar :navlist="navlist"></tabbar>
     </ViewBox>
 </template>

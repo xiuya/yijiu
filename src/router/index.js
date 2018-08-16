@@ -16,7 +16,8 @@ const homeSearch=()=>
 /* 订单  */
 const order = () =>
     import('@/pages/order/order');
-
+const orderDetail = () =>
+    import('@/pages/order/orderDetail');
 /* 购物车*/
 const cart = () =>
     import('@/pages/cart/cart');
@@ -70,7 +71,8 @@ export default new Router({
             component: order,
             meta: {
                 auth: false,
-            }
+            },
+            children:[]
         },
         {
             path: 'cart',
@@ -144,6 +146,14 @@ export default new Router({
         path: '/home/homeSearch',
         name: 'Search',
         component:homeSearch
+    },
+    {
+        path: '/order/orderDetail',
+        name: 'orderDetail',
+        component:orderDetail,
+        meta: {
+            auth: true,
+        }
     },
    
     {

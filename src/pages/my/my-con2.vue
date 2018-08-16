@@ -1,6 +1,8 @@
 <template>
 		<div id="my-con2">
-			<div class="fixed-con-lg">
+			 				<box gap="15px 15px">
+		                        <XButton type="primary" :disabled="btnloading"  @click.native="confirm">{{btnWord}}</XButton>
+		            </box>
 	            <box gap="15px 15px">
 	                <circleTitle title="企业详情" class="info" greytitle=true>
 	                    	<!--所在城市:<span>深圳</span>-->
@@ -11,24 +13,24 @@
 						      <x-address title="所在城市:" v-model="addressValue" raw-value :list="addressData" value-text-align="left"></x-address>
 
 
-						      <x-input title="具体地址:" placeholder="请输入具体地址" ></x-input>
+						      <x-input title="具体地址:" placeholder="" ></x-input>
 
 	                    	<!--员工人数:<span>1200</span>-->
 
-						      <x-input title="员工人数:" placeholder="请输入员工人数" keyboard="number"></x-input>
+						      <x-input title="员工人数:" placeholder="" keyboard="number"></x-input>
 
 
 						      <!--<x-input title="成立时间:" placeholder="请输入成立时间" ></x-input>-->
       							<calendar @on-change="onChange" v-model="demo3" title="成立时间:" disable-future></calendar>
 
 
-						      <x-input title="年销售额:" placeholder="请输入年销售额（单位/万元）" keyboard="number"></x-input>
+						      <x-input title="年销售额:" placeholder="" keyboard="number"></x-input>
 
 
-						      <x-input title="企业主:" placeholder="请输入企业主名称"></x-input>
+						      <x-input title="企业主:" placeholder=""></x-input>
 
 
-						      <x-input title="座机/电话:" name="mobile" placeholder="请输入电话号码" keyboard="number" is-type="china-mobile"></x-input>
+						      <x-input title="座机/电话:" name="mobile" placeholder="" keyboard="number" is-type="china-mobile"></x-input>
 						    </group>
 	                    <div class="info-list">文字介绍:<span><x-textarea v-model="describ"></x-textarea></span></div>
 	                    <div class="info-list" id="img-wrap">
@@ -37,12 +39,11 @@
 								<div id="addImg_box" class="bg-fff mt-15"></div>
 							</div>
 	                    </div>
-	                      	<box gap="15px 15px">
-		                        <XButton type="primary" :disabled="btnloading"  @click.native="confirm">{{btnWord}}</XButton>
-		                    </box>
+	                     
 	                </circleTitle>
+
 	            </box>
-	        </div>
+							
 		</div>
 </template>
 
@@ -173,7 +174,6 @@ export default {
 <style  scoped>
 #my-con2{width: 100%;height: 100%;background: #d1e9ff;}
 .info-list{font-size: 12px;text-align: left;color: #333;padding-left: 20px;line-height: 30px;}
-
 </style>
 <style>
  
