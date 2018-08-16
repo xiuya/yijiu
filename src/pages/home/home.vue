@@ -247,7 +247,6 @@ data() {
         },
         addCar(hot){
                     var date = new Date();
-                    // var price=0,count=0;
                     var dataForAddCar={};
                     dataForAddCar.id=hot.id;
                     dataForAddCar.name=hot.name;
@@ -257,12 +256,13 @@ data() {
                     dataForAddCar.title=hot.productTitle;
                     dataForAddCar.time=date;
                     dataForAddCar.count=1;
-                    // console.log(dataForAddCar)
                     var jsonString=localStorage.getItem('addcar')||'[]';
-                     var arr =   JSON.parse(jsonString);
-                    arr.push(dataForAddCar);
+                    console.log(jsonString)
+                    
+                    var arrCar=JSON.parse(jsonString);
+                    arrCar.push(dataForAddCar);
 
-                localStorage.setItem('addcar',JSON.stringify(arr));
+                localStorage.setItem('addcar',JSON.stringify(arrCar));
                 // this.showModule();
                 // setTimeout(() => {
                 //     AlertModule.hide()
@@ -353,7 +353,7 @@ data() {
     .homefooter .vux-tab{width: 700px;}
     /* .homefooter .vux-tab div{width: 70px !important;} */
     /* .homefooter  ::-webkit-scrollbar{height: 0px !important; opacity:0;} */
-    .hot-list{background:url(../../assets/img/bg3.png);}
+    /* .hot-list{background:url(../../assets/img/bg3.png);} */
     #home .vux-tab .vux-tab-item{-webkit-box-flex: 1 !important;-ms-flex: 1 !important;flex: 1 !important;}
     #home .vux-tab-container{    overflow-x: scroll;overflow-y: hidden;}
     /* .scrollable::-webkit-scrollbar{height: 1px ;background: #EF3F7F;} */

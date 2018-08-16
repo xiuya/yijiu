@@ -276,7 +276,7 @@ export default {
   font-size: 18px;
   line-height: 40px;
   //   background: #000;
-  background: url(../../assets/img/bg3.png);
+  // background: url(../../assets/img/);
 }
 .count_status {
   line-height: 30px;

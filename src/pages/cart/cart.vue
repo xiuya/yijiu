@@ -70,11 +70,10 @@ export default {
       todaydata: {},
       resdatas: [],
       buyValue: 1,
-      getItems: localStorage.getItem("addcar")
-        ? JSON.parse(localStorage.getItem("addcar"))
-        : "",
+      getItems:[],
       priceTotal:0,  
       countTotal:0,  
+      dataDetail:[],
     };
   },
   components: {
@@ -100,18 +99,39 @@ export default {
         // let all=this.getItems;
         // var price=0,count=0;
         this.$nextTick(function(){
-                      for (var i = 0; i < this.getItems.length-1; i++) {
-                            this.priceTotal+= parseInt(this.getItems[i].price);
-                            this.countTotal+=1;
-                            for(var j=i+1;j<this.getItems.length;j++){
-                                    if(this.getItems[i].id==this.getItems[j].id){
-                                        this.getItems[i].count+=1;
-                                            this.countTotal-=1;
-                                            this.getItems.splice(j,1);
-                                            console.log(this.getItems);
-                                    }
-                            }
-                    }
+           var addCar=localStorage.getItem("addcar")? JSON.parse(localStorage.getItem("addcar")): "";
+           var resObj={};
+                      for (var i = 0; i < addCar.length-1; i++) {
+                        var item=addCar[i];
+                        if(!resObj[item.id]){
+                              // this.priceTotal+= parseInt(this.getItems[i].price);
+                              // this.countTotal+=1;
+                              resObj[item.id]=item.count;
+                        }else{
+                          var count=resObj[item.id];
+                              resObj[item.id]=count+item.count;
+                        }
+                      };
+          //  console.log(resObj);
+          //  var idString='';
+           for(var key in resObj){
+              // idString=key;
+          //  var url='http://localhost:8080/#/home/homeDetail?id='+key;
+          //  console.log(url)
+          var goodsdetail='static/data/details/'+key+'/getProductDetailInfo.json';
+              this.$axios.get(goodsdetail)
+                .then(res=>{
+                  if(!!res.data){
+                      this.getItems.push(res.data);
+                      console.log(this.getItems)
+          
+                  }
+                    
+                      // this.buydist=this.$refs.buyInfo.offsetTop;
+                        // this.guigdist=this.$refs.guigInfo.offsetTop;
+                        // console.log(this.buydist,this.guigdist)
+            });
+           }
 
         })
   
