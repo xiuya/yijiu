@@ -1,24 +1,24 @@
 <template>
     <div>
         <div id="home" >
-        	<div class="topswiper" :duration='1000'>
+        	<div class="topswiper" >
         		<!--<swiper loop auto :list="demo06_list" :index="demo06_index" @on-index-change="demo06_onIndexChange"></swiper>-->	
-        		<swiper   loop  auto :interval="4000" :duration='1000' ref='topSwiper' v-model="SwipeIndex">
-			      <swiper-item class="black" v-for="(value,index) in swiperdata" :key="index" ><img :src="value"  @click="goDetails(index)"/></swiper-item>
+        		<swiper   loop  auto :interval="4000" :duration='1000' ref='topSwiper' v-model="SwipeIndex" @on-index-change="demo_onIndexChange">
+			      <swiper-item class="black" v-for="(value,index) in swiperdatas" :key="index" ><img :src="value"  @click="goDetails(index)"/></swiper-item>
         		</swiper>
         	</div>
 			<div class="secswiper" >
-        		<swiper auto loop :interval="4000" :duration='1000' v-model="SwipeIndex2">
-			      <swiper-item  class="black" v-for="(key,value) in swiperdata1" :key="value" ><img :src="key"  @click="goDetails(value) "/></swiper-item>
+        		<swiper @on-index-change="demo01_onIndexChange" auto loop :interval="4000" :duration='1000' v-model="demo01_index">
+			      <swiper-item  class="black" v-for="(key,value) in swiperdatas" :key="value" ><img :src="key"  @click="goDetails(value) "/></swiper-item>
 			    </swiper>
         	</div>
             <div class="thirdswiper container">
-        		<swiper auto loop  :interval="4000" :duration='1000' >
+        		<swiper @on-index-change="demo02_onIndexChange" auto loop :interval="4000" :duration='1000' v-model="demo02_index" >
 			      <swiper-item class="black" v-for="(key,value) in swiperdatas" :key="value"><img :src="key" @click="goDetails(value)"/></swiper-item>
 			    </swiper>
         	</div>
             <div class="fourswiper container">
-        		<swiper auto loop :interval="4000" :duration='1000'>
+        		<swiper auto loop :interval="4000" :duration='1000' @on-index-change="demo03_onIndexChange"  v-model="demo03_index">
 			      <swiper-item class="black" v-for="(key,value) in swiperdatas" :key="value"><img :src="key" @click="goDetails(value)"/></swiper-item>
 			    </swiper>
         	</div>
@@ -127,7 +127,9 @@ data() {
             defaultImg: 'this.src="' + require('@/assets/img/default.png') + '"',
             flag1:8000,
             SwipeIndex:0,
-            SwipeIndex2:0,
+            demo01_index:-1,
+            demo02_index:-1,
+            demo03_index:-1,
 		}
 	},
 	components: {
@@ -138,6 +140,12 @@ data() {
          Tab, 
          TabItem
 	},
+    props:{
+            auto1:{
+                type:Boolean,
+                require:true
+            }
+    },
 	created() {
 		this.$axios.get('static/data/index/xs-hotSale1.json')
             .then(res=>{
@@ -196,18 +204,7 @@ data() {
         //  this.$nextTick(()=>{
             // this.$refs.swiper.xheight = '300px'
       
-            setTimeout(function(){
-                 _this.SwipeIndex2=0;
-                //   _this.swiperdata1=
-                // {
-                //             "07d3a288-4283-43c5-9a69-2f249579778f":	banner5,
-                //             "a51d5068-83a2-4bfd-b5c7-59f61beb1730":banner6,
-                //             "038d3183-c96f-4a7c-9f19-9ad398e40451":	banner3,
-                //             "82534bf9-1802-4ade-9db8-71e7819c52a2":	banner4,
-                //             "804e902c-fe52-479b-a65c-7e196d8687a9":banner7,
-                //             "548de378-65c2-4eef-9aed-b7786443200c":banner8,
-                // };
-            },1000)
+ 
         //  })   
             this.hotScrollTop=this.$refs.hotGoods.offsetTop;
             // this.$refs.topSwiper.setAttribute("auto");
@@ -216,9 +213,31 @@ data() {
 
     },
     methods: {
-       	 demo06_onIndexChange (index) {
-	      this.demo06_index = index
+        demo_onIndexChange (index) {
+                var _this=this;
+                setTimeout(function(){
+                _this.swiper_index = index+1
+                },0)
+            },
+        demo01_onIndexChange (index) {
+                var _this=this;
+                setTimeout(function(){
+                _this.demo01_index = index+1
+                },2000)
+            },
+       	 demo02_onIndexChange (index) {
+                var _this=this;
+	        setTimeout(function(){
+                _this.demo02_index = index+1
+            },3000)
         },
+         
+        demo03_onIndexChange(index){
+                  var _this=this;
+                setTimeout(function(){
+                _this.demo03_index = index+1
+                },4000)
+        },            
         goDetails(id){
                 console.log(id)
              this.$router.push({
@@ -283,7 +302,7 @@ data() {
                     });
             };
         } ,
-        SwipeIndex2:function(val,oldval){
+        demo01_index:function(val,oldval){
             console.log(val,oldval)
             // if(val==1){
             //     this.SwipeIndex2=0;
