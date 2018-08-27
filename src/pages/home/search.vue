@@ -1,13 +1,13 @@
 <template>
     <div id="search" >
-        	<div class="search active" >
+        	<div class="search" >
                 <form class="search-bar clear ng-pristine ng-valid">
                     <i class="iconfont icon-sousuo search-btn" @click="addHistory()"></i>
                     <input type="search" placeholder="保湿" class="left "  v-model="key">
                     <span class="left" @click="cancel">取消</span>
                 </form>
 
-                <tab :line-width=2 active-color='#fc378c' v-model="index">
+                <tab :line-width=2  active-color='#fc378c' v-model="index">
                     <tab-item class="vux-center" :selected="tabName === item" v-for="(item, index) in tabberGoods" @click="tabName= item" :key="index">{{item}}</tab-item>
                 </tab>
                   <swiper v-model="index" height="200px" :show-dots="false">
@@ -19,24 +19,8 @@
                                     <li v-for="(key,value) in item"  :key="value" class="left ">
                                         <a href="#classinfo" >{{key.name}}</a>
                                     </li>
-                                    <!-- <li ng-repeat="(key,value) in hotSearch" @click="addHistory(value,info.searchCitemlass=key)" class="left ">
-                                        <a href="#classinfo" class="ng-binding"></a></li>itemitems
-                                    <li ng-repeat="(key,value) in hotSearch" @click="addHistory(value,info.searchClass=key)" class="left ">
-                                        <a href="#classinfo" class="ng-binding"></a></li>
-                                    <li ng-repeat="(key,value) in hotSearch" @click="addHistory(value,info.searchClass=key)" class="left ">
-                                        <a href="#classinfo" class="ng-binding">肌肤保养</a></li>
-                                    <li ng-repeat="(key,value) in hotSearch" @click="addHistory(value,info.searchClass=key)" class="left ">
-                                        <a href="#classinfo" class="ng-binding">面部护理</a></li>
-                                    <li ng-repeat="(key,value) in hotSearch" @click="addHistory(value,info.searchClass=key)" class="left ">
-                                        <a href="#classinfo" class="ng-binding">男士用品</a></li>item
-                                    <li ng-repeat="(key,value) in hotSearch" @lick="addHistory(value,info.searchClass=key)" class="left ">
-                                        <a href="#classinfo" class="ng-binding">奇幻香水</a></li>
-                                    <li ng-repeat="(key,value) in hotSearch" @click="addHistory(value,info.searchClass=key)" class="left ">
-                                        <a href="#classinfo" class="ng-binding">母子用品</a></li> -->
                             </ul>
                         </section>
-                    
-                    
                     </div>
                     </swiper-item>
                 </swiper>
@@ -55,7 +39,7 @@ data() {
             defaultImg: 'this.src="' + require('@/assets/img/default.png') + '"',
             key:'',
             showSearch:false,
-            tabberGoods:["全部","商品", '店铺'],
+            tabberGoods:["商品", '店铺'],
             tabberGoodsItem:[[{name:'热卖面膜'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}],[{name:'热卖面膜'},{name:'母子用品'},{name:'母子用品'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}],[{name:'母子用品'},{name:'母子用品'},{name:'热卖面膜'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}]],
             index: 0,
             tabName:"全部",

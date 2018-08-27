@@ -18,6 +18,11 @@ const order = () =>
     import('@/pages/order/order');
 const orderDetail = () =>
     import('@/pages/order/orderDetail');
+//   商品管理
+const goods = () =>
+    import('@/pages/goods/goods');
+const goodsDetail = () =>
+    import('@/pages/goods/goodsdetail');  
 /* 购物车*/
 const cart = () =>
     import('@/pages/cart/cart');
@@ -69,6 +74,15 @@ export default new Router({
             path: 'order',
             name: 'order',
             component: order,
+            meta: {
+                auth: false,
+            },
+            children:[]
+        },
+        {
+            path: 'goods',
+            name: 'goods',
+            component: goods,
             meta: {
                 auth: false,
             },

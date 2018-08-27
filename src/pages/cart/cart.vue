@@ -1,58 +1,58 @@
 <template>
     <div id="cart">
-
-     	<div class="container-cart ">   
-            <div class="cart-empty" v-if='!getItems'>
-                购物车空,赶紧去购物去吧.
-            </div>
-            <div class="null"></div>
-            <div class="shop" v-for='(getItem,index) in getItems' :key='index' v-if='getItems.length>=1'>
-                <!-- 店铺名 -->
-                <div class="shop_name clearfix">
-                    <span class="shop_name_text fl">
-                        {{getItem.storeName}}
-                    </span>
-                    <span class="fr">
-                        {{getItem.time}}
-                    </span>
-                </div>
-                <!-- 宝贝组 -->
-                <div class="shop_item_group">
-                    <!-- 单个宝贝 -->
-                    <div class="shop_item clearfix">
-                        <div class="img-box" >
-                            <img :src="getItem.img" alt="" class="item_icon">
-                        </div>
-                        <div class="shop_item_right" >
-                        	<div class="shop-content clearfix">
-                        		<div class="fl">
-                        			<span class="title">{{getItem.name}}</span>
-		                            <span class="description">
-		                                		{{getItem.title}}
-		                            </span>
-                        		</div>
-                        		<div class="fr">
-                               			 <div class="edit_icon "></div>
-                        		</div>
-                        	
-                        	</div>
-                            	<div class="tag_group">
-	                                <span class="price">{{getItem.price}}</span>
-									<x-number  v-model="getItem.count" :min="0" @on-change="change"></x-number>
-	                            </div>
-                        </div>
+              <div class="container-cart ">   
+                    <div class="cart-empty" v-if='!getItems'>
+                        购物车空,赶紧去购物去吧.
                     </div>
-               </div>
-            </div>   
-            <div class="cart-footer clearfix" v-if='getItems.length>=1'>
-                <div class="bg-gray" >清空</div>
-                <div><div>收藏</div>999款</div>
-                <div><div>共选</div><span class="c-blue">{{countTotal}}</span>款</div>
-                <div><div>合计</div> <span class="c-red">￥{{priceTotal}}</span></div>
-                <div class="bg-red">结算</div>
-                <div class="bg-green checkall">全选</div>
-            </div>   
-      </div> 
+                    <div class="null"></div>
+                    <div class="shop" v-for='(getItem,index) in getItems' :key='index' v-if='getItems.length>=1'>
+                        <!-- 店铺名 -->
+                        <div class="shop_name clearfix">
+                            <span class="shop_name_text fl">
+                                {{getItem.storeName}}
+                            </span>
+                            <span class="fr">
+                                {{getItem.time}}
+                            </span>
+                        </div>
+                        <!-- 宝贝组 -->
+                        <div class="shop_item_group">
+                            <!-- 单个宝贝 -->
+                            <div class="shop_item clearfix">
+                                <div class="img-box" >
+                                    <img :src="imgUrl+getItem.img" alt="" class="item_icon">
+                                </div>
+                                <div class="shop_item_right" >
+                                  <div class="shop-content clearfix">
+                                    <div class="fl">
+                                      <span class="title">{{getItem.name}}</span>
+                                        <span class="description">
+                                                {{getItem.title}}
+                                        </span>
+                                    </div>
+                                    <div class="fr">
+                                            <div class="edit_icon "></div>
+                                    </div>
+                                  
+                                  </div>
+                                      <div class="tag_group">
+                                          <span class="price">{{getItem.price}}</span>
+                          <x-number  v-model="getItem.count" :min="0" @on-change="change"></x-number>
+                                      </div>
+                                </div>
+                            </div>
+                      </div>
+                    </div>   
+                    <div class="cart-footer clearfix" v-if='getItems.length>=1'>
+                        <div class="bg-gray" >清空</div>
+                        <div><div>收藏</div>999款</div>
+                        <div><div>共选</div><span class="c-blue">{{countTotal}}</span>款</div>
+                        <div><div>合计</div> <span class="c-red">￥{{priceTotal}}</span></div>
+                        <div class="bg-red">结算</div>
+                        <div class="bg-green checkall">全选</div>
+                    </div>   
+              </div> 
+         
 
     </div>
 </template>
@@ -85,7 +85,6 @@ export default {
   },
   methods: {
     change(val) {
-      //   console.log('change', val)
     }
   },
   created() {
@@ -96,8 +95,6 @@ export default {
   },
   mounted() {
     console.log(this.getItems);
-        // let all=this.getItems;
-        // var price=0,count=0;
         this.$nextTick(function(){
            var addCar=localStorage.getItem("addcar")? JSON.parse(localStorage.getItem("addcar")): "";
            var resObj={};
@@ -112,24 +109,21 @@ export default {
                               resObj[item.id]=count+item.count;
                         }
                       };
-          //  console.log(resObj);
-          //  var idString='';
+           console.log(resObj);
            for(var key in resObj){
-              // idString=key;
           //  var url='http://localhost:8080/#/home/homeDetail?id='+key;
           //  console.log(url)
+          var _this=this;
           var goodsdetail='static/data/details/'+key+'/getProductDetailInfo.json';
               this.$axios.get(goodsdetail)
                 .then(res=>{
                   if(!!res.data){
+                      this.$set(res.data,"count",resObj[key])
                       this.getItems.push(res.data);
                       console.log(this.getItems)
+                      this.countTotal++
           
                   }
-                    
-                      // this.buydist=this.$refs.buyInfo.offsetTop;
-                        // this.guigdist=this.$refs.guigInfo.offsetTop;
-                        // console.log(this.buydist,this.guigdist)
             });
            }
 
@@ -265,5 +259,6 @@ export default {
     flex-direction: column-reverse;
 }
 .null{height: 50px;}
+
 </style>
 

@@ -37,6 +37,11 @@ export default {
                     text: '购物车',
                 },
                 {
+                    path: '/goods',
+                    title: '商品管理',
+                    text: '商品管理',
+                },
+                {
                     path: '/my/mycon5',
                     title: '账户',
                     text: '账户',
