@@ -1,10 +1,11 @@
 <template>
     <div id="cart">
-              <div class="container-cart ">   
-                    <div class="cart-empty" v-if='!getItems'>
+              <div class="container-cart ">  
+                 
+                    <div class="cart-empty" v-if='getItems.length==0'>
+                        <img :src="caricon" alt="">
                         购物车空,赶紧去购物去吧.
                     </div>
-                    <div class="null"></div>
                     <div class="shop" v-for='(getItem,index) in getItems' :key='index' v-if='getItems.length>=1'>
                         <!-- 店铺名 -->
                         <div class="shop_name clearfix">
@@ -37,19 +38,21 @@
                                   </div>
                                       <div class="tag_group">
                                           <span class="price">{{getItem.price}}</span>
-                          <x-number  v-model="getItem.count" :min="0" @on-change="change"></x-number>
+                                          <x-number  v-model="getItem.count" :min="1" @on-change="change"></x-number>
                                       </div>
                                 </div>
                             </div>
                       </div>
                     </div>   
-                    <div class="cart-footer clearfix" v-if='getItems.length>=1'>
-                        <div class="bg-gray" >清空</div>
+        <x-header :left-options="{showBack: false}">购物车 </x-header>
+
+                    <div class="cart-footer clearfix" v-if='getItems.length>=0'>
+                        <div class="bg-gray" @click='clearLocalstorage' >清空</div>
                         <div><div>收藏</div>999款</div>
                         <div><div>共选</div><span class="c-blue">{{countTotal}}</span>款</div>
                         <div><div>合计</div> <span class="c-red">￥{{priceTotal}}</span></div>
                         <div class="bg-red">结算</div>
-                        <div class="bg-green checkall">全选</div>
+                        <div class="bg-green checkall" @click="checkAll">全选</div>
                     </div>   
               </div> 
          
@@ -61,6 +64,7 @@
 import { Grid, GridItem, XHeader, XNumber, Group } from "vux";
 // import moment from 'moment';
 //import wallet_04 from '@/assets/img/wallet_04.png'
+import caricon from '@/assets/img/car.png'
 
 export default {
   name: "wallet",
@@ -74,6 +78,7 @@ export default {
       priceTotal:0,  
       countTotal:0,  
       dataDetail:[],
+      caricon:caricon,
     };
   },
   components: {
@@ -85,11 +90,19 @@ export default {
   },
   methods: {
     change(val) {
+    },
+    checkAll(){
+       document.querySelector('.vux-number-input').style.background="#00ff66";
+    },
+    clearLocalstorage(){
+        localStorage.setItem("addcar",'');
+        // location.reload();
     }
+    
+  
   },
   created() {
     this.$axios.get("static/data/index/xs-hotSale1.json").then(res => {
-      // console.log(res.data)
       this.resdatas = res.data;
     });
   },
@@ -121,8 +134,7 @@ export default {
                       this.$set(res.data,"count",resObj[key])
                       this.getItems.push(res.data);
                       console.log(this.getItems)
-                      this.countTotal++
-          
+                      this.countTotal++;
                   }
             });
            }
@@ -160,19 +172,19 @@ export default {
   height: 90px;
 }
 .c-red {
-  color: rgb(252, 55, 140);
+  color: #ff6666;
 }
 .c-blue {
   color: #2f9cff;
 }
 .bg-red {
-  background: rgb(252, 55, 140);
+  background: #ff6666;
 }
 .bg-gray {
   background: gray;
 }
 .bg-green {
-  background: #2f9cff;
+  background: #00ff66;
 }
 .cart-footer {
   width: 100%;
@@ -259,6 +271,8 @@ export default {
     flex-direction: column-reverse;
 }
 .null{height: 50px;}
-
+.cart-empty{text-align: center;font-size: 30px;line-height: 60px;}
+.cart-empty img{width: 100%;}
+.cart-empty i{display: block;font-size: 50px;}
 </style>
 

@@ -5,7 +5,7 @@
                 <tab :line-width=2 active-color='#fc378c' v-model="index">
                     <tab-item class="vux-center" :selected="tabName === item" v-for="(item, index) in tabberGoods" @click="tabName= item" :key="index">{{item}}</tab-item>
                 </tab>
-                  <swiper v-model="index" :height="height" :show-dots="false">
+                  <swiper v-model="index"  :show-dots="false">
                     <swiper-item >
                         <div class="tab-swiper vux-center">
                             <section class="search-main">
@@ -73,8 +73,46 @@
                     </swiper-item>
                     <swiper-item >
                         <div class="tab-swiper vux-center">
-                            <section class="search-main saleOn">
+                            <section class="search-main saleOn clearfix">
                                 <!-- <div>在售商品</div> -->
+                                <div class="goods_list ">
+                                    <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
+                                        <div class="count_title clearfix status5">
+                                                <div class="title_left fl">家用电器</div>
+                                            <div class="title_right fr">商品名称1225</div>
+                                        </div>
+                                        <div class="count_up clearfix ">
+                                            <div class="left">
+                                                <span >上架：</span>
+                                                <span >2018-7-24</span>
+                                            </div>
+                                            <div class="right-content">
+                                            <div class="right">
+                                                <span>型号：</span>
+                                                <span >abcde-677742455</span>
+                                            </div>
+                                            </div>  
+                                        </div>
+                                        <div class="count_down  clearfix" >
+                                            <div class="left">
+                                                <img :src="listImg" alt="">
+                                            </div>
+                                            <div class="right-content">
+                                                <div class="center">
+                                                    <div><span>款式：</span><span>4款</span></div>
+                                                    <div><span>单价：</span><span>￥999</span></div>
+                                                    <div><span>起订量：</span><span>100套</span></div>
+                                                    <div><span>库存：</span><span>1000套</span></div>
+                                                </div>
+                                                <div class="right right-singer">
+                                                    <a href="#" class="pay_money ">删除</a>
+                                                    <div class="saleOut">已售999套</div>
+                                                    <a href="#" class="pay_money xiajia">下架</a>
+                                                </div>
+                                            </div>      
+                                        </div>
+                                    </router-link>
+                                </div>
                                 <div class="goods_list ">
                                     <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
                                         <div class="count_title clearfix status5">
@@ -186,8 +224,8 @@ export default {
       index:0,
       tabberGoods:["预览","汇总统计","编辑商品","下架商品","在售商品"],
       tabberGoodsItem:[[{name:'热卖面膜'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}],[{name:'热卖面膜'},{name:'母子用品'},{name:'母子用品'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}],[{name:'母子用品'},{name:'母子用品'},{name:'热卖面膜'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}]],
-    tabName:"在售商品",
-    height:0,
+        tabName:"在售商品",
+    // height:180,
 
 
     };
@@ -210,8 +248,9 @@ export default {
 
   },
   mounted() {
-            this.height=document.querySelector('#home-view').height;
-      console.log(this.height)
+            // this.height=document.querySelector('.saleOn').offsetHeight;
+            // console.log(this.height)
+            // this.$refs.swiper.height=this.height;
   },
   distoryed() {},
   methods: {},
@@ -381,8 +420,16 @@ a.pay_cancel {
 .goods_list.xiajiawrap a.del{background: #cc0000;background-image:none;}
 .saleOn .goodsfooter{position: absolute;bottom: 0;height: 40px;line-height: 40px;font-size: 18px;width: 100%;color: #91f880;text-align: center;    ;}
 .saleOn .goodsfooter>span{float: right;margin-right: 14px;color: #ffffff;font-size: 14px;line-height: 40px;}
-.search-main{padding-bottom: 40px;}
+.search-main{}
+#order .vux-slider{height: 100%; width: 100%; }
+
 </style>
+<style>
+#order .vux-slider .vux-swiper{height: 100% !important; display: -webkit-box; display: -ms-flexbox;display: flex;-webkit-box-orient: vertical;-webkit-box-direction: reverse;-ms-flex-direction: column-reverse;flex-direction: column-reverse;}
+.search-main{padding-bottom: 40px;}
+.vux-swiper-item .vux-center{position: absolute;bottom: 0px;width: 100%;}
+</style>
+
 
 
 

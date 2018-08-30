@@ -57,7 +57,7 @@
                </div>
                <div class="homefootet_search">
                    <div> <router-link :to="{path:'/home/homeSearch',query:{name:'商品'}}" class="right-icon">搜商品</router-link></div>
-                   <div><router-link :to="{path:'/home/homeSearch',query:{name:'店铺'}}"  class="right-icon">搜卖家</router-link></div>
+                   <!-- <div><router-link :to="{path:'/home/homeSearch',query:{name:'店铺'}}"  class="right-icon">搜卖家</router-link></div> -->
                </div>
         </div>
     </div>
@@ -214,7 +214,6 @@ export default {
       this.venue_img = res.data;
     });
     this.$axios.get("static/data/index/limitSale.json").then(res => {
-      // console.log(res.data)
       for (var i = 0; i < res.data.length; i++) {
         var d = {};
         d.bgimg = "http://cn01.alicdn.sasa.com/" + res.data[i].bgimg;
@@ -251,75 +250,18 @@ export default {
       "07d3a288-4283-43c5-9a69-2f249579778f": banner5,
       "a51d5068-83a2-4bfd-b5c7-59f61beb1730": banner6,
       "038d3183-c96f-4a7c-9f19-9ad398e40451": banner3
-      // "82534bf9-1802-4ade-9db8-71e7819c52a2":	banner4,
-      // "804e902c-fe52-479b-a65c-7e196d8687a9":banner7,
-      // "548de378-65c2-4eef-9aed-b7786443200c":banner8,
     };
-    this.list2 = [
-      "家居百货",
-      "家用电器",
-      "食品酒水",
-      "服装配饰",
-      "美妆个护",
-      "母婴用品",
-      "数码办公",
-      "汽车用品",
-      "精选箱包",
-      "户外用品"
-    ];
+    this.list2 = ["家居百货","家用电器","食品酒水","服装配饰", "美妆个护","母婴用品","数码办公","汽车用品","精选箱包", "户外用品"];
   },
   mounted() {
     this.hotScrollTop = this.$refs.hotGoods.offsetTop;
     var _this = this;
-    // console.log(_this.$refs.topSwiper)
-    // _this.$refs.topSwiper.auto=true;
-    //   var  Swiperauto=setTimeout(()=>{
-    //         _this.auto4=true;
-    //         _this.$refs.topSwiper4.render();
-    //     },3000)
 
-    //     this.timeOut=setTimeout(()=>{
-    //         _this.play();
-    //         console.log(12)
-    //     },10000)
   },
   distoryed() {
     // this.timeOut=null;
   },
   methods: {
-    swiper00_onIndexChange(index) {
-      //第壹个轮播
-      var _this = this;
-    //   console.log(index + "---01");
-      // setTimeout(function(){
-      _this.swiper0_index = index;
-      // },1000)
-    },
-    swiper01_onIndexChange(index) {
-      //第二个轮播
-      var _this = this;
-      console.log(index + "---02");
-      // setTimeout(function(){
-      _this.swiper01_index = index;
-      // },1000)
-    },
-    swiper02_onIndexChange(index) {
-      //第三个轮播
-      var _this = this;
-    //   console.log(index + "---03");
-      // setTimeout(function(){
-      // _this.swiper02_index = index+1
-      // },2000)
-    },
-
-    swiper03_onIndexChange(index) {
-      //第四个轮播
-    //   console.log(index + "---04");
-      var _this = this;
-      // setTimeout(function(){
-      // _this.swiper03_index = index+1
-      // },3000)
-    },
 
     goDetails(id) {
       // console.log(id)
@@ -349,10 +291,6 @@ export default {
       var arrCar = JSON.parse(jsonString);
       arrCar.push(dataForAddCar);
       localStorage.setItem("addcar", JSON.stringify(arrCar));
-      // this.showModule();
-      // setTimeout(() => {
-      //     AlertModule.hide()
-      // }, 3000)
       alert("加入购物车成功");
     },
     change(i) {
@@ -540,9 +478,9 @@ export default {
   z-index: 50;
   width: 15%;
   background: #d1d2d7;
-  border-top-left-radius: 10px;
+  // border-top-left-radius: 10px;
   text-align: center;
-  line-height: 30px;
+  line-height: 44px;
 }
 .homefootet_search a {
   color: #2f9cff;
@@ -723,8 +661,6 @@ export default {
 }
 .bullet span:first-child {
   margin-left: 0;
-}
-.switch {
 }
 .switch span {
   position: absolute;

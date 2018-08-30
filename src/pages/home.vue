@@ -17,7 +17,7 @@ export default {
         return {
             navlist:[
                {
-                    path: '/',
+                    path: '/scroll',
                     title: 'logo',
                     text: 'logo',
                 },

@@ -394,15 +394,20 @@
                     </div>
             	</div>
 
-
-
+              <div class="order-footer">
+                    <tab :line-width=2 active-color='#fc378c' v-model="index">
+                      <tab-item class="vux-center" :selected="tabName === item" v-for="(item, index) in tabberGoods" @click="tabName= item" :key="index">{{item}}</tab-item>
+                    </tab>
+              </div>  
+              
 
             </div>
     </div>
 </template>
 
 <script>
-import { XHeader, XButton, Box } from "vux";
+
+import { XHeader, XButton, Box, Tab, TabItem } from "vux";
 import creditCard from "./../../components/creditCard/creditCard";
 import listImg from "@/assets/img/order/dingdan.jpg"
 export default {
@@ -410,7 +415,11 @@ export default {
   data() {
     return {
       status: "",
-      listImg:listImg
+      listImg:listImg,
+      index:0,
+      tabberGoods:["预览","汇总统计","编辑商品","下架商品","在售商品"],
+      tabberGoodsItem:[[{name:'热卖面膜'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}],[{name:'热卖面膜'},{name:'母子用品'},{name:'母子用品'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}],[{name:'母子用品'},{name:'母子用品'},{name:'热卖面膜'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}]],
+      tabName:"在售商品",
 
     };
     showMenus: false;
@@ -420,7 +429,9 @@ export default {
     XHeader,
     XButton,
     Box,
-    creditCard
+    creditCard, 
+    Tab,
+     TabItem
   },
   created() {},
   mounted() {},
@@ -585,6 +596,8 @@ a.pay_cancel {
 .right-singer{background: #ffffff;height: 100%;}
 .sktime{background:#7a7a84; line-height: 20px;margin-top: 10px;}
 .sktime>span{display: block;height: 20px;padding:0 5px;}
+.order-footer{position: absolute;bottom: 0;left: 0;right: 0;width: 100%;}
+
 </style>
 
 
