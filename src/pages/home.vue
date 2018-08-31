@@ -16,11 +16,12 @@ export default {
     data() {
         return {
             navlist:[
-               {
-                    path: '/scroll',
-                    title: 'logo',
-                    text: 'logo',
-                },
+            //    {
+            //         path: '/scroll',
+            //         title: 'logo',
+            //         text: 'logo',
+
+            //     },
                 {
                     path: '/home',
                     title: '首页',

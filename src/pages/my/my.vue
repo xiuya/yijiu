@@ -83,12 +83,12 @@ export default {
 /*#fbf9fe底色 浅白色*/
  #img-wrap input{border: none;margin-bottom:0;}
   #img-wrap #addImg_box{display: flex;margin-top: 15px;}
-	#img-wrap .upload-addimg-btn:first-child,.upload-btn-box{position: relative;cursor: pointer;display: inline-block;width: 80px;height: 80px;}
+	#img-wrap .upload-addimg-btn:first-child,.upload-btn-box{position: relative;cursor: pointer;display: inline-block;width: 76px;height: 76px;}
 	#img-wrap .upload-btn-box{width: 0;}
 	#img-wrap .upload-img-box{margin-left: -3px;}
 	#img-wrap .upload-img-box:after{clear: both;width: 0;height: 0;display: block;overflow:hidden;}
-	#img-wrap .upload-addimg-btn:first-child input{width: 80px;height: 80px;position: absolute;left:0;top:0;z-index: 9;opacity: 0;}
-	#img-wrap .add-file{font-size: 80px;display: inline-block;width: 80px;height: 80px;line-height: 80px;color:#ccc;}
+	#img-wrap .upload-addimg-btn:first-child input{width: 76px;height: 76px;position: absolute;left:0;top:0;z-index: 9;opacity: 0;}
+	#img-wrap .add-file{font-size: 76px;display: inline-block;width: 76px;height: 76px;line-height: 76px;color:#ccc;}
 	#img-wrap .upload-img-item{float: left;width: 76px;height: 76px;margin-left:5px;margin-top:2px;margin-bottom:3px;position: relative; border:1px solid #ddd;margin-top:-2px;}
 	#img-wrap .upload-img-item:first-child{margin-left: 87px;}
 	#img-wrap .upload-img-item img{width: 100%;height: 100%;}

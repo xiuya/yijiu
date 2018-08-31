@@ -14,6 +14,7 @@
                             </span>
                             <span class="fr">
                                 {{getItem.time}}
+                                2015-10-12
                             </span>
                         </div>
                         <!-- 宝贝组 -->
@@ -27,17 +28,17 @@
                                   <div class="shop-content clearfix">
                                     <div class="fl">
                                       <span class="title">{{getItem.name}}</span>
-                                        <span class="description">
-                                                {{getItem.title}}
-                                        </span>
+                                      <span class="description">
+                                              {{getItem.title}}这是商品描述内容
+                                      </span>
+                                      <span class="price">{{getItem.price}}</span>
                                     </div>
                                     <div class="fr">
-                                            <div class="edit_icon "></div>
+                                             <x-button type="default">删除</x-button>
                                     </div>
                                   
                                   </div>
                                       <div class="tag_group">
-                                          <span class="price">{{getItem.price}}</span>
                                           <x-number  v-model="getItem.count" :min="1" @on-change="change"></x-number>
                                       </div>
                                 </div>
@@ -61,10 +62,10 @@
 </template>
 
 <script>
-import { Grid, GridItem, XHeader, XNumber, Group } from "vux";
+import { Grid, GridItem, XHeader, XNumber, Group, XButton } from "vux";
 // import moment from 'moment';
 //import wallet_04 from '@/assets/img/wallet_04.png'
-import caricon from '@/assets/img/car.png'
+import caricon from "@/assets/img/car.png";
 
 export default {
   name: "wallet",
@@ -74,11 +75,11 @@ export default {
       todaydata: {},
       resdatas: [],
       buyValue: 1,
-      getItems:[],
-      priceTotal:0,  
-      countTotal:0,  
-      dataDetail:[],
-      caricon:caricon,
+      getItems: [],
+      priceTotal: 0,
+      countTotal: 0,
+      dataDetail: [],
+      caricon: caricon
     };
   },
   components: {
@@ -86,20 +87,18 @@ export default {
     GridItem,
     XHeader,
     XNumber,
-    Group
+    Group,
+    XButton
   },
   methods: {
-    change(val) {
+    change(val) {},
+    checkAll() {
+      document.querySelector(".vux-number-input").style.background = "#00ff66";
     },
-    checkAll(){
-       document.querySelector('.vux-number-input').style.background="#00ff66";
-    },
-    clearLocalstorage(){
-        localStorage.setItem("addcar",'');
-        // location.reload();
+    clearLocalstorage() {
+      localStorage.setItem("addcar", "");
+      // location.reload();
     }
-    
-  
   },
   created() {
     this.$axios.get("static/data/index/xs-hotSale1.json").then(res => {
@@ -108,47 +107,47 @@ export default {
   },
   mounted() {
     console.log(this.getItems);
-        this.$nextTick(function(){
-           var addCar=localStorage.getItem("addcar")? JSON.parse(localStorage.getItem("addcar")): "";
-           var resObj={};
-                      for (var i = 0; i < addCar.length-1; i++) {
-                        var item=addCar[i];
-                        if(!resObj[item.id]){
-                              // this.priceTotal+= parseInt(this.getItems[i].price);
-                              // this.countTotal+=1;
-                              resObj[item.id]=item.count;
-                        }else{
-                          var count=resObj[item.id];
-                              resObj[item.id]=count+item.count;
-                        }
-                      };
-           console.log(resObj);
-           for(var key in resObj){
-          //  var url='http://localhost:8080/#/home/homeDetail?id='+key;
-          //  console.log(url)
-          var _this=this;
-          var goodsdetail='static/data/details/'+key+'/getProductDetailInfo.json';
-              this.$axios.get(goodsdetail)
-                .then(res=>{
-                  if(!!res.data){
-                      this.$set(res.data,"count",resObj[key])
-                      this.getItems.push(res.data);
-                      console.log(this.getItems)
-                      this.countTotal++;
-                  }
-            });
-           }
-
-        })
-  
+    this.$nextTick(function() {
+      var addCar = localStorage.getItem("addcar")
+        ? JSON.parse(localStorage.getItem("addcar"))
+        : "";
+      var resObj = {};
+      for (var i = 0; i < addCar.length - 1; i++) {
+        var item = addCar[i];
+        if (!resObj[item.id]) {
+          // this.priceTotal+= parseInt(this.getItems[i].price);
+          // this.countTotal+=1;
+          resObj[item.id] = item.count;
+        } else {
+          var count = resObj[item.id];
+          resObj[item.id] = count + item.count;
+        }
+      }
+      console.log(resObj);
+      for (var key in resObj) {
+        //  var url='http://localhost:8080/#/home/homeDetail?id='+key;
+        //  console.log(url)
+        var _this = this;
+        var goodsdetail =
+          "static/data/details/" + key + "/getProductDetailInfo.json";
+        this.$axios.get(goodsdetail).then(res => {
+          if (!!res.data) {
+            this.$set(res.data, "count", resObj[key]);
+            this.getItems.push(res.data);
+            console.log(this.getItems);
+            this.countTotal++;
+          }
+        });
+      }
+    });
   }
 };
 </script>
 
 <style scoped lang="less">
-.cart-empty{
-    height: 100%;
-    width: 100%;
+.cart-empty {
+  height: 100%;
+  width: 100%;
 }
 #home-view {
   position: relative;
@@ -190,9 +189,9 @@ export default {
   width: 100%;
   height: 50px;
   border-top: 1px solid #333;
-  position:fixed;
-  background: #fff    ;   
-  bottom:50px;
+  position: fixed;
+  background: #fff;
+  bottom: 50px;
 }
 .cart-footer > div {
   float: left;
@@ -221,24 +220,19 @@ export default {
   width: 100%;
   top: 0;
 }
-.img-box {
-  height: 125px;
-  width: 125px;
-  float: left;
-  vertical-align: middle;
-}
+
 .shop_item_right {
   overflow: hidden;
   height: 100%;
   font-size: 13px;
-  padding: 14px 23px 14px 0;
   position: relative;
-  height: 97px;
+  height: 90px;
+  width: 267px;
 }
 .tag_group {
   position: absolute;
-  bottom: 8px;
-  width: 100%;
+  bottom: 0px;
+  right: 0;
 }
 .shop_item_right .description {
   height: 23px;
@@ -250,8 +244,36 @@ export default {
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
-.container-cart{
-    padding-bottom: 50px;
+.container-cart {
+  padding-bottom: 50px;
+}
+.shop-content .title {
+  font-size: 12px;
+  line-height: 20px;
+  height: 40px;
+  color: #010101;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.shop-content .fr button {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.shop_item {
+  display: flex;
+  height: 90px;
+  overflow: hidden;
+}
+.img-box {
+  height: 90px;
+  width: 90px;
+  vertical-align: middle;
+}
+.price {
+  color: red;
 }
 </style>
 <style>
@@ -266,13 +288,24 @@ export default {
 }
 
 .container-cart {
-    height: 100%;
-    display: flex;
-    flex-direction: column-reverse;
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
 }
-.null{height: 50px;}
-.cart-empty{text-align: center;font-size: 30px;line-height: 60px;}
-.cart-empty img{width: 100%;}
-.cart-empty i{display: block;font-size: 50px;}
+.null {
+  height: 50px;
+}
+.cart-empty {
+  text-align: center;
+  font-size: 30px;
+  line-height: 60px;
+}
+.cart-empty img {
+  width: 100%;
+}
+.cart-empty i {
+  display: block;
+  font-size: 50px;
+}
 </style>
 

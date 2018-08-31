@@ -35,9 +35,9 @@
 	                    <div class="info-list">文字介绍:<span><x-textarea v-model="describ"></x-textarea></span></div>
 	                    <div class="info-list" id="img-wrap">
 	                    	<div class="ft-upload bg-fff table-view-four mui-table-view  mui-text-left">
-								<div class="c-333 ft-title list-li"><i class="iconfont icon-shuxian"></i>添加介绍图片:</div>
-								<div id="addImg_box" class="bg-fff mt-15"></div>
-							</div>
+																<div class="c-333 ft-title list-li"><i class="iconfont icon-shuxian"></i>添加介绍图片:</div>
+																<div id="addImg_box" class="bg-fff mt-15"></div>
+												</div>
 	                    </div>
 	                     
 	                </circleTitle>

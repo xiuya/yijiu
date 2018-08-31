@@ -27,12 +27,13 @@
         <box gap="10px 20px">
             <XButton type="primary"  @click.native="confirmLogin">登 录</XButton>
         </box>
-        <!-- <router-link class="forgetPwd fr" v-if="loginType==='pwd'" to="/login/forgetPwd">忘记密码</router-link> -->
+        <router-link class="forgetPwd fr" v-if="loginType==='pwd'" to="/my/setUp/setPwd">忘记密码</router-link>
+        <router-link class="forgetPwd fr" v-if="loginType==='smsCode'" to="/my/setUp/editPwd">注册申请</router-link>
     </div>
 </template>
 
 <script>
-import { Tab, TabItem ,Swiper, SwiperItem , XInput, Group, XButton ,Box, XHeader} from 'vux'
+import { Toast,Tab, TabItem  ,ToastPlugin,Swiper, SwiperItem , XInput, Group, XButton ,Box, XHeader} from 'vux'
 import { mapActions, mapState } from 'vuex'
 
 export default {
@@ -46,14 +47,17 @@ export default {
             smsCode:'',
             wait:60,
             disabled001:false,
-            codeWord:'发 送'
+            codeWord:'发 送',
+            showPositionValue:false,//是否显示
+            position:'center',//提示信息
+            toastText:'',//提示文本
         }
     },
     computed: mapState([
         'user'
     ]),
     components: {
-        Tab, TabItem, Swiper, SwiperItem,  XInput, Group, XButton, Box,XHeader
+        Toast,Tab, TabItem, Swiper, SwiperItem,  XInput, Group, XButton, Box,XHeader,ToastPlugin
     },
     created() {
        //console.log(this.$store.getters.getUser)
@@ -74,11 +78,15 @@ export default {
         ...mapActions([
             'login', 'sendcode'
         ]),
+        Toast(valueText){
+            this.showPositionValue=true;
+            this.toastText=valueText;
+        },
         confirmLogin(){
-            if(!this.phone) return mui.toast('手机号未填');
-            if(!/^1[34578]\d{9}$/.test(this.phone)) return mui.toast('手机号格式不对');
-            if(this.loginType==='pwd' && !this.pwd) return mui.toast('登录密码未填');
-            if(this.loginType==='smsCode' && !this.smsCode) return mui.toast('验证码未填');
+            if(!this.phone) return this.Toast('手机号未填');
+            if(!/^1[34578]\d{9}$/.test(this.phone)) return Toast('手机号格式不对');
+            if(this.loginType==='pwd' && !this.pwd) return Toast('登录密码未填');
+            if(this.loginType==='smsCode' && !this.smsCode) return Toast('验证码未填');
             let payload;
             switch (this.loginType) {
                 case 'pwd':
@@ -91,8 +99,16 @@ export default {
             this.login(payload)
         },
         sendCode(){
-            if(!this.phone) return mui.toast('手机号未填');
-            if(!/^1[34578]\d{9}$/.test(this.phone)) return mui.toast('手机号格式不对');
+            if(!this.phone) return   this.$vux.toast.show({
+                        // title:'手机号未填',
+                        type: 'warn',
+                        text: '手机号未填'
+                    });
+            if(!/^1[34578]\d{9}$/.test(this.phone)) return  this.$vux.toast.show({
+                        // title:'手机号未填',
+                        type: 'warn',
+                        text: '手机号格式不对'
+                    });
             this.sendcode({phone: this.phone});
             const that = this;
             function time() {
@@ -120,13 +136,13 @@ export default {
             this.loginType = this.index==0?'smsCode':'pwd'
         },
         'user.redirectTo'(){
-            mui.toast(this.user.msg.replace(/\d+/,''));
+            Toast(this.user.msg.replace(/\d+/,''));
             const from = this.$route.query.redirect;
             if(from) this.$router.replace({ path: from});
             else this.$router.replace({ path: this.user.redirectTo});
         },
         'user.msg'(){
-            mui.toast(this.user.msg.replace(/\d+/,''))
+            Toast(this.user.msg.replace(/\d+/,''))
         },
         'smsCode'(){
             if(this.loginType==='smsCode' && this.smsCode.length==4){
@@ -142,7 +158,7 @@ export default {
 
 <style scoped>
     #login{width: 100%;height: 100%;background-color: #f0f0f0;}
-    .logo{width: 100%;padding: 30px;text-align: center;}
+    .logo{width: 100%;padding-top: 30px;text-align: center;}
     .logo img{display: inline-block;width: 50%;height: auto;}
     .forgetPwd{font-size: 14px;margin-right: 20px;color: #666;}
 </style>

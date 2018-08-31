@@ -2,6 +2,9 @@
     <div id="setPwd">
         <bHeader title="设置密码" class="fixed-top"></bHeader>
         <div class="fixed-con-lg">
+               <div class="logo">
+                    <img :src='require("./../../assets/img/logo.png")'>
+                </div>
             <group>
                 <x-input title="手机号码" v-model="phone" name="mobile" placeholder="请输入手机号码" keyboard="number" :max="11"></x-input>
                 <x-input title="验证码" class="weui-vcode" v-model="smsCode" placeholder="请输入验证码">
@@ -51,16 +54,44 @@ export default {
             'set_forget_pwd', 'sendcode'
         ]),
         confirmEdit(){
-            if(!this.phone) return mui.toast('手机号未填');
-            if(!/^1[34578]\d{9}$/.test(this.phone)) return mui.toast('手机号格式不对');
-            if(!this.login_pwd || !this.check_pwd) return mui.toast('密码未填');
-            if(this.login_pwd !== this.check_pwd) return mui.toast('两次密码不一致');
-            if(!this.smsCode) return mui.toast('验证码未填');
+            if(!this.phone) return  this.$vux.toast.show({
+                        // title:'手机号未填',
+                        type: 'warn',
+                        text: '手机号未填'
+                    });
+            if(!/^1[34578]\d{9}$/.test(this.phone)) return  this.$vux.toast.show({
+                        // title:'手机号未填',
+                        type: 'warn',
+                        text: '手机号格式不对'
+                    });
+            if(!this.login_pwd || !this.check_pwd) return  this.$vux.toast.show({
+                        // title:'手机号未填',
+                        type: 'warn',
+                        text: '密码未填'
+                    });
+            if(this.login_pwd !== this.check_pwd) return  this.$vux.toast.show({
+                        // title:'手机号未填',
+                        type: 'warn',
+                        text: '两次密码不一致'
+                    });
+            if(!this.smsCode) return  this.$vux.toast.show({
+                        // title:'手机号未填',
+                        type: 'warn',
+                        text: '验证码未填'
+                    });
             this.set_forget_pwd(this.$data)
         },
         sendCode(){
-            if(!this.phone) return mui.toast('手机号未填');
-            if(!/^1[34578]\d{9}$/.test(this.phone)) return mui.toast('手机号格式不对');
+            if(!this.phone) return  this.$vux.toast.show({
+                        // title:'手机号未填',
+                        type: 'warn',
+                        text: '手机号未填'
+                    });
+            if(!/^1[34578]\d{9}$/.test(this.phone)) return  this.$vux.toast.show({
+                        // title:'手机号未填',
+                        type: 'warn',
+                        text: '手机号格式不对'
+                    });
             this.sendcode({phone: this.phone});
             const that = this;
             function time() {
@@ -85,7 +116,11 @@ export default {
     },
     watch: {
         'user.msg'(){
-            mui.toast(this.user.msg.replace(/\d+/,''))
+            this.$vux.toast.show({
+                        // title:'手机号未填',
+                        type: 'warn',
+                        text:this.user.msg.replace(/\d+/,'')
+                    });
         },
         'user.redirectTo'(){
             if(this.user.redirectTo){
@@ -98,7 +133,7 @@ export default {
 
 <style scoped>
     #setPwd{width: 100%;height: 100%;background-color: #f0f0f0;}
-    .logo{width: 100%;padding: 30px;text-align: center;}
+    .logo{width: 100%;padding-top: 30px;text-align: center;}
     .logo img{display: inline-block;width: 50%;height: auto;}
     #setPwd .weui-btn{font-size: 14px;}
 </style>
@@ -107,5 +142,7 @@ export default {
     #setPwd .vux-no-group-title{margin-top: 0 !important;}
     #setPwd .weui-label{font-size:14px;}
     #setPwd input{margin-bottom:0 !important;border:none !important;padding:0 !important;font-size:14px !important;}
+    #setPwd .weui-btn{height: 40px;line-height: 40px;}    #editPwd  .weui-btn{height: 40px;line-height: 40px;}
+    #setPwd .vux-x-input .weui-btn{height: 26px;line-height:21px !important;}
 </style>
 

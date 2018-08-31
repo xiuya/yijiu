@@ -3,9 +3,7 @@
 					<box gap="15px 15px">
 						<circleTitle title="登录信息" class="info" greytitle=true>
 							<div class="info-list">账户名:<span>一九</span></div>
-							<div class="info-list">密&nbsp;&nbsp;&nbsp;&nbsp;码:<span>实业公司</span></div>
-							<div class="info-list">确认密码:<span>电商</span></div>
-							<div class="info-list">显示网名:<span class="theme-c">  B2B</span></div>
+							<div class="info-list">卡号:<span class="theme-c">  B2B</span></div>
 						</circleTitle>
 					</box>
 					<box gap="15px 15px">

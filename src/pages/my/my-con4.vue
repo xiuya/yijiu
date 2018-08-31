@@ -3,15 +3,24 @@
 				<box gap="15px 15px">
 		                        <XButton type="primary" :disabled="btnloading"  @click.native="confirm">{{btnWord}}</XButton>
 		       </box>
-				<box gap="15px 15px">
-	                <circleTitle title="登录信息" class="info" greytitle=true>
+			   <box gap="15px 15px">
+	                <circleTitle title="添加银行卡" class="info" greytitle=true>
 	                 <group label-width="4.5em" label-margin-right="2em" label-align="right">
-						      <x-input title="账户名:" placeholder="" ></x-input>
-						      <x-input title="密码:" placeholder="" ></x-input>
-						      <x-input title="确认密码:" placeholder="" ></x-input>
-						      <x-input title="显示网名:" placeholder="" ></x-input>
-		            </group>   
-		               
+						      <x-input title="持卡人:" placeholder="请输入真实姓名" ></x-input>
+						      <x-input title="卡号:" placeholder="请输入带银联标识的卡号" ></x-input>
+						      <x-input title="手机号:" placeholder="请输入持卡人预留的电话" ></x-input>
+						      <x-input title="验证码:" placeholder="" ></x-input>
+					</group>	      
+	                </circleTitle>
+	            </box>
+				<box gap="15px 15px">
+	                <circleTitle title="修改密码" class="info" greytitle=true>
+						<group label-width="4.5em" label-margin-right="2em" label-align="right">
+								<x-input title="账户名:" placeholder="" ></x-input>
+								<x-input title="旧密码:" placeholder="" ></x-input>
+								<x-input title="新密码:" placeholder="" ></x-input>
+								<x-input title="确认密码:" placeholder="" ></x-input>
+						</group>   
 	                </circleTitle>
 	            </box>
 	            <box gap="15px 15px">
@@ -24,6 +33,7 @@
 					</group>	      
 	                </circleTitle>
 	            </box>
+
 	       
 	   		
 		</div>

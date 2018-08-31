@@ -1,7 +1,9 @@
 <template>
     <div>
         <div id="order">
-        
+            <tab :line-width=2 active-color='#fc378c' v-model="index">
+                    <tab-item class="vux-center" :selected="tabName === item" v-for="(item, index) in tabberGoods" @click="tabName= item" :key="index">{{item}}</tab-item>
+                </tab>
               	<div class="container ">
                   <div class="maijia">买家</div>
                     <div class="goods_list ">
@@ -68,8 +70,8 @@
                                     <div><span>卖家：</span><span>卖家名称111</span></div>
                                   </div>
                                   <div class="right">
-                                    <a href="#" class="pay_money wuliu">查看物流</a>
-                                    <a href="#" class="pay_cancel">取消订单</a>
+                                    <!-- <a href="#" class="pay_money wuliu">查看物流</a> -->
+                                    <a href="#" class="pay_cancel" @click.prevent="cancelorder">取消订单</a>
                                   </div>
                                 </div>
                             </div>
@@ -98,7 +100,6 @@
                                     <img :src="listImg" alt="">
                                 </div>
                                 <div class='right-content'>
-
                                     <div class="center">
                                       <div><span>总款式：</span><span>4款</span></div>
                                       <div><span>总金额：</span><span>￥999</span></div>
@@ -106,7 +107,7 @@
                                       <div><span>卖家：</span><span>卖家名称111</span></div>
                                     </div>
                                     <div class="right">
-                                      <a href="#" class="pay_money ">付款</a>
+                                      <a href="#" class="pay_money ">确认收货</a>
                                       <a href="#" class="pay_cancel">取消订单</a>
                                     </div>
                                 </div>    
@@ -155,7 +156,7 @@
                             </div>
                          </router-link>
                     </div>
-                     <div class="goods_list ">
+                    <div class="goods_list ">
                          <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
                               <div class="count_title clearfix status5">
                                     <div class="title_left fl">已取消</div>
@@ -184,9 +185,13 @@
                                         <div><span>总数量：</span><span>100套</span></div>
                                         <div><span>卖家：</span><span>卖家名称111</span></div>
                                       </div>
-                                      <div class="right">
-                                        <a href="#" class="pay_money ">付款</a>
-                                        <a href="#" class="pay_cancel">取消订单</a>
+                                      <div class="right right-singer">
+                                        <a href="#" class="pay_money ">仅退款</a>
+                                          <div class="sktime">
+                                            <span >取消订单</span>
+                                            <span>2018-12-22</span>
+                                            <span>12:25</span>
+                                          </div>
                                       </div>
                                 </div>      
                               </div>
@@ -417,9 +422,8 @@ export default {
       status: "",
       listImg:listImg,
       index:0,
-      tabberGoods:["预览","汇总统计","编辑商品","下架商品","在售商品"],
-      tabberGoodsItem:[[{name:'热卖面膜'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}],[{name:'热卖面膜'},{name:'母子用品'},{name:'母子用品'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}],[{name:'母子用品'},{name:'母子用品'},{name:'热卖面膜'},{name:'幻彩化妆品',},{name:'个人用品',},{name:'母子用品'}]],
-      tabName:"在售商品",
+      tabberGoods:["已取消","待评价","待收货","待发货","待付款","全部","搜索"],
+      tabName:"全部",
 
     };
     showMenus: false;
@@ -436,7 +440,13 @@ export default {
   created() {},
   mounted() {},
   distoryed() {},
-  methods: {},
+  methods: {
+
+    cancelorder(){
+       this.$vux.confirm.show({title:'取消订单原因',content:'<textarea></textarea>'});
+            
+    }
+  },
   watch: {
     "card.creditCard"() {
       this.creditCard = this.card.creditCard;
@@ -599,6 +609,10 @@ a.pay_cancel {
 .order-footer{position: absolute;bottom: 0;left: 0;right: 0;width: 100%;}
 
 </style>
+<style>
+#home-view{padding: 0;}
+</style>
+
 
 
 
