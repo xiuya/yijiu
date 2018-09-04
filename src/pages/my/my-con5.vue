@@ -1,6 +1,6 @@
 <template>
-		<div id="my-con5">
-	            <box gap="15px 15px">
+		<div id="my-con5"   ref="myCon5">
+	            <box gap="15px 15px" >
 	                <circleTitle title="统计汇总" class="info" greytitle=true>
 	                    <div class="info-list first-info">支付总金额:<span>50000000万元</span></div>
 	                    <div class="info-list">总订单数:<span>1000笔</span></div>
@@ -48,6 +48,8 @@ export default {
        circleTitle, Box, XButton
     },
     created() {
+		// console.log(document.body.offsetHeight,this.$refs.myCon5.offsetTop)
+		document.body.scrollTop(0);
     },
     mounted() {
 

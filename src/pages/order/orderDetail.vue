@@ -23,34 +23,31 @@
             </box >
             <box class="list-box list-sec">
             <divider>这个个宝贝</divider>
-            <x-table :cell-bordered="false" style="background-color:#fff;">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>款式名称</th>
-                            <th>采购数量</th>
-                            <th>合计金额</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>一个奥斯卡的妈妈</td>
-                            <td>100套</td>
-                            <td>:￥1000</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>两个奥斯卡的妈妈</td>
-                            <td>1000套</td>
-                            <td>:￥10000</td>
-                        </tr>
-                        </tbody>
-            </x-table>
+                             <div class="count_down_list  clearfix"  >
+                                        <div class="xuhao">1</div>
+                                        <div class="left">
+                                            <img :src="listImg" alt="">
+                                        </div>
+                                        <div class='right-content'>
+                                                    <div class="kuansiTop">款式名称阿达阿达撒多撒多所所大所啊</div>
+                                                    <div class="kuansiBottom"><span class="left">100箱</span><span class="right">￥999</span></div>
+                                        </div>
+                             </div>
+                             <div class="count_down_list  clearfix"  >
+                                        <div class="xuhao">1</div>
+                                        <div class="left">
+                                            <img :src="listImg" alt="">
+                                        </div>
+                                        <div class='right-content'>
+                                                    <div class="kuansiTop">款式名称阿达阿达撒多撒多所所大所啊</div>
+                                                    <div class="kuansiBottom"><span class="left">100箱</span><span class="right">￥999</span></div>
+                                        </div>
+                             </div>
+                    
               <flexbox>
                 <flexbox-item><div class="flex-demo ta-l">数量:100000套</div></flexbox-item>
                 <flexbox-item><div class="flex-demo ta-r">金额:￥999</div></flexbox-item>
-                </flexbox>
+              </flexbox>
             </box>
 
             <x-table :cell-bordered="false" style="background-color:#eee;">
@@ -131,11 +128,13 @@ import {
   Group,
   XButton
 } from "vux";
+import listImg from "@/assets/img/order/dingdan.jpg"
 export default {
   name: "orderDetail",
   data() {
     return {
-      status: ""
+        status: "",
+        listImg:listImg,
     };
     showMenus: false;
   },
@@ -228,6 +227,23 @@ header {
   width: 12px;
   height: 12px;
 }
+.count_down_list img{
+width: 80px;
+height: 80px;
+margin-right: 10px;
+}
+.count_down_list{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    background: #ffffff;
+    border-bottom: 1px dashed #ccc;
+
+}
+.count_down_list .kuansiTop{margin-bottom: 17px;}
+.xuhao{line-height: 80px;width: 15px;text-align: center;}
+.count_down_list .kuansiBottom{display: flex;    justify-content: space-between;}
+.count_down_list .kuansiBottom .right{color: #ff0000;}
 </style>
 
 

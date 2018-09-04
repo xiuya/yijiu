@@ -30,11 +30,24 @@
                 </card>    
         </div>
         <div class="distancebetween"  @click='touchmove' ref='distance'></div>
-        <div class="xiangqing-kuansi" ref='ks'>
+
+        <div class="xiangqing-kuansi" ref='ks' >
                 <div class="kuanshititle">
                         <div class="top">商品名称1322阿萨</div>
                         <div class="topdetail">请选择款式</div>
                 </div>
+                
+                <div class="kuanshicontent clearfix" @click="handleks(1)">
+                    <div class="left">
+                            <div class="ksname">款式名称12346</div>
+                            <div class="ksdetail">库存100件 <span>¥1500/100件</span></div>
+                    </div>
+                    <div class="right">
+                            <div class="xinghao">型号：102155</div> 
+                            <div class="ksnum"><x-number  v-model="ksnum" :min="0" @on-change="change" width='30px'></x-number></div>
+                    </div>
+                </div>
+                
                 <div class="kuanshicontent clearfix">
                     <div class="left">
                             <div class="ksname">款式名称12346</div>
@@ -45,16 +58,7 @@
                             <div class="ksnum"><x-number  v-model="ksnum" :min="0" @on-change="change" width='30px'></x-number></div>
                     </div>
                 </div>
-                <div class="kuanshicontent clearfix">
-                    <div class="left">
-                            <div class="ksname">款式名称12346</div>
-                            <div class="ksdetail">库存100件 <span>¥1500/100件</span></div>
-                    </div>
-                    <div class="right">
-                            <div class="xinghao">型号：102155</div> 
-                            <div class="ksnum"><x-number  v-model="ksnum" :min="0" @on-change="change" width='30px'></x-number></div>
-                    </div>
-                </div>
+
                 <div class="kuanshicontent clearfix">
                     <div class="left">
                             <div class="ksname">款式名称12346</div>
@@ -200,6 +204,18 @@ export default {
         this.$refs.distance.style.top=e.clientY+delta+'px';
         this.$refs.detailWrap.style.height=e.clientY+delta+'px';
         this.$refs.ks.style.top=e.clientY+delta+'px';
+    },
+    handleks(tab, e){
+        console.log(tab)
+        this.handleScroll(this.$refs.guigInfo);
+    },
+    handleScroll(element) {
+      var content = document.querySelector(".xiangqing-wrap");
+      this.scrollHeight = element.offsetTop;
+      var _this = this;
+      setTimeout(() => {
+        content.scrollTo({ behavior: "smooth", top: _this.scrollHeight - 104 });
+      }, 0);
     },
   },
   created() {

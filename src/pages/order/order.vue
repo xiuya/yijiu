@@ -399,11 +399,11 @@
                     </div>
             	</div>
 
-              <div class="order-footer">
+              <!-- <div class="order-footer">
                     <tab :line-width=2 active-color='#fc378c' v-model="index">
                       <tab-item class="vux-center" :selected="tabName === item" v-for="(item, index) in tabberGoods" @click="tabName= item" :key="index">{{item}}</tab-item>
                     </tab>
-              </div>  
+              </div>   -->
               
 
             </div>
@@ -606,7 +606,7 @@ a.pay_cancel {
 .right-singer{background: #ffffff;height: 100%;}
 .sktime{background:#7a7a84; line-height: 20px;margin-top: 10px;}
 .sktime>span{display: block;height: 20px;padding:0 5px;}
-.order-footer{position: absolute;bottom: 0;left: 0;right: 0;width: 100%;}
+// .order-footer{position: absolute;bottom: 0;left: 0;right: 0;width: 100%;}
 
 </style>
 <style>

@@ -16,12 +16,12 @@ export default {
     data() {
         return {
             navlist:[
-            //    {
-            //         path: '/scroll',
-            //         title: 'logo',
-            //         text: 'logo',
+               {
+                    path: '',
+                    title: 'logo',
+                    text: '',
 
-            //     },
+                },
                 {
                     path: '/home',
                     title: '首页',
@@ -78,6 +78,6 @@ export default {
     #header-d .vux-header{position: fixed;top: 0;width: 100%;background-color: @theme-color;} */
     #home-view{width: 100%;height: 100%;padding: 0 0 4px;box-sizing: border-box;overflow:auto;background-color: #f1f2f3;}
     #home-view::-webkit-scrollbar{width:0px;}
-    #footer{position: fixed;bottom: 0;}
-   
+    #footer{position: fixed;bottom: 0;background: url(/static/img/logo.a86301c.png) no-repeat;background-size: 40px 40px;background-position: 15px;}
+    #footer>a:first-child span{background: url(../assets/img/logo.png) 100% no-repeat;}
 </style>
