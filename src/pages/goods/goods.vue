@@ -26,7 +26,7 @@
                             </section>
                         </div>
                     </swiper-item>
-                    <swiper-item >
+                    <swiper-item  ref="swiper2">
                         <div class="tab-swiper vux-center">
                             <section class="search-main saleAll">
                                  <div class="sale_total">汇总统计</div>
@@ -254,9 +254,8 @@
                                 </group>
                                 <div class="compare">
                                     <div class="header">对标参数</div>
-                                    <div class="header-detail">该商品在其他电商有销售 
-对比凸显在 傻傻平台 购买的超值优惠</div>
-                                <x-table :cell-bordered="false" style="background-color:#fff;">
+                                    <div class="header-detail">该商品在其他电商有销售 对比凸显在 傻傻平台 购买的超值优惠</div>
+                                    <x-table :cell-bordered="false" style="background-color:#fff;">
                                         <thead>
                                         <tr>
                                             <th width="35">序号</th>
@@ -266,18 +265,18 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><x-input></x-input></td>
-                                            <td><x-input></x-input></td>
-                                            <td><x-input></x-input></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td><x-input></x-input></td>
-                                            <td><x-input></x-input></td>
-                                            <td><x-input></x-input></td>
-                                        </tr>
+                                            <tr>
+                                                <td>1</td>
+                                                <td><x-input></x-input></td>
+                                                <td><x-input></x-input></td>
+                                                <td><x-input></x-input></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td><x-input></x-input></td>
+                                                <td><x-input></x-input></td>
+                                                <td><x-input></x-input></td>
+                                            </tr>
                                             <tr>
                                                 <td>3</td>
                                                 <td><x-input></x-input></td>
@@ -671,7 +670,13 @@ export default {
       this.creditCard = this.card.creditCard;
       this.creditCard.map(v => (v["path"] = "/order/repay"));
     },
-    "card.msg"() {}
+    "card.msg"() {},
+    'index'(val){
+        console.log(val);
+        if(val==1){
+            console.log(document.querySelector('#order .vux-swiper-item .vux-center').scrollHeight)
+        }
+    },
   }
 };
 </script>

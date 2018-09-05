@@ -1,37 +1,18 @@
 <template>
+<div>
 		<div id="my-con2">
-			 				<box gap="15px 15px">
-		                        <XButton type="primary" :disabled="btnloading"  @click.native="confirm">{{btnWord}}</XButton>
-		            </box>
+			
 	            <box gap="15px 15px">
 	                <circleTitle title="企业详情" class="info" greytitle=true>
-	                    	<!--所在城市:<span>深圳</span>-->
-	                 <group label-width="4.5em" label-margin-right="2em" label-align="right">
-
-
-						      <!--<x-input title="所在城市:" placeholder="请输入所在城市" ></x-input>-->
-						      <x-address title="所在城市:" v-model="addressValue" raw-value :list="addressData" value-text-align="left"></x-address>
-
-
-						      <x-input title="具体地址:" placeholder="" ></x-input>
-
-	                    	<!--员工人数:<span>1200</span>-->
-
-						      <x-input title="员工人数:" placeholder="" keyboard="number"></x-input>
-
-
-						      <!--<x-input title="成立时间:" placeholder="请输入成立时间" ></x-input>-->
-      							<calendar @on-change="onChange" v-model="demo3" title="成立时间:" disable-future></calendar>
-
-
-						      <x-input title="年销售额:" placeholder="" keyboard="number"></x-input>
-
-
-						      <x-input title="企业主:" placeholder=""></x-input>
-
-
-						      <x-input title="座机/电话:" name="mobile" placeholder="" keyboard="number" is-type="china-mobile"></x-input>
-						    </group>
+										<group label-width="4.5em" label-margin-right="2em" label-align="right">
+											<x-address title="所在城市:" v-model="addressValue" raw-value :list="addressData" value-text-align="left"></x-address>
+											<x-input title="具体地址:" placeholder="" ></x-input>
+											<x-input title="员工人数:" placeholder="" keyboard="number"></x-input>
+											<calendar @on-change="onChange" v-model="demo3" title="成立时间:" disable-future></calendar>
+											<x-input title="年销售额:" placeholder="" keyboard="number"></x-input>
+											<x-input title="企业主:" placeholder=""></x-input>
+											<x-input title="座机/电话:" name="mobile" placeholder="" keyboard="number" is-type="china-mobile"></x-input>
+										</group>
 	                    <div class="info-list">文字介绍:<span><x-textarea v-model="describ"></x-textarea></span></div>
 	                    <div class="info-list" id="img-wrap">
 	                    	<div class="ft-upload bg-fff table-view-four mui-table-view  mui-text-left">
@@ -39,12 +20,13 @@
 																<div id="addImg_box" class="bg-fff mt-15"></div>
 												</div>
 	                    </div>
-	                     
 	                </circleTitle>
-
 	            </box>
-							
+							 <box gap="15px 15px">
+		                  <XButton type="primary" :disabled="btnloading"  @click.native="confirm">{{btnWord}}</XButton>
+		          </box>
 		</div>
+</div>
 </template>
 
 <script>
@@ -167,12 +149,13 @@ export default {
     },
     mounted() {
 			this.postimg();
+			
     }
 }    
 </script>
 
 <style  scoped>
-#my-con2{width: 100%;height: 100%;background: #d1e9ff;}
+#my-con2{}
 .info-list{font-size: 12px;text-align: left;color: #333;padding-left: 20px;line-height: 30px;}
 </style>
 <style>

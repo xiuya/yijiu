@@ -49,7 +49,6 @@ export default {
     },
     created() {
 		// console.log(document.body.offsetHeight,this.$refs.myCon5.offsetTop)
-		document.body.scrollTop(0);
     },
     mounted() {
 
