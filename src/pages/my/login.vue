@@ -4,6 +4,14 @@
         <div class="logo">
             <img :src='require("./../../assets/img/logo.png")'>
         </div>
+         <group >	
+         				<div id="selectPeople">选择身份
+         				
+         				<check-icon :value.sync="buyer">{{loginUser.buyer}}</check-icon>
+         				<check-icon :value.sync="seller">{{loginUser.seller}}</check-icon>
+         				</div>
+                    	
+         </group>	
         <tab v-model="index">
             <tab-item :selected="loginType==='smsCode'" @on-item-click="onItemClick('smsCode')">验证码登录</tab-item>
             <tab-item :selected="loginType==='pwd'" @on-item-click="onItemClick('pwd')">密码登录</tab-item>
@@ -11,6 +19,9 @@
         <swiper v-model="index" height="120px" :show-dots="false">
             <swiper-item>
                 <group>
+
+                    
+
                     <x-input v-model="phone" title="手机号码" name="phone" placeholder="请输入手机号码" keyboard="number" :max="11"></x-input>
                     <x-input v-model="smsCode" title="验证码" class="weui-vcode" placeholder="请输入验证码" :max="4">
                         <x-button slot="right"  :disabled="disabled001"  @click.native="sendCode" type="primary" mini  :text="codeWord"></x-button>
@@ -33,7 +44,7 @@
 </template>
 
 <script>
-import { Toast,Tab, TabItem  ,ToastPlugin,Swiper, SwiperItem , XInput, Group, XButton ,Box, XHeader} from 'vux'
+import { Toast,Tab, TabItem  ,ToastPlugin,Swiper, SwiperItem , XInput, Group, XButton ,Box, XHeader,CheckIcon} from 'vux'
 import { mapActions, mapState } from 'vuex'
 
 export default {
@@ -51,13 +62,16 @@ export default {
             showPositionValue:false,//是否显示
             position:'center',//提示信息
             toastText:'',//提示文本
+            buyer:true,
+            seller:false,
+            loginUser:{buyer:'我是买家',seller:'我是卖家'}
         }
     },
     computed: mapState([
         'user'
     ]),
     components: {
-        Toast,Tab, TabItem, Swiper, SwiperItem,  XInput, Group, XButton, Box,XHeader,ToastPlugin
+        Toast,Tab, TabItem, Swiper, SwiperItem,  XInput, Group, XButton, Box,XHeader,ToastPlugin,CheckIcon
     },
     created() {
        //console.log(this.$store.getters.getUser)
@@ -76,27 +90,29 @@ export default {
             this.loginType= type
         },
         ...mapActions([
-            'login', 'sendcode'
+            'login', 'sendcode','person'
         ]),
         Toast(valueText){
             this.showPositionValue=true;
             this.toastText=valueText;
         },
         confirmLogin(){
-            if(!this.phone) return this.Toast('手机号未填');
-            if(!/^1[34578]\d{9}$/.test(this.phone)) return Toast('手机号格式不对');
-            if(this.loginType==='pwd' && !this.pwd) return Toast('登录密码未填');
-            if(this.loginType==='smsCode' && !this.smsCode) return Toast('验证码未填');
-            let payload;
-            switch (this.loginType) {
-                case 'pwd':
-                    payload={phone:this.phone,pwd:this.pwd}
-                    break;
-                default:
-                    payload={phone:this.phone,smsCode:this.smsCode}
-                    break;
-            }
-            this.login(payload)
+            this.person({seller:this.seller})
+
+            // if(!this.phone) return this.Toast('手机号未填');
+            // if(!/^1[34578]\d{9}$/.test(this.phone)) return Toast('手机号格式不对');
+            // if(this.loginType==='pwd' && !this.pwd) return Toast('登录密码未填');
+            // if(this.loginType==='smsCode' && !this.smsCode) return Toast('验证码未填');
+            // let payload;
+            // switch (this.loginType) {
+            //     case 'pwd':
+            //         payload={phone:this.phone,pwd:this.pwd,person:this.seller}
+            //         break;
+            //     default:
+            //         payload={phone:this.phone,smsCode:this.smsCode}
+            //         break;
+            // }
+            // this.login(payload)
         },
         sendCode(){
             if(!this.phone) return   this.$vux.toast.show({
@@ -126,7 +142,8 @@ export default {
                 }  
             }
             time()
-        }
+        },
+        
     },
     distoryed(){
 
@@ -136,10 +153,11 @@ export default {
             this.loginType = this.index==0?'smsCode':'pwd'
         },
         'user.redirectTo'(){
-            Toast(this.user.msg.replace(/\d+/,''));
-            const from = this.$route.query.redirect;
-            if(from) this.$router.replace({ path: from});
-            else this.$router.replace({ path: this.user.redirectTo});
+            this.$router.push('/')
+            // Toast(this.user.msg.replace(/\d+/,''));
+            // const from = this.$route.query.redirect;
+            // if(from) this.$router.replace({ path: from});
+            // else this.$router.replace({ path: this.user.redirectTo});
         },
         'user.msg'(){
             Toast(this.user.msg.replace(/\d+/,''))
@@ -150,7 +168,21 @@ export default {
                     this.confirmLogin()
                 }, 500);
             }
-        }
+        },
+        'buyer'(val){
+        	if(val){
+        		this.seller=false;
+        	}else{
+        		this.seller=true;
+        	}
+        },
+        'seller'(val){
+        	if(val){
+        		this.buyer=false;
+        	}else{
+        		this.buyer=true;
+        	}
+        },
 
     }
 }
@@ -167,5 +199,6 @@ export default {
     #login .vux-no-group-title{margin-top: 0 !important;}
     #login .weui-label{font-size:14px;}
     #login input{border:none !important;}
+    #selectPeople{padding: 15px;}
 </style>
 

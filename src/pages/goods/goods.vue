@@ -6,7 +6,7 @@
                 <tab :line-width=2 active-color='#fc378c' v-model="index">
                     <tab-item class="vux-center" :selected="tabName === item" v-for="(item, index) in tabberGoods" @click="tabName= item" :key="index">{{item}}</tab-item>
                 </tab>
-                  <swiper v-model="index"  :show-dots="false">
+                  <swiper v-model="index"  :show-dots="false"  ref="swiperWrap" class="swiperWrap" > 
                     <swiper-item >
                         <div class="tab-swiper vux-center">
                             <section class="search-main">
@@ -541,6 +541,10 @@ import {
 } from "vux";
 import creditCard from "./../../components/creditCard/creditCard";
 import listImg from "@/assets/img/order/dingdan.jpg";
+import BScroll from 'better-scroll'
+// const wrapper =this.$refs.swiperWrap;
+// const meunScroll = new BScroll(wrapper, {})
+
 export default {
   name: "order",
   data() {
@@ -592,7 +596,8 @@ export default {
       showSuccess: true,
       disabledValue: "点击上传图片",
       results: [],
-      value: "test"
+      value: "test",
+      swiperScroll:'',
     };
   },
   computed: {},
@@ -623,6 +628,12 @@ export default {
   },
   distoryed() {},
   methods: {
+       _initScroll() {
+                    this.swiperScroll= new BScroll(this.$refs.swiper2,{});
+                    // this.foodScroll = new BScroll(this.$refs.foodwrapper, {
+                    //     click: true
+                    // });
+      },
     onDelete() {
       this.showSuccess = true;
     },
@@ -674,7 +685,11 @@ export default {
     'index'(val){
         console.log(val);
         if(val==1){
-            console.log(document.querySelector('#order .vux-swiper-item .vux-center').scrollHeight)
+                //dom结构加载结束
+                        // this.$nextTick(() => {
+                            this._initScroll()
+                        // })
+            // console.log(document.querySelector('#order .vux-swiper-item .vux-center').scrollTop(100))
         }
     },
   }
@@ -943,7 +958,7 @@ a.pay_money.xiajia {
 <style>
 #order .vux-slider .vux-swiper {
   height: 100% !important;
-  overflow: scroll;
+  /* overflow: scroll; */
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

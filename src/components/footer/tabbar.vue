@@ -1,19 +1,65 @@
 <template>
     <tabbar id="footer">
-        <tabbar-item v-for="item in navlist" :key="item.path" :selected="item.path===pathname" :link="{path:item.path,replace:true}">
-            <!--<i slot="icon" class="iconfont" :class="item.iconClass"></i>-->
-            <span slot="label">{{item.text}}</span>
+    	<span class="logo"></span>
+        <tabbar-item v-if='!state' v-for="item in items" :key="item.index" :selected="item.index===pathname" :link="{path:item.index,replace:true}">
+            <span slot="label">{{item.title}}</span>
+        </tabbar-item>
+        <tabbar-item v-if='state' v-for="item in itemsSecond" :key="item.index" :selected="item.index===pathname" :link="{path:item.index,replace:true}">
+            <span slot="label">{{item.title}}</span>
         </tabbar-item>
     </tabbar>
 </template>
 
 <script>
+import logo from '@/assets/img/logo.png'
 import { Tabbar, TabbarItem } from 'vux'
+import {mapState} from "vuex"
 export default {
     name : 'footer',
     data() {
         return {
-            pathname : this.$route.path
+            pathname : this.$route.path,
+            items:[{
+                            "icon": "fa fa-home",
+                            "index": "/home",
+                            "title": "首页"
+                        }, {
+                            "icon": " fa fa-plus-square-o",
+                            "index": "/order",
+                            "title": "订单"
+                        },{
+                            "icon": "fa fa-shopping-basket",
+                            "index": "/cart",
+                            "title": "购物车"
+                        },
+                        {
+                            "icon": "fa fa-file-text-o",
+                            "index": "/my",
+                            "title": "账户"
+                        },
+            ],
+           itemsSecond:[{
+                            "icon": "fa fa-home",
+                            "index": "/homeSeller",
+                            "title": "店铺商品"
+                        }, {
+                            "icon": " fa fa-plus-square-o",
+                            "index": "/orderSeller",
+                            "title": "我的订单"
+                        },{
+                            "icon": "fa fa-shopping-basket",
+                            "index": "/goods",
+                            "title": "商品管理"
+                        },
+                        {
+                            "icon": "fa fa-file-text-o",
+                            "index": "/my",
+                            "title": "账户"
+                        },
+            ],
+            state:false,
+
+            
         }
     },
     props:['navlist'],
@@ -21,16 +67,27 @@ export default {
          Tabbar, TabbarItem
     },
     computed:{
+    	changePeople(){
+    		return this.$store.state.user.seller;
+    	}
     },
     created() {
     },
     mounted() {
-        
+        console.log(this.changePeople,"122",this.$store.state.user.saller)
+        if(this.$store.state.user.saller){
+        	this.state=true;
+        }
     },
     distoryed() {
 
     },
     methods: {
+    },
+    watch:{
+    	'changePeople'(value){
+    		console.log(value,'12')
+    	}
     }
 }
 </script>
@@ -48,5 +105,7 @@ i.weui-tabbar__icon, .weui-tabbar__icon > i{color: #666;}
 	    display: block;
 	    /*padding: 0 8px;*/
 	}
+/*#footer{position: fixed;bottom: 0;background: url(/static/img/logo.a86301c.png) no-repeat;background-size: 40px 40px;background-position: 15px;}*/
+.logo{width:80px;}
 </style>
 

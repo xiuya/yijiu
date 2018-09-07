@@ -11,21 +11,22 @@ import moment from 'moment'
 import { BrowserInfo } from "@/utils/utils.js"
 import {UploaderPost,Loading,}  from  "@/assets/js/upload.js"
 import axios from 'axios'
+// import VueGesture from 'vue2-gesture'
 // import '@'
 // const FastClick = require('fastclick')
 
 import '@/assets/css/main.less';
 import '@/assets/font/iconfont.css';
 
-
 /* 移除移动端点击延迟 */
 // FastClick.attach(document.body)
 import { ToastPlugin,ConfirmPlugin,AlertPlugin} from 'vux'
 
+// Vue.use(VueGesture)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(AlertPlugin)
- 
+
 //公用的弹窗(全局变量)
 Vue.prototype.showToast = function( showPositionValue,type,text,width="10em"){
   this.$vux.toast.show({

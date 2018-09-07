@@ -9,6 +9,9 @@ const home = () =>
 /* 首页 */
 const homeindex = () =>
     import('@/pages/home/home');
+// 卖家首页   
+const homeindexSeller = () =>
+    import('@/pages/home/home');
 const homeDetail=()=>
     import('@/pages/home/homeDetail')
 const homeSearch=()=>
@@ -16,6 +19,8 @@ const homeSearch=()=>
 /* 订单  */
 const order = () =>
     import('@/pages/order/order');
+const orderSeller = () =>
+    import('@/pages/order/orderSeller');
 const orderDetail = () =>
     import('@/pages/order/orderDetail');
 //   商品管理
@@ -97,9 +102,25 @@ export default new Router({
             }
         },
         {
+            path: 'homeSeller',
+            name: 'home',
+            component: homeindexSeller,
+            meta: {
+                auth: false,
+            }
+        },
+        {
             path: 'order',
             name: 'order',
             component: order,
+            meta: {
+                auth: false,
+            },
+            children:[]
+        },  {
+            path: 'orderSeller',
+            name: 'orderSeller',
+            component: orderSeller,
             meta: {
                 auth: false,
             },
