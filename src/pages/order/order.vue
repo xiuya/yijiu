@@ -1,12 +1,13 @@
 <template>
     <div>
         <div id="order">
-            <tab :line-width=2 active-color='#fc378c' v-model="index">
-                    <tab-item class="vux-center" :selected="tabName === item" v-for="(item, index) in tabberGoods" @click="tabName= item" :key="index">{{item}}</tab-item>
+            <tab   v-model="tabindex">
+                    <tab-item class="vux-center" :selected="tabName === item.status" v-for="(item, index) in tabberGoods" @click="tabName=item.status" :key="index">
+                      <badge :text="item.length" v-show='item.length-1>=0'></badge>
+                      {{item.status}}</tab-item>
                 </tab>
               	<div class="container ">
-                  <div class="maijia">买家</div>
-                    <div class="goods_list ">
+                    <!-- <div class="goods_list ">
                         <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
                                 <div class="count_title clearfix status1">
                                         <div class="title_left fl">待付款</div>
@@ -70,7 +71,6 @@
                                     <div><span>卖家：</span><span>卖家名称111</span></div>
                                   </div>
                                   <div class="right">
-                                    <!-- <a href="#" class="pay_money wuliu">查看物流</a> -->
                                     <a href="#" class="pay_cancel" @click.prevent="cancelorder">取消订单</a>
                                   </div>
                                 </div>
@@ -117,7 +117,7 @@
                               <div class="fr">单号：4512154123</div>
                             </div>
                       </router-link>
-                  </div>
+                  </div> 
                     <div class="goods_list ">
                          <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
                             <div class="count_title clearfix status4 ">
@@ -155,22 +155,24 @@
                                 </div>    
                             </div>
                          </router-link>
-                    </div>
-                    <div class="goods_list ">
-                         <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
-                              <div class="count_title clearfix status5">
-                                    <div class="title_left fl">已取消</div>
-                                  <div class="title_right fr">商品名称1225</div>
+                    </div>-->
+
+                    <div class="goods_list " v-for="(item,index) in sub_list" :key="index">
+                         <router-link  :to="{ path: '/order/orderDetail', query: { orderId: item.orderId }}"  >
+                              <div class="count_title clearfix " :class="{status5: item.status=='已取消',status4:item.status=='待评价',status3:item.status=='待收货',
+                              status2:item.status=='待发货',status1:item.status=='待付款' }">
+                                    <div class="title_left fl">{{item.status}}</div>
+                                  <div class="title_right fr">{{item.shopName}}</div>
                               </div>
                               <div class="count_up clearfix ">
                                 <div class="left">
                                     <span >下单：</span>
-                                    <span >2018-7-24</span>
+                                    <span >{{item.createTime}}</span>
                                 </div>
                                 <div class="right-content">
                                   <div class="right">
                                       <span>订单号：</span>
-                                      <span >abcde-677742455</span>
+                                      <span >{{item.orderNo}}</span>
                                   </div>
                                 </div>  
                               </div>
@@ -180,240 +182,50 @@
                                   </div>
                                 <div class="right-content">
                                       <div class="center">
-                                        <div><span>总款式：</span><span>4款</span></div>
-                                        <div><span>总金额：</span><span>￥999</span></div>
-                                        <div><span>总数量：</span><span>100套</span></div>
-                                        <div><span>卖家：</span><span>卖家名称111</span></div>
+                                        <div><span>总款式：</span><span>{{item.style}}</span></div>
+                                        <div><span>总金额：</span><span>￥{{item.totalPrice}}</span></div>
+                                        <div><span>总数量：</span><span>{{item.number}}</span></div>
+                                        <div><span>卖家：</span><span>{{item.shopName}}</span></div>
                                       </div>
-                                      <div class="right right-singer">
-                                        <a href="#" class="pay_money ">仅退款</a>
+
+                                      <div class="right right-singer " v-if="item.status=='已取消'">
+                                          <a href="#" class="pay_money ">仅退款</a>
                                           <div class="sktime">
                                             <span >取消订单</span>
                                             <span>2018-12-22</span>
                                             <span>12:25</span>
                                           </div>
                                       </div>
-                                </div>      
-                              </div>
-                         </router-link>
-                    </div>
-            	</div>
 
-              	<div class="container ">
-                    <div class="maijia">卖家</div>  
-                    <div class="goods_list ">
-                        <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
-                                <div class="count_title clearfix status1">
-                                        <div class="title_left fl">待付款</div>
-                                        <div class="title_right fr">商品名称1225</div>
-                                </div>
-                                <div class="count_up clearfix ">
-                                    <div class="left">
-                                        <span >下单：</span>
-                                        <span >2018-7-24</span>
-                                    </div>
-                                    <div class="right">
-                                        <span>订单号：</span>
-                                        <span >abcde-677742455</span>
-                                    </div>
-                                </div>
-                                <div class="count_down  clearfix"  >
-                                        <div class="left">
-                                            <img :src="listImg" alt="">
-                                        </div>
-                                        <div class='right-content'>
-                                                <div class="center">
-                                                    <div><span>总款式：</span><span>4款</span></div>
-                                                    <div><span>总金额：</span><span>￥999</span></div>
-                                                    <div><span>总数量：</span><span>100套</span></div>
-                                                    <div><span>买家：</span><span>买家名称111</span></div>
-                                                </div>
-                                                <!-- <div class="right">
-                                                    <a href="#" class="pay_money ">付款</a>
-                                                    <a href="#" class="pay_cancel">取消订单</a>
-                                                </div> -->
-                                        </div>
-                                </div>
-                      </router-link>
-                    </div> 
-
-                      <div class="goods_list ">
-                         <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
-                            <div class="count_title clearfix status2">
-                                  <div class="title_left fl">待发货</div>
-                                <div class="title_right fr">商品名称1225</div>
-                            </div>
-                            <div class="count_up clearfix ">
-                              <div class="left">
-                                  <span >下单：</span>
-                                  <span >2018-8-24 12：12</span>
-                              </div>
-                              <div class="right">
-                                  <span>订单号：</span>
-                                  <span >abcde-677742455</span>
-                              </div>
-                            </div>
-                            <div class="count_down  clearfix"  >
-                                <div class="left">
-                                    <img :src="listImg" alt="">
-                                </div>
-                                <div class='right-content'>
-                                  <div class="center">
-                                    <div><span>总款式：</span><span>4款</span></div>
-                                    <div><span>总金额：</span><span>￥999</span></div>
-                                    <div><span>总数量：</span><span>100套</span></div>
-                                    <div><span>买家：</span><span>买家名称111</span></div>
-                                  </div>
-                                  <div class="right">
-                                    <a href="#" class="pay_money wuliu">填写物流</a>
-                                    <!-- <a href="#" class="pay_cancel">取消订单</a> -->
-                                  </div>
-                                </div>
-                            </div>
-                         </router-link>
-                    </div>
-
-
-                <div class="goods_list ">
-                      <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
-                            <div class="count_title clearfix status3">
-                                  <div class="title_left fl">待收货</div>
-                                <div class="title_right fr">商品名称1225</div>
-                            </div>
-                            <div class="count_up clearfix ">
-                              <div class="left">
-                                  <span >下单：</span>
-                                  <span >2018-7-24</span>
-                              </div>
-                              <div class="right">
-                                  <span>订单号：</span>
-                                  <span >abcde-677742455</span>
-                              </div>
-                            </div>
-                            <div class="count_down  clearfix" >
-                                <div class="left">
-                                    <img :src="listImg" alt="">
-                                </div>
-                                <div class='right-content'>
-
-                                    <div class="center">
-                                      <div><span>总款式：</span><span>4款</span></div>
-                                      <div><span>总金额：</span><span>￥999</span></div>
-                                      <div><span>总数量：</span><span>100套</span></div>
-                                      <div><span>卖家：</span><span>卖家名称111</span></div>
-                                    </div>
-                                    <div class="right">
-                                      <!-- <a href="#" class="pay_money ">付款</a> -->
-                                      <!-- <a href="#" class="pay_cancel">取消订单</a> -->
-                                    </div>
-                                </div>    
-                            </div>
-                            <div class="count_footer clearfix">
-                              <div class="fl">顺风快递</div>
-                              <div class="fr">单号：4512154123</div>
-                            </div>
-                      </router-link>
-                  </div>
-                    <div class="goods_list ">
-                         <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
-                            <div class="count_title clearfix status4 ">
-                                  <div class="title_left fl">已收款</div>
-                                <div class="title_right fr">商品名称1225</div>
-                            </div>
-                            <div class="count_up clearfix ">
-                              <div class="left">
-                                  <span >下单：</span>
-                                  <span >2018-8-24 12：12</span>
-                              </div>
-                              <div class="right-content">
-                                <div class="right">
-                                  <span>订单号：</span>
-                                  <span >abcde-677742455</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="count_down  clearfix" >
-                                <div class="left">
-                                    <img :src="listImg" alt="">
-                                </div>
-                                <div class="right-content">
-                                    <div class="center">
-                                      <div><span>总款式：</span><span>4款</span></div>
-                                      <div><span>总金额：</span><span>￥999</span></div>
-                                      <div><span>总数量：</span><span>100套</span></div>
-                                      <div><span>卖家：</span><span>卖家名称111</span></div>
-                                    </div>
-                                    <div class="right right-singer">
-                                      <a href="#" class="pay_money wuliu">看评语</a>
-                                      <!-- <a href="#" class="pay_cancel">申请售后</a> -->
-                                      <div class="sktime">
-                                        <span>收款时间</span>
-                                        <span>2018-12-22</span>
-                                        <span>12:25</span>
+                                      <div class="right" v-if="item.status=='待评价'">
+                                                  <a href="#" class="pay_money wuliu">写评语</a>
+                                                  <a href="#" class="pay_cancel">申请售后</a>
                                       </div>
-                                    </div>
-                                </div>    
-                            </div>
-                         </router-link>
-                    </div>
-                     <div class="goods_list ">
-                         <router-link  :to="{ path: '/order/orderDetail', query: { orderId: 123 }}"  >
-                              <div class="count_title clearfix status5">
-                                    <div class="title_left fl">已取消</div>
-                                  <div class="title_right fr">商品名称1225</div>
-                              </div>
-                              <div class="count_up clearfix ">
-                                <div class="left">
-                                    <span >下单：</span>
-                                    <span >2018-7-24</span>
-                                </div>
-                                <div class="right-content">
-                                  <div class="right">
-                                      <span>订单号：</span>
-                                      <span >abcde-677742455</span>
-                                  </div>
-                                </div>  
-                              </div>
-                              <div class="count_down  clearfix" >
-                                  <div class="left">
-                                      <img :src="listImg" alt="">
-                                  </div>
-                                <div class="right-content">
-                                      <div class="center">
-                                        <div><span>总款式：</span><span>4款</span></div>
-                                        <div><span>总金额：</span><span>￥999</span></div>
-                                        <div><span>总数量：</span><span>100套</span></div>
-                                        <div><span>卖家：</span><span>卖家名称111</span></div>
+
+                                      <div class="right" v-if="item.status=='待收货'">
+                                          <a href="#" class="pay_money ">确认收货</a>
+                                          <a href="#" class="pay_cancel">取消订单</a>
+                                      </div> 
+                                      <div class="right" v-if="item.status=='待发货'">
+                                          <span>订单号：</span>
+                                          <span >abcde-677742455</span>
                                       </div>
-                                      <div class="right right-singer">
-                                        <a href="#" class="pay_money ">仅退款</a>
-                                          <div class="sktime">
-                                            <span>收款时间</span>
-                                            <span>2018-12-22</span>
-                                            <span>12:25</span>
-                                          </div>
+                                      <div class="right"  v-if="item.status=='待付款'">
+                                            <a href="#" class="pay_money ">付款</a>
+                                            <a href="#" class="pay_cancel">取消订单</a>
                                       </div>
                                 </div>      
                               </div>
                          </router-link>
                     </div>
             	</div>
-
-              <!-- <div class="order-footer">
-                    <tab :line-width=2 active-color='#fc378c' v-model="index">
-                      <tab-item class="vux-center" :selected="tabName === item" v-for="(item, index) in tabberGoods" @click="tabName= item" :key="index">{{item}}</tab-item>
-                    </tab>
-              </div>   -->
-              
-
             </div>
     </div>
 </template>
 
 <script>
 
-import { XHeader, XButton, Box, Tab, TabItem } from "vux";
-import creditCard from "./../../components/creditCard/creditCard";
+import { XHeader, XButton, Box, Tab, TabItem,Badge, } from "vux";
 import listImg from "@/assets/img/order/dingdan.jpg"
 export default {
   name: "order",
@@ -421,9 +233,17 @@ export default {
     return {
       status: "",
       listImg:listImg,
-      index:0,
-      tabberGoods:["已取消","待评价","待收货","待发货","待付款","全部","搜索"],
+      tabindex:0,
+      tabberGoods:[{status:"已取消",length:0},{status:"待评价",length:0},{status:"待收货",length:0},{status:"待发货",length:0},{status:"待付款",length:0},{status:"全部",length:0},{status:"搜索",length:0}],
       tabName:"全部",
+      goods_list:
+      [{status:'已取消',name:'商品2',delTime:'2018-5-25',orderNum:'2011515121512',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
+      {status:'待评价',name:'商品3',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
+      {status:'待收货',name:'商品4',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
+      {status:'待发货',name:'商品5',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
+      {status:'待付款',name:'商品6',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
+      ],
+      sub_list:[],
 
     };
     showMenus: false;
@@ -433,31 +253,80 @@ export default {
     XHeader,
     XButton,
     Box,
-    creditCard, 
     Tab,
-     TabItem
+    TabItem,
+    Badge,
   },
-  created() {},
+  created() {
+    this.orderList();
+  },
   mounted() {},
   distoryed() {},
   methods: {
-
     cancelorder(){
        this.$vux.confirm.show({title:'取消订单原因',content:'<textarea></textarea>'});
-            
+    },
+    orderList(){
+       this.$axios.get('/user/order/orders',{currPage:1}).then(res=>{
+         if(res.code=='OK'){
+            this.goods_list=res.data;
+            this.sub_list=res.data;
+            let arr1=this.goods_list.filter((item)=>item.status=='已取消');
+            let arr2=this.goods_list.filter((item)=>item.status=='待评价');
+            let arr3=this.goods_list.filter((item)=>item.status=='待收货');
+            let arr4=this.goods_list.filter((item)=>item.status=='待发货');
+            let arr5=this.goods_list.filter((item)=>item.status=='待付款');
+            let arr=this.goods_list.filter((item)=>item);
+            // arr=[...arr];
+            // console.log(arr1.length)
+            this.tabberGoods[0].length=arr1.length;
+            this.tabberGoods[1].length=arr2.length;
+            this.tabberGoods[2].length=arr3.length;
+            this.tabberGoods[3].length=arr4.length;
+            this.tabberGoods[4].length=arr5.length;
+            this.tabberGoods[5].length=arr.length;
+         }
+       })
     }
   },
   watch: {
     "card.creditCard"() {
       this.creditCard = this.card.creditCard;
-      this.creditCard.map(v => (v["path"] = "/order/repay"));
+      // this.creditCard.map(v => (v["path"] = "/order/repay"));
     },
-    "card.msg"() {}
+    "card.msg"() {},
+    'tabindex':function(val){
+      console.log(val)
+        if(val==4){
+          this.sub_list=this.goods_list.filter((item)=>{ return item.status=='待付款'?true:false})
+        }else  if(val==3){
+          this.sub_list=this.goods_list.filter((item)=>{ return item.status=='待发货'?true:false})
+        }else  if(val==2){
+          this.sub_list=this.goods_list.filter((item)=>{ return item.status=='待收货'?true:false})
+        }else  if(val==1){
+          this.sub_list=this.goods_list.filter((item)=>{ return item.status=='待评价'?true:false})
+        }else  if(val==0){
+          this.sub_list=this.goods_list.filter((item)=>{ return item.status=='已取消'?true:false})
+        }else if(val=5){
+          this.sub_list=this.goods_list;
+        }else{
+          this.sub_list=this.goods_list;
+        }
+    }
   }
 };
 </script>
 
 <style scoped lang="less">
+.container {margin-bottom: 40px;}
+.vux-tab-wrap {
+    padding-top: 33px;
+    position: absolute;
+    bottom: 0;
+    z-index: 10;
+    width: 100%;
+    height: 60px;
+}
 .maijia{color: #fff;}
 #order {
   width: 100%;
@@ -611,6 +480,8 @@ a.pay_cancel {
 </style>
 <style>
 #home-view{padding: 0;}
+#order .vux-tab-item{position: relative;}
+#order .vux-badge{position: absolute;right: 0;top: 0;}
 </style>
 
 

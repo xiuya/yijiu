@@ -6,40 +6,36 @@
         </div>
          <group >	
          				<div id="selectPeople">选择身份
-         				
          				<check-icon :value.sync="buyer">{{loginUser.buyer}}</check-icon>
          				<check-icon :value.sync="seller">{{loginUser.seller}}</check-icon>
          				</div>
                     	
          </group>	
-        <tab v-model="index">
+        <!-- <tab v-model="index">
             <tab-item :selected="loginType==='smsCode'" @on-item-click="onItemClick('smsCode')">验证码登录</tab-item>
             <tab-item :selected="loginType==='pwd'" @on-item-click="onItemClick('pwd')">密码登录</tab-item>
-        </tab>
-        <swiper v-model="index" height="120px" :show-dots="false">
-            <swiper-item>
-                <group>
-
-                    
-
+        </tab> -->
+        <!-- <swiper v-model="index" height="120px" :show-dots="false">
+            <swiper-item> -->
+                <!-- <group>
                     <x-input v-model="phone" title="手机号码" name="phone" placeholder="请输入手机号码" keyboard="number" :max="11"></x-input>
                     <x-input v-model="smsCode" title="验证码" class="weui-vcode" placeholder="请输入验证码" :max="4">
                         <x-button slot="right"  :disabled="disabled001"  @click.native="sendCode" type="primary" mini  :text="codeWord"></x-button>
                     </x-input>
-                </group>
-            </swiper-item>
-            <swiper-item>
+                </group> -->
+            <!-- </swiper-item> -->
+            <!-- <swiper-item> -->
                 <group>
                     <x-input v-model="phone" title="手机号码" name="phone" placeholder="请输入手机号码" keyboard="number" :max="11"></x-input>
                     <x-input v-model="pwd" title="密码" name="pwd" placeholder="请输入密码" type="password"></x-input>
                 </group>
-            </swiper-item>
-        </swiper>
+            <!-- </swiper-item> -->
+        <!-- </swiper> -->
         <box gap="10px 20px">
             <XButton type="primary"  @click.native="confirmLogin">登 录</XButton>
         </box>
-        <router-link class="forgetPwd fr" v-if="loginType==='pwd'" to="/my/setUp/setPwd">忘记密码</router-link>
-        <router-link class="forgetPwd fr" v-if="loginType==='smsCode'" to="/my/setUp/editPwd">注册申请</router-link>
+        <router-link class="forgetPwd fl"  to="/my/setUp/setPwd">忘记密码</router-link>
+        <router-link class="forgetPwd fr"  to="/my/setUp/editPwd">注册申请</router-link>
     </div>
 </template>
 
@@ -51,7 +47,7 @@ export default {
     name: "login",
     data() {
         return {
-            loginType:'smsCode',  //pwd
+            // loginType:'smsCode',  //pwd
             index:0,
             phone:'',
             pwd:'',
@@ -86,9 +82,9 @@ export default {
         }); */
     },
     methods: {
-        onItemClick(type){
-            this.loginType= type
-        },
+        // onItemClick(type){
+        //     this.loginType= type
+        // },
         ...mapActions([
             'login', 'sendcode','person'
         ]),
@@ -98,7 +94,6 @@ export default {
         },
         confirmLogin(){
             this.person({seller:this.seller})
-
             // if(!this.phone) return this.Toast('手机号未填');
             // if(!/^1[34578]\d{9}$/.test(this.phone)) return Toast('手机号格式不对');
             // if(this.loginType==='pwd' && !this.pwd) return Toast('登录密码未填');
@@ -149,9 +144,9 @@ export default {
 
     },
     watch: {
-        'index'(){
-            this.loginType = this.index==0?'smsCode':'pwd'
-        },
+        // 'index'(){
+        //     this.loginType = this.index==0?'smsCode':'pwd'
+        // },
         'user.redirectTo'(){
             this.$router.push('/')
             // Toast(this.user.msg.replace(/\d+/,''));
@@ -162,13 +157,13 @@ export default {
         'user.msg'(){
             Toast(this.user.msg.replace(/\d+/,''))
         },
-        'smsCode'(){
-            if(this.loginType==='smsCode' && this.smsCode.length==4){
-                setTimeout(() => {
-                    this.confirmLogin()
-                }, 500);
-            }
-        },
+        // 'smsCode'(){
+        //     if(this.loginType==='smsCode' && this.smsCode.length==4){
+        //         setTimeout(() => {
+        //             this.confirmLogin()
+        //         }, 500);
+        //     }
+        // },
         'buyer'(val){
         	if(val){
         		this.seller=false;

@@ -5,19 +5,16 @@ import App from './App'
 import router from './router'
 import store from '@/store/index'
 import 'babel-polyfill'
-import http from './http/http'
+import axios from '@/http/http'
 import moment from 'moment'
 // import { ConfirmPlugin } from 'vux'
 import { BrowserInfo } from "@/utils/utils.js"
 import {UploaderPost,Loading,}  from  "@/assets/js/upload.js"
-import axios from 'axios'
+// import axios from 'axios'
 // import VueGesture from 'vue2-gesture'
-// import '@'
 // const FastClick = require('fastclick')
-
 import '@/assets/css/main.less';
 import '@/assets/font/iconfont.css';
-
 /* 移除移动端点击延迟 */
 // FastClick.attach(document.body)
 import { ToastPlugin,ConfirmPlugin,AlertPlugin} from 'vux'
@@ -42,18 +39,18 @@ Vue.prototype.showToast = function( showPositionValue,type,text,width="10em"){
 const Message = {};
 Message.install = () => {
     const msg = {
-            alert: config => {
-            let def = {
-                title:'提示',
-                content:'系统异常，请重新登录后再试！',
-                buttonText:'确定'
-            }
-            if(typeof  config  === 'string' || typeof  config  === 'number'){
-        Vue.$vux.alert.show(Object.assign(def,{content:config}));
-    }else{
-        Vue.$vux.alert.show(Object.assign(def,config));
-    }
-},
+                alert: config => {
+                let def = {
+                    title:'提示',
+                    content:'系统异常，请重新登录后再试！',
+                    buttonText:'确定'
+                }
+                if(typeof  config  === 'string' || typeof  config  === 'number'){
+            Vue.$vux.alert.show(Object.assign(def,{content:config}));
+        }else{
+            Vue.$vux.alert.show(Object.assign(def,config));
+        }
+    },
     confirm: config => {
         let isConfirm = false;
         let def = {
@@ -114,12 +111,13 @@ new Vue({
 
 // Vue.use(ConfirmPlugin); //弹窗组件
 
-store.$http = http;
+// store.$http = http;
 Vue.prototype.$upload =UploaderPost;
-Vue.prototype.$moment = moment;
-Vue.prototype.$http = http;
+Vue.prototype.moment = moment;
+
+// Vue.prototype.$http = http;
 Vue.prototype.$axios = axios;
 Vue.prototype.imgUrl = 'http://cn01.alicdn.sasa.com/';
 Vue.prototype.BrowserInfo = BrowserInfo;
 Vue.prototype.system = BrowserInfo().isIphone ? 'Iphone' : 'Android';
-Vue.prototype.baseURL = "http://www.kbbabc.com/";
+Vue.prototype.baseURL = "http://www.asd.com/";

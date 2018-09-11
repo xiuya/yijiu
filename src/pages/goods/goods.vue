@@ -928,8 +928,6 @@ a.pay_money.xiajia {
   font-size: 14px;
   line-height: 40px;
 }
-.search-main {
-}
 #order .vux-slider {
   height: 100%;
   width: 100%;

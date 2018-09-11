@@ -28,18 +28,18 @@
             <div class="venue_box" ref="hotGoods">
               <ul class="hot-list clearfix" >
                   <li v-for='(hot,index) in venue_img' :key="index" @click="goDetails(hot.id)">
-                                <img :src="imgUrl+hot.img"  :onerror="defaultImg"/>
+                                <img :src="hot.thumbnail"  :onerror="defaultImg"/>
                         <div class="producttagname" v-if='hot.killendtime'></div>
                         <div class="placename"  v-if='hot.placename'>{{hot.placename}}</div>
                         <div class="home-hotinfo">
                           <p><span >{{hot.storeName}}</span><span>{{hot.name}}</span></p>
                           <div class="jg">
                             <span >￥{{hot?parseFloat(hot.price).toFixed(0):0}}</span>
-                            <span class="fr" style="padding-right:5px;">{{hot.commentcount}}件起售</span>
+                            <span class="fr" style="padding-right:5px;">{{hot.miniOrder}}件起售</span>
                           </div>
-                          <p><span >卖点：</span><span>{{hot.name}}</span></p>
+                          <p><span >卖点：</span><span>{{hot.sellerPoint}}</span></p>
                         </div>
-                        <span class="add-car icon iconfont icon-gouwuche" @click.stop='addCar(hot)'></span>
+                        <span class="add-car icon iconfont icon-gouwuche" @click.stop='addCar(hot.id)'></span>
                   </li>
               </ul>        
             </div>
@@ -50,13 +50,13 @@
                     <!-- <tab  active-color='#2f9cff' v-model="footerindex" >
                         <tab-item class="vux-center"   v-for="(item, index) in homefooterList" @click=" footer2=item" :selected="footer2===item" :key="index">{{item}}</tab-item>
                     </tab> -->
-                        <tab :line-width=0 active-color='#fc378c' v-model="index">
-                            <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list2" @click="demo2 = item" :key="index">{{item}}</tab-item>
+                        <tab  v-model="index">
+                            <tab-item class="vux-center" :selected="footerTab === item" v-for="(item, index) in footerList" @click="footerTab = item.typeName" :key="index">{{item.typeName}}</tab-item>
                         </tab>
                 </div>
                </div>
                <div class="homefootet_search">
-                   <div> <router-link :to="{path:'/home/homeSearch',query:{name:'商品'}}" class="right-icon">搜商品</router-link></div>
+                   <div> <router-link :to="{path:'/home/homeSearch'}" class="right-icon">搜商品</router-link></div>
                    <!-- <div><router-link :to="{path:'/home/homeSearch',query:{name:'店铺'}}"  class="right-icon">搜卖家</router-link></div> -->
                </div>
         </div>
@@ -81,9 +81,9 @@ export default {
   data() {
     return {
       footerindex: 0,
-      list2: [],
+      footerList: [],
       index: 0,
-      demo2: "家居百货",
+      footerTab: "",
       dataUrl: "",
       oneswiper: true,
       hotScrollTop: 0,
@@ -210,29 +210,33 @@ export default {
     TabItem
   },
   created() {
-    this.$axios.get("static/data/index/xs-hotSale1.json").then(res => {
-      this.venue_img = res.data;
-    });
-    this.$axios.get("static/data/index/limitSale.json").then(res => {
-      for (var i = 0; i < res.data.length; i++) {
-        var d = {};
-        d.bgimg = "http://cn01.alicdn.sasa.com/" + res.data[i].bgimg;
-        d.dataname = res.data[i].dataname;
-        d.discount = res.data[i].discount;
-        d.price = res.data[i].price;
-        d.oldprice = res.data[i].oldprice;
-        d.productid = res.data[i].productid;
-        d.id = res.data[i].productid;
-        d.img = "http://cn01.alicdn.sasa.com/" + res.data[i].iconimg;
-        d.name = res.data[i].dataname;
-        d.storeName = "";
-        this.timesSale.push(d);
-      }
-    });
+    //商品列表
+    this.goodsList();
+    //底部导航
+    this.getfooterList();
+    // this.$axios.get("static/data/index/xs-hotSale1.json").then(res => {
+    //   this.venue_img = res.data.records;
+    // });
+    // this.$axios.get("static/data/index/limitSale.json").then(res => {
+    //   for (var i = 0; i < res.data.length; i++) {
+    //     var d = {};
+    //     d.bgimg = "http://cn01.alicdn.sasa.com/" + res.data[i].bgimg;
+    //     d.dataname = res.data[i].dataname;
+    //     d.discount = res.data[i].discount;
+    //     d.price = res.data[i].price;
+    //     d.oldprice = res.data[i].oldprice;
+    //     d.productid = res.data[i].productid;
+    //     d.id = res.data[i].productid;
+    //     d.img = "http://cn01.alicdn.sasa.com/" + res.data[i].iconimg;
+    //     d.name = res.data[i].dataname;
+    //     d.storeName = "";
+    //     this.timesSale.push(d);
+    //   }
+    // });
 
-    this.$axios.get("static/data/index/pf-hotSale1.json").then(res => {
-      this.hotSale = res.data;
-    });
+    // this.$axios.get("static/data/index/pf-hotSale1.json").then(res => {
+    //   this.hotSale = res.data;
+    // });
 
     this.swiperdata = {
       "a21fbb07-1b03-4e90-80e3-613a67138a23": banner2,
@@ -251,7 +255,7 @@ export default {
       "a51d5068-83a2-4bfd-b5c7-59f61beb1730": banner6,
       "038d3183-c96f-4a7c-9f19-9ad398e40451": banner3
     };
-    this.list2 = ["家居百货","家用电器","食品酒水","服装配饰", "美妆个护","母婴用品","数码办公","汽车用品","精选箱包", "户外用品"];
+    // this.footerList = ["家居百货","家用电器","食品酒水","服装配饰", "美妆个护","母婴用品","数码办公","汽车用品","精选箱包", "户外用品"];
   },
   mounted() {
     this.hotScrollTop = this.$refs.hotGoods.offsetTop;
@@ -262,7 +266,19 @@ export default {
     // this.timeOut=null;
   },
   methods: {
-
+    goodsList(){
+        this.$axios.get("/index",{currPage:1}).then(res => {
+          if(res.code=='OK'){
+            this.venue_img = res.data.records;
+          }
+        });
+    },
+    getfooterList(){
+        this.$axios.get('/goodsType/oneType').then(res=>{
+          if(res.code=='OK')
+          this.footerList=res.data
+        })
+    },
     goDetails(id) {
       // console.log(id)
       this.$router.push({
@@ -276,22 +292,29 @@ export default {
       this.cindex = index;
     },
     addCar(hot) {
-      var date = new Date();
-      var dataForAddCar = {};
-      dataForAddCar.id = hot.id;
-      dataForAddCar.name = hot.name;
-      dataForAddCar.img = "http://cn01.alicdn.sasa.com/" + hot.img;
-      dataForAddCar.storeName = hot.storeName;
-      dataForAddCar.price = hot.price;
-      dataForAddCar.title = hot.productTitle;
-      dataForAddCar.time = date;
-      dataForAddCar.count = 1;
-      var jsonString = localStorage.getItem("addcar") || "[]";
-      console.log(jsonString);
-      var arrCar = JSON.parse(jsonString);
-      arrCar.push(dataForAddCar);
-      localStorage.setItem("addcar", JSON.stringify(arrCar));
-      alert("加入购物车成功");
+      // var date = new Date();
+      // var dataForAddCar = {};
+      // dataForAddCar.id = hot.id;
+      // dataForAddCar.name = hot.name;
+      // dataForAddCar.img = "http://cn01.alicdn.sasa.com/" + hot.img;
+      // dataForAddCar.storeName = hot.storeName;
+      // dataForAddCar.price = hot.price;
+      // dataForAddCar.title = hot.productTitle;
+      // dataForAddCar.time = date;
+      // dataForAddCar.count = 1;
+      // var jsonString = localStorage.getItem("addcar") || "[]";
+      // console.log(jsonString);
+      // var arrCar = JSON.parse(jsonString);
+      // arrCar.push(dataForAddCar);
+      // localStorage.setItem("addcar", JSON.stringify(arrCar));
+      // alert("加入购物车成功");
+          this.$axios.get('/user/order/add_goods',{styleId:hot}).then(
+            res=>{
+              if(res.code=='OK')
+              alert('加入购物车成功')
+              this.$vux.toast.show({'text':'加入购物车成功'})
+            }
+          )
     },
     change(i) {
       this.mark = i;
@@ -591,13 +614,9 @@ export default {
   height: 200px;
   background-color: #fff;
 }
-/* .homefooter{overflow: scroll;} */
-.homefooter .vux-tab {
+/* .homefooter .vux-tab {
   width: 700px;
-}
-/* .homefooter .vux-tab div{width: 70px !important;} */
-/* .homefooter  ::-webkit-scrollbar{height: 0px !important; opacity:0;} */
-/* .hot-list{background:url(../../assets/img/bg3.png);} */
+} */
 #home .vux-tab .vux-tab-item {
   -webkit-box-flex: 1 !important;
   -ms-flex: 1 !important;

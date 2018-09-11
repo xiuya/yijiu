@@ -95,6 +95,6 @@ export default {
 	#img-wrap .delimg-btn{position: absolute;top:-2px;right: 0;font-size: 30px;color:#ccc;}
 	#img-wrap .mint-cell-wrapper{padding: 0 15px;}
   #img-wrap #addImg_boxs{display: flex; display: -webkit-flex;margin-top: 15px;}
- #home-view{display: flex; display: -webkit-flex;flex-direction: column-reverse;background-color: #f1f2f3;padding: 4px;}
+ #home-view{display: flex; display: -webkit-flex;flex-direction: column-reverse;background-color: #f1f2f3;}
 
 </style>

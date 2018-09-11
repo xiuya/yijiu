@@ -4,26 +4,36 @@
             <header>订单详情</header>
             <box  class="list-box">
                 <div class="order-title">
-                    <div class="fl">状态:待收货</div>
-                    <div class="fr">卖家:壹玖实业投资有限公司</div>
+                    <div class="fl">状态:{{orderDetail.order[0].status}}</div>
+                    <div class="fr">卖家:{{orderDetail.order[0].shopName}}</div>
                 </div>
                 <flexbox>
-                    <flexbox-item><div class="flex-demo">下单:2018-11-22</div></flexbox-item>
-                    <flexbox-item><div class="flex-demo ta-l">订单号:abcsadsdwda112123</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo">下单:{{orderDetail.order[0].createTime}}</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo ta-l">订单号:{{orderDetail.order[0].orderNo}}</div></flexbox-item>
                 </flexbox>
                 
                 <flexbox>
-                    <flexbox-item><div class="flex-demo">订单总款式:12款</div></flexbox-item>
-                    <flexbox-item><div class="flex-demo ta-l">订单总商品:3种</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo">订单总款式:{{orderDetail.order[0].stylesNum}}</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo ta-l">订单总商品:{{orderDetail.order[0].goodsNum}}</div></flexbox-item>
                 </flexbox>
                 <flexbox>
-                    <flexbox-item><div class="flex-demo">订单总数量:1000套</div></flexbox-item>
-                    <flexbox-item><div class="flex-demo ta-l">订单金额:￥999</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo">订单总数量:{{orderDetail.order[0].number}}</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo ta-l">订单金额:￥{{orderDetail.order[0].totalPrice}}</div></flexbox-item>
                 </flexbox>
             </box >
-            <box class="list-box list-sec">
-            <divider>这个个宝贝</divider>
-                             <div class="count_down_list  clearfix"  >
+            <box class="list-box list-sec" v-for="(item,index) in orderDetail.order[0].styles" :key='index'>
+            <divider>{{item.goodsName}}</divider>
+                             <div class="count_down_list  clearfix" v-for='(itemSub,indexSub) in item.details' :key='indexSub'>
+                                        <div class="xuhao">{{indexSub+1}}</div>
+                                        <div class="left" style="width:90px;">
+                                            <img :src="itemSub.img" alt="">
+                                        </div>
+                                        <div class='right-content' style="width:220px;">
+                                                    <div class="kuansiTop">{{itemSub.styleName}}</div>
+                                                    <div class="kuansiBottom"><span class="left">数量：{{itemSub.number}}</span><span class="right">￥{{itemSub.price}}</span></div>
+                                        </div>
+                             </div>
+                             <!-- <div class="count_down_list  clearfix"  >
                                         <div class="xuhao">1</div>
                                         <div class="left">
                                             <img :src="listImg" alt="">
@@ -32,30 +42,15 @@
                                                     <div class="kuansiTop">款式名称阿达阿达撒多撒多所所大所啊</div>
                                                     <div class="kuansiBottom"><span class="left">100箱</span><span class="right">￥999</span></div>
                                         </div>
-                             </div>
-                             <div class="count_down_list  clearfix"  >
-                                        <div class="xuhao">1</div>
-                                        <div class="left">
-                                            <img :src="listImg" alt="">
-                                        </div>
-                                        <div class='right-content'>
-                                                    <div class="kuansiTop">款式名称阿达阿达撒多撒多所所大所啊</div>
-                                                    <div class="kuansiBottom"><span class="left">100箱</span><span class="right">￥999</span></div>
-                                        </div>
-                             </div>
-                    
+                             </div> -->
               <flexbox>
-                <flexbox-item><div class="flex-demo ta-l">数量:100000套</div></flexbox-item>
-                <flexbox-item><div class="flex-demo ta-r">金额:￥999</div></flexbox-item>
+                <flexbox-item><div class="flex-demo ta-l">数量:{{item.subNumber}}</div></flexbox-item>
+                <flexbox-item><div class="flex-demo ta-r">金额:￥{{item.subPrice}}</div></flexbox-item>
               </flexbox>
             </box>
-
+                         <!-- <divider>物流信息</divider>
             <x-table :cell-bordered="false" style="background-color:#eee;">
                         <tbody>
-                        <tr>
-                            <td>发货省市区</td>
-                            <td>深圳</td>
-                        </tr>
                         <tr>
                             <td>物流公司</td>
                             <td>速尔</td>
@@ -72,37 +67,37 @@
                             <td>电话</td>
                             <td>13865659898</td>
                         </tr>
+                        </tbody>
+            </x-table> -->
+                         <divider>买家信息</divider>
+            <x-table :cell-bordered="false" style="background-color:#eee;">
+                        <tbody>
                         <tr>
-                            <td>收货省市区</td>
-                            <td>广东深圳</td>
-                        </tr>
-                        <tr>
-                            <td>具体地址</td>
-                            <td>南山区t大厦</td>
+                            <td>收货地址</td>
+                            <td>{{ orderDetail.address}}</td>
                         </tr>
                         <tr>
                             <td>收货人</td>
-                            <td>万开</td>
+                            <td>{{ orderDetail.receiver}}</td>
                         </tr>
                         <tr>
                             <td>收货人电话</td>
-                            <td>13865659898</td>
+                            <td>{{orderDetail.mobile}}</td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td>买家备注</td>
-                            <td>红色</td>
-                        </tr>
-                       
+                            <td></td>
+                        </tr> -->
                         </tbody>
             </x-table>
-            <group >
+            <!-- <group >
                     <divider>写评语</divider>  
-                     <x-textarea  :placeholder="写评语" :max="200"  :height="200" :rows="8" :cols="30"></x-textarea>
+                     <x-textarea :max="200"  :height="200" :rows="8" :cols="30"></x-textarea>
                     <div><x-button mini :gradients="['#1D62F0', '#19D5FD']">保存</x-button></div>
 
             </group>
              <group >
-                    <divider>联系买家</divider>  
+                    <divider>联系卖家</divider>  
                      <x-textarea  :max="200" :show-counter="false" :height="200" :rows="8" :cols="30"></x-textarea>
                       <div> <x-button mini :gradients="['#1D62F0', '#19D5FD']">发送</x-button></div>
             </group>
@@ -110,7 +105,7 @@
                     <divider>联系客服</divider>  
                      <x-textarea  :max="200" :show-counter="false" :height="200" :rows="8" :cols="30"></x-textarea>
                     <div class="clearfix"><x-button mini :gradients="['#FF2719', '#FF61AD']">发送建议</x-button><x-button mini :gradients="['#1D62F0', '#19D5FD']">发送求助</x-button><x-button mini >发送投诉</x-button></div>
-            </group>
+            </group> -->
         <div class="backicon" @click='goback'></div>
 
         </div>
@@ -135,6 +130,7 @@ export default {
     return {
         status: "",
         listImg:listImg,
+        orderDetail:{},
     };
     showMenus: false;
   },
@@ -149,12 +145,22 @@ export default {
     Group,
     XButton
   },
-  created() {},
+  created(){
+      this.getorderDetail();
+  },
   mounted() {},
   distoryed() {},
   methods: {
     goback() {
       window.history.go(-1);
+    },
+    getorderDetail(){
+      this.$axios.get('/user/order/detail',{orderId:this.$route.query.orderId}).then(res=>
+        {
+            if(res.code=='OK'){
+               this.orderDetail=res.data
+            }
+        })      
     }
   },
   watch: {}

@@ -1,7 +1,6 @@
 <template>
     <div id="cart">
               <div class="container-cart ">  
-                 
                     <div class="cart-empty" v-if='getItems.length==0'>
                         <img :src="caricon" alt="">
                         购物车空,赶紧去购物去吧.
@@ -10,11 +9,11 @@
                         <!-- 店铺名 -->
                         <div class="shop_name clearfix">
                             <span class="shop_name_text fl">
-                                {{getItem.storeName}}
+                                {{getItem.shopName}}
                             </span>
                             <span class="fr">
-                                {{getItem.time}}
-                                2015-10-12
+                                {{moment(getItem.createTime).format('YYYY-MM-DD HH:mm:ss')}}
+                                <!-- 2015-10-12 -->
                             </span>
                         </div>
                         <!-- 宝贝组 -->
@@ -22,16 +21,17 @@
                             <!-- 单个宝贝 -->
                             <div class="shop_item clearfix">
                                 <div class="img-box" >
-                                    <img :src="imgUrl+getItem.img" alt="" class="item_icon">
+                                    <img :src="getItem.img" alt="" class="item_icon">
                                 </div>
                                 <div class="shop_item_right" >
                                   <div class="shop-content clearfix">
                                     <div class="fl">
-                                      <span class="title">{{getItem.name}}</span>
-                                      <span class="description">
-                                              {{getItem.title}}这是商品描述内容
+                                      <span class="title">{{getItem.goodsName}}</span>
+                                       <span class="description">
+                                              <!-- {{getItem.title}}
+                                             这是商品描述内容  -->
                                       </span>
-                                      <span class="price">{{getItem.price}}</span>
+                                      <span class="price">￥{{getItem.price}}/{{getItem.minNum}}</span>
                                     </div>
                                     <div class="fr">
                                              <x-button type="default">删除</x-button>
@@ -39,20 +39,20 @@
                                   
                                   </div>
                                       <div class="tag_group">
-                                          <x-number  v-model="getItem.count" :min="1" @on-change="change"></x-number>
+                                          <x-number  v-model="getItem.number" :min="1" @on-change="change"></x-number>
                                       </div>
                                 </div>
                             </div>
                       </div>
                     </div>   
-        <x-header :left-options="{showBack: false}">购物车 </x-header>
 
+                    <x-header :left-options="{showBack: false}">购物车 </x-header>
                     <div class="cart-footer clearfix" v-if='getItems.length>=0'>
                         <div class="bg-gray" @click='clearLocalstorage' >清空</div>
                         <div><div>收藏</div>999款</div>
                         <div><div>共选</div><span class="c-blue">{{countTotal}}</span>款</div>
                         <div><div>合计</div> <span class="c-red">￥{{priceTotal}}</span></div>
-                        <div class="bg-red">结算</div>
+                        <div class="bg-red" @click="payCar">结算</div>
                         <div class="bg-green checkall" @click="checkAll">全选</div>
                     </div>   
               </div> 
@@ -71,15 +71,15 @@ export default {
   name: "wallet",
   data() {
     return {
-      gridList: [],
-      todaydata: {},
-      resdatas: [],
-      buyValue: 1,
+      // gridList: [],
+      // todaydata: {},
+      // buyValue: 1,
       getItems: [],
       priceTotal: 0,
       countTotal: 0,
-      dataDetail: [],
-      caricon: caricon
+      // dataDetail: [],
+      caricon: caricon,
+      arrItems:[],
     };
   },
   components: {
@@ -98,48 +98,78 @@ export default {
     clearLocalstorage() {
       localStorage.setItem("addcar", "");
       // location.reload();
+    },
+    getCart(){
+        this.$axios.get('/user/order/shop_cart').then(
+          res=>{
+            if(res.code=='OK'){
+                  this.getItems=res.data.details;
+                  this.countTotal=res.data.number;
+                  this.priceTotal=res.data.subPrice;
+            }
+          
+          })
+    },
+    payCar(){
+      // console.log(this.getItems)
+      var arrItems=[];
+      var getItems=this.getItems
+      for(let i in getItems){
+        console.log(i)
+        arrItems.push({styleId:getItems[i].styleId,number:getItems[i].number});
+      };
+      arrItems=JSON.stringify(arrItems);
+      // console.log(arrItems)
+      // [{"styleId":"bhoL","number":"2"},{"styleId":"bXBT","number":"3"},{"styleId":"b047","number":"4"},{"styleId":"hTbi","number":"5"}]
+        this.$axios.post('/user/order/buy',{shopCard:arrItems}).then(
+          res=>{
+            if(res.code=='OK'){
+              this.$router.push({path:'/order/orderDetail'});
+            }
+              // this.$vux.toast.show({'text':'购买成功'});
+          })
+      
     }
   },
   created() {
-    this.$axios.get("static/data/index/xs-hotSale1.json").then(res => {
-      this.resdatas = res.data;
-    });
+  
   },
   mounted() {
+    this.getCart();
     console.log(this.getItems);
-    this.$nextTick(function() {
-      var addCar = localStorage.getItem("addcar")
-        ? JSON.parse(localStorage.getItem("addcar"))
-        : "";
-      var resObj = {};
-      for (var i = 0; i < addCar.length - 1; i++) {
-        var item = addCar[i];
-        if (!resObj[item.id]) {
-          // this.priceTotal+= parseInt(this.getItems[i].price);
-          // this.countTotal+=1;
-          resObj[item.id] = item.count;
-        } else {
-          var count = resObj[item.id];
-          resObj[item.id] = count + item.count;
-        }
-      }
-      console.log(resObj);
-      for (var key in resObj) {
-        //  var url='http://localhost:8080/#/home/homeDetail?id='+key;
-        //  console.log(url)
-        var _this = this;
-        var goodsdetail =
-          "static/data/details/" + key + "/getProductDetailInfo.json";
-        this.$axios.get(goodsdetail).then(res => {
-          if (!!res.data) {
-            this.$set(res.data, "count", resObj[key]);
-            this.getItems.push(res.data);
-            console.log(this.getItems);
-            this.countTotal++;
-          }
-        });
-      }
-    });
+    // this.$nextTick(function() {
+    //   var addCar = localStorage.getItem("addcar")
+    //     ? JSON.parse(localStorage.getItem("addcar"))
+    //     : "";
+    //   var resObj = {};
+    //   for (var i = 0; i < addCar.length - 1; i++) {
+    //     var item = addCar[i];
+    //     if (!resObj[item.id]) {
+    //       // this.priceTotal+= parseInt(this.getItems[i].price);
+    //       // this.countTotal+=1;
+    //       resObj[item.id] = item.count;
+    //     } else {
+    //       var count = resObj[item.id];
+    //       resObj[item.id] = count + item.count;
+    //     }
+    //   }
+    //   console.log(resObj);
+    //   for (var key in resObj) {
+    //     //  var url='http://localhost:8080/#/home/homeDetail?id='+key;
+    //     //  console.log(url)
+    //     var _this = this;
+    //     var goodsdetail =
+    //       "static/data/details/" + key + "/getProductDetailInfo.json";
+    //     this.$axios.get(goodsdetail).then(res => {
+    //       if (!!res.data) {
+    //         this.$set(res.data, "count", resObj[key]);
+    //         this.getItems.push(res.data);
+    //         console.log(this.getItems);
+    //         this.countTotal++;
+    //       }
+    //     });
+    //   }
+    // });
   }
 };
 </script>
@@ -245,7 +275,7 @@ export default {
   -webkit-box-orient: vertical;
 }
 .container-cart {
-  padding-bottom: 50px;
+  padding-bottom: 50px;padding-top: 10px;
 }
 .shop-content .title {
   font-size: 12px;
@@ -307,5 +337,6 @@ export default {
   display: block;
   font-size: 50px;
 }
+.container-cart  .vux-header{width: 100%;top: 0;position:fixed;}
 </style>
 

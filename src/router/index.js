@@ -10,7 +10,7 @@ const home = () =>
 const homeindex = () =>
     import('@/pages/home/home');
 // 卖家首页   
-const homeindexSeller = () =>
+const homeSeller = () =>
     import('@/pages/home/home');
 const homeDetail=()=>
     import('@/pages/home/homeDetail')
@@ -103,8 +103,8 @@ export default new Router({
         },
         {
             path: 'homeSeller',
-            name: 'home',
-            component: homeindexSeller,
+            name: 'homeSeller',
+            component: homeSeller,
             meta: {
                 auth: false,
             }

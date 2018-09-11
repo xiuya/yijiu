@@ -8,13 +8,28 @@
                 <tab :line-width=2  active-color='#fc378c' v-model="indexsec">
                     <tab-item class="vux-center" :selected="tabName === item" v-for="(item, indexsec) in tabberGoods" @click="tabName= item" :key="indexsec">{{item}}</tab-item>
                 </tab>
+                <form class="search-bar clear ">
+                    <span class="left" @click="cancel">取消</span>
+                    <input type="search" placeholder="保湿" class="left "  v-model="key">
+                    <i class="iconfont icon-sousuo search-btn" @click="addHistory()"></i>
+                        <search
+                                        @result-click="resultClick"
+                                        @on-change="getResult"
+                                        :results="results"
+                                        v-model="value"
+                                        position="fixed"
+                                        auto-scroll-to-top
+                                        top="0px"
+                                        @on-focus="onFocus"
+                                        @on-cancel="onCancel"
+                                        @on-submit="onSubmit"
+                                        ref="search"></search>
+                </form>
                   <swiper v-model="indexsec" height="100%" :show-dots="false">
                     <swiper-item :key="1">
                         <div class="tab-swiper vux-center">
                             <section class="search-main">
-                                <!-- <h3 v-if='index!=0'>{{title_main}}</h3> -->
-        <x-header :left-options="{showBack: false}" v-if='index!=0'>{{title_main}}</x-header>
-
+                                <x-header :left-options="{showBack: false}" v-if='index!=0'>{{title_main}}</x-header>
                                 <h4 v-if='index==0'>搜索发现</h4>
                                 <ul v-if='index==0' class="clearfix tuijian">
                                         <li v-for="(key,value) in tabberGoodsinfo"  :key="value" class="left ">
@@ -88,11 +103,8 @@
                         </div>
                     </swiper-item>
                 </swiper>
-                <form class="search-bar clear ng-pristine ng-valid">
-                    <i class="iconfont icon-sousuo search-btn" @click="addHistory()"></i>
-                    <input type="search" placeholder="保湿" class="left "  v-model="key">
-                    <span class="left" @click="cancel">取消</span>
-                </form>
+   
+                
             </div>
     </div>
 </template>
@@ -105,6 +117,7 @@ import {
   FlexboxItem,
   Tab,
   TabItem,
+Search,
   XHeader
 } from "vux";
 
@@ -130,15 +143,14 @@ export default {
         "精选箱包",
         "户外用品"
       ],
-      tabberGoodsItem: [
-        ,
-        [
-          { name: "热卖面膜" },
-          { name: "幻彩化妆品" },
-          { name: "个人用品" },
-          { name: "母子用品" }
-        ]
-      ],
+      // tabberGoodsItem: [
+      //   [
+      //     { name: "热卖面膜" },
+      //     { name: "幻彩化妆品" },
+      //     { name: "个人用品" },
+      //     { name: "母子用品" }
+      //   ]
+      // ],
       index: 0,
       indexsec: 0,
       tabName: "全部",
@@ -149,8 +161,10 @@ export default {
       ],
       tabberShopinfo: [{ name: "店铺1" }, { name: "店铺2" }, { name: "店铺3" }],
       venue_img: [],
-      title_main: "全部"
-    };
+      title_main: "全部",
+      results: [],
+      value: "test",
+    }
   },
   components: {
     Swiper,
@@ -159,12 +173,13 @@ export default {
     FlexboxItem,
     Tab,
     TabItem,
+    Search,
      XHeader
   },
   created() {
-    this.$axios.get("static/data/index/xs-hotSale1.json").then(res => {
-      this.venue_img = res.data;
-    });
+    // this.$axios.get("static/data/index/xs-hotSale1.json").then(res => {
+    //   this.venue_img = res.data;
+    // });
   },
   mounted() {
     this.tabName = this.$route.query.name;
@@ -175,7 +190,41 @@ export default {
     addHistory() {},
     cancel() {
       window.history.go(-1);
-    }
+    },//SearchStart
+     setFocus () {
+      this.$refs.search.setFocus()
+    },
+    resultClick (item) {
+      window.alert('you click the result item: ' + JSON.stringify(item))
+    },
+    getResult (val) {
+      console.log('on-change', val)
+      this.results = val ? getResult(this.value) : []
+    },
+    onSubmit () {
+      this.$refs.search.setBlur()
+      this.$vux.toast.show({
+        type: 'text',
+        position: 'top',
+        text: 'on submit'
+      })
+    },
+    onFocus () {
+      console.log('on focus')
+    },
+    onCancel () {
+      console.log('on cancel')
+    }, 
+    getResults (val) {
+      let rs = []
+      for (let i = 0; i < 20; i++) {
+        rs.push({
+          title: `${val} result: ${i + 1} `,
+          other: i
+        })
+      }
+    return rs
+    } //搜索end
   },
   filters: {},
   watch: {
@@ -184,7 +233,7 @@ export default {
       if (val != 0) {
         this.title_main = this.tabGoods[val];
         this.indexsec = 0;
-         window.scroll(0, 0);
+        //  window.scroll(0, 0);
         // document.querySelector('.venue_box').scrollTop=0;
       }
     }
@@ -243,19 +292,7 @@ export default {
   font-size: 14px;
   color: #9d9d9d;
 }
-.search {
-  background: #f7f7f7;
-  height: 100%;
-  position: fixed;
-  width: 100%;
-  z-index: 10000;
-  top: 0;
-  // left: 100%;
-  overflow: hidden;
-  transition: 0.3s left;
-  display: flex;
-  flex-direction: column-reverse;
-}
+
 .search .search-main ul.tuijian li a {
   display: inline-block;
   padding: 6px 9px;
@@ -268,6 +305,19 @@ export default {
   margin-right: 11px;
   margin-top: 11px;
   float: left;
+}
+.search {
+  background: #f7f7f7;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  z-index: 10000;
+  top: 0;
+  // left: 100%;
+  overflow: hidden;
+  transition: 0.3s left;
+  display: flex;
+  flex-direction: column-reverse;
 }
 .vux-slider {
   height: 100%;
@@ -460,6 +510,9 @@ export default {
   font-size: 14px;
   height: 20px;
   line-height: 20px;
+}
+.search-main {
+  padding-bottom: 40px;
 }
 </style>
 
