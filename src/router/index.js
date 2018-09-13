@@ -21,6 +21,8 @@ const order = () =>
     import('@/pages/order/order');
 const orderSeller = () =>
     import('@/pages/order/orderSeller');
+const orderDetailnoId = () =>
+    import('@/pages/order/orderDetailnoId');
 const orderDetail = () =>
     import('@/pages/order/orderDetail');
 //   商品管理
@@ -192,7 +194,14 @@ export default new Router({
 			        }
 			    }
 			]
-        }
+        },{
+            path: 'mySeller',
+            name: 'mySeller',
+            component:resolve => require(['@/pages/my/mySeller'],resolve),
+            meta: {
+                auth: true,
+            }
+        },
         ]
     },
     {
@@ -216,6 +225,22 @@ export default new Router({
             auth: true,
         }
     },
+    {
+        path: '/order/orderDetailnoId',
+        name: 'orderDetailnoId',
+        component:resolve => require(['@/pages/order/orderDetailnoId'],resolve),
+        meta: {
+            auth: true,
+        }
+    }, {
+        path: '/shop/shopDetail',
+        name: 'shopDetail',
+        component:resolve => require(['@/pages/home/shopDetail'],resolve),
+        meta: {
+            auth: true,
+        }
+    },
+    
    
     {
         path: '/my/setUp/editPwd',

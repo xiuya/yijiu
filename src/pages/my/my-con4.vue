@@ -33,9 +33,6 @@
 					</group>	      
 	                </circleTitle>
 	            </box>
-
-	       
-	   		
 		</div>
 </template>
 

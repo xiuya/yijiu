@@ -53,11 +53,11 @@ export default {
                         },
                         {
                             "icon": "fa fa-file-text-o",
-                            "index": "/my",
+                            "index": "/mySeller",
                             "title": "账户"
                         },
             ],
-            state:false,
+            state:localStorage.getItem('seller'),
 
             
         }
@@ -77,6 +77,8 @@ export default {
         console.log(this.changePeople,"122",this.$store.state.user.saller)
         if(this.$store.state.user.saller){
         	this.state=true;
+        }else{
+            this.state=false;
         }
     },
     distoryed() {
@@ -85,9 +87,9 @@ export default {
     methods: {
     },
     watch:{
-    	'changePeople'(value){
-    		console.log(value,'12')
-    	}
+    	// 'changePeople'(value){
+    	// 	console.log(value,'12')
+    	// }
     }
 }
 </script>

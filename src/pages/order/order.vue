@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="order">
-            <tab   v-model="tabindex">
+                <tab   v-model="tabindex" v-if='tabberGoods[4].length-1>=0'>
                     <tab-item class="vux-center" :selected="tabName === item.status" v-for="(item, index) in tabberGoods" @click="tabName=item.status" :key="index">
                       <badge :text="item.length" v-show='item.length-1>=0'></badge>
                       {{item.status}}</tab-item>
@@ -167,7 +167,7 @@
                               <div class="count_up clearfix ">
                                 <div class="left">
                                     <span >下单：</span>
-                                    <span >{{item.createTime}}</span>
+                                    <span class="headtime">{{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
                                 </div>
                                 <div class="right-content">
                                   <div class="right">
@@ -237,11 +237,12 @@ export default {
       tabberGoods:[{status:"已取消",length:0},{status:"待评价",length:0},{status:"待收货",length:0},{status:"待发货",length:0},{status:"待付款",length:0},{status:"全部",length:0},{status:"搜索",length:0}],
       tabName:"全部",
       goods_list:
-      [{status:'已取消',name:'商品2',delTime:'2018-5-25',orderNum:'2011515121512',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
-      {status:'待评价',name:'商品3',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
-      {status:'待收货',name:'商品4',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
-      {status:'待发货',name:'商品5',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
-      {status:'待付款',name:'商品6',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
+      [
+      //   {status:'已取消',name:'商品2',delTime:'2018-5-25',orderNum:'2011515121512',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
+      // {status:'待评价',name:'商品3',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
+      // {status:'待收货',name:'商品4',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
+      // {status:'待发货',name:'商品5',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
+      // {status:'待付款',name:'商品6',delTime:'2018-5-25',orderNum:'20115151saasdsa',style:'4',moneyTotal:'￥999',countTotal:'100',saleName:'卖家名称'},
       ],
       sub_list:[],
 
@@ -296,7 +297,7 @@ export default {
     },
     "card.msg"() {},
     'tabindex':function(val){
-      console.log(val)
+        console.log(val)
         if(val==4){
           this.sub_list=this.goods_list.filter((item)=>{ return item.status=='待付款'?true:false})
         }else  if(val==3){
@@ -307,7 +308,11 @@ export default {
           this.sub_list=this.goods_list.filter((item)=>{ return item.status=='待评价'?true:false})
         }else  if(val==0){
           this.sub_list=this.goods_list.filter((item)=>{ return item.status=='已取消'?true:false})
-        }else if(val=5){
+        }else if(val==5){
+          this.sub_list=this.goods_list;
+        }else if(val==6){
+          this.$vux.confirm.show({title:'输入商品名称查询',content:'<textarea id="textareaOrder" v-focus></textarea>'});
+          // document.querySelector('#textareaOrder').focus();
           this.sub_list=this.goods_list;
         }else{
           this.sub_list=this.goods_list;
@@ -482,6 +487,8 @@ a.pay_cancel {
 #home-view{padding: 0;}
 #order .vux-tab-item{position: relative;}
 #order .vux-badge{position: absolute;right: 0;top: 0;}
+#textareaOrder{width: 220px;height: 60px;font-size: 16px;line-height: 30px;resize: none;}
+.headtime  {    font-size: 13px;line-height: 34px;}
 </style>
 
 

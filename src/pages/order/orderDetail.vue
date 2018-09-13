@@ -4,24 +4,24 @@
             <header>订单详情</header>
             <box  class="list-box">
                 <div class="order-title">
-                    <div class="fl">状态:{{orderDetail.order[0].status}}</div>
-                    <div class="fr">卖家:{{orderDetail.order[0].shopName}}</div>
+                    <div class="fl">状态:{{orderDetail.status}}</div>
+                    <div class="fr">卖家:{{orderDetail.shopName}}</div>
                 </div>
                 <flexbox>
-                    <flexbox-item><div class="flex-demo">下单:{{orderDetail.order[0].createTime}}</div></flexbox-item>
-                    <flexbox-item><div class="flex-demo ta-l">订单号:{{orderDetail.order[0].orderNo}}</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo">下单:{{orderDetail.createTime}}</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo ta-l">订单号:{{orderDetail.orderNo}}</div></flexbox-item>
                 </flexbox>
                 
                 <flexbox>
-                    <flexbox-item><div class="flex-demo">订单总款式:{{orderDetail.order[0].stylesNum}}</div></flexbox-item>
-                    <flexbox-item><div class="flex-demo ta-l">订单总商品:{{orderDetail.order[0].goodsNum}}</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo">订单总款式:{{orderDetail.stylesNum}}</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo ta-l">订单总商品:{{orderDetail.goodsNum}}</div></flexbox-item>
                 </flexbox>
                 <flexbox>
-                    <flexbox-item><div class="flex-demo">订单总数量:{{orderDetail.order[0].number}}</div></flexbox-item>
-                    <flexbox-item><div class="flex-demo ta-l">订单金额:￥{{orderDetail.order[0].totalPrice}}</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo">订单总数量:{{orderDetail.number}}</div></flexbox-item>
+                    <flexbox-item><div class="flex-demo ta-l">订单金额:￥{{orderDetail.totalPrice}}</div></flexbox-item>
                 </flexbox>
             </box >
-            <box class="list-box list-sec" v-for="(item,index) in orderDetail.order[0].styles" :key='index'>
+            <box class="list-box list-sec" v-for="(item,index) in orderDetail.styles" :key='index'>
             <divider>{{item.goodsName}}</divider>
                              <div class="count_down_list  clearfix" v-for='(itemSub,indexSub) in item.details' :key='indexSub'>
                                         <div class="xuhao">{{indexSub+1}}</div>
@@ -74,15 +74,15 @@
                         <tbody>
                         <tr>
                             <td>收货地址</td>
-                            <td>{{ orderDetail.address}}</td>
+                            <td>{{ order.address}}</td>
                         </tr>
                         <tr>
                             <td>收货人</td>
-                            <td>{{ orderDetail.receiver}}</td>
+                            <td>{{ order.receiver}}</td>
                         </tr>
                         <tr>
                             <td>收货人电话</td>
-                            <td>{{orderDetail.mobile}}</td>
+                            <td>{{order.mobile}}</td>
                         </tr>
                         <!-- <tr>
                             <td>买家备注</td>
@@ -131,6 +131,7 @@ export default {
         status: "",
         listImg:listImg,
         orderDetail:{},
+        order:{},
     };
     showMenus: false;
   },
@@ -158,7 +159,8 @@ export default {
       this.$axios.get('/user/order/detail',{orderId:this.$route.query.orderId}).then(res=>
         {
             if(res.code=='OK'){
-               this.orderDetail=res.data
+               this.order=res.data;
+               this.orderDetail=res.data.order[0];
             }
         })      
     }

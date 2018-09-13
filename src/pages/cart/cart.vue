@@ -1,10 +1,11 @@
 <template>
     <div id="cart">
-              <div class="container-cart ">  
-                    <div class="cart-empty" v-if='getItems.length==0'>
-                        <img :src="caricon" alt="">
-                        购物车空,赶紧去购物去吧.
-                    </div>
+                <div class="cart-empty" v-if='getItems.length==0'>
+                  <img :src="caricon" alt="">
+                    <div>购物车空,赶紧去购物去吧.</div>
+              </div>
+              <div class="container-cart " v-else>  
+                   
                     <div class="shop" v-for='(getItem,index) in getItems' :key='index' v-if='getItems.length>=1'>
                         <!-- 店铺名 -->
                         <div class="shop_name clearfix">
@@ -34,7 +35,7 @@
                                       <span class="price">￥{{getItem.price}}/{{getItem.minNum}}</span>
                                     </div>
                                     <div class="fr">
-                                             <x-button type="default">删除</x-button>
+                                             <x-button type="default" @click.native="delgoods(getItem.styleId)">删除</x-button>
                                     </div>
                                   
                                   </div>
@@ -48,8 +49,9 @@
 
                     <x-header :left-options="{showBack: false}">购物车 </x-header>
                     <div class="cart-footer clearfix" v-if='getItems.length>=0'>
-                        <div class="bg-gray" @click='clearLocalstorage' >清空</div>
-                        <div><div>收藏</div>999款</div>
+                        <div class="bg-gray" @click="qingkong">清空</div>
+                        <!-- <div><div>收藏</div>999款</div> -->
+                      <div></div>
                         <div><div>共选</div><span class="c-blue">{{countTotal}}</span>款</div>
                         <div><div>合计</div> <span class="c-red">￥{{priceTotal}}</span></div>
                         <div class="bg-red" @click="payCar">结算</div>
@@ -107,7 +109,6 @@ export default {
                   this.countTotal=res.data.number;
                   this.priceTotal=res.data.subPrice;
             }
-          
           })
     },
     payCar(){
@@ -121,15 +122,29 @@ export default {
       arrItems=JSON.stringify(arrItems);
       // console.log(arrItems)
       // [{"styleId":"bhoL","number":"2"},{"styleId":"bXBT","number":"3"},{"styleId":"b047","number":"4"},{"styleId":"hTbi","number":"5"}]
-        this.$axios.post('/user/order/buy',{shopCard:arrItems}).then(
-          res=>{
-            if(res.code=='OK'){
-              this.$router.push({path:'/order/orderDetail'});
-            }
-              // this.$vux.toast.show({'text':'购买成功'});
-          })
+     this.$router.push({path:'/order/orderDetailnoId',query:{shopCard:arrItems}});
+    
       
-    }
+    },
+    delgoods(styleId){
+             this.$axios.post('/user/order/shop_cart_del',{styleId:styleId}).then(
+            res=>{
+              if(res.code=='OK'){
+                 this.$vux.toast.show({'text':'删除成功'})
+                 this.getCart();
+              }
+            });
+    },
+    qingkong(){
+       this.$axios.post('/user/order/shop_cart_clear').then(
+            res=>{
+              if(res.code=='OK'){
+                 this.getCart();
+                 this.$vux.toast.show({'text':'购物车全部清空'})
+              }
+        });
+      
+    },
   },
   created() {
   
@@ -176,7 +191,7 @@ export default {
 
 <style scoped lang="less">
 .cart-empty {
-  height: 100%;
+  // height: 100%;
   width: 100%;
 }
 #home-view {
@@ -185,7 +200,7 @@ export default {
 .shop {
   padding: 5px 8px;
   background: #fff;
-  margin-bottom: 15px;
+  margin-bottom:10px;
 }
 .shop_name {
   border-bottom: 1px solid #ccc;
@@ -275,8 +290,13 @@ export default {
   -webkit-box-orient: vertical;
 }
 .container-cart {
-  padding-bottom: 50px;padding-top: 10px;
+  // padding-bottom: 50px;padding-top: 10px;
+  margin-bottom: 50px;
 }
+.shop-content{
+  display: flex;
+}
+.shop-content .fl{width: 180px;}
 .shop-content .title {
   font-size: 12px;
   line-height: 20px;

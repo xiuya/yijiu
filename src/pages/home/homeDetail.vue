@@ -1,31 +1,38 @@
 <template>
     <div id="homeDetail">
     <!--详情主页面-->
-    <div class="details">
+    <div class="homeDetail">
         <div class="xiangqing-wrap" ref="detailWrap">
                 <divider>图文详情</divider>
                 <card >
                     <div slot="content" class="card-demo-flex card-demo-content01">
-                        <ul class="tuwen">
-                        <li v-for="(item,index) in dataDetail.pics" :key='index'><img :src="imgUrl+item.img"/></li>      
-                        </ul> 
+                      <div v-html="dataDetail.describe"></div>
+                        <!-- <ul class="tuwen">
+                          <li v-for="(item,index) in dataDetail.describe" :key='index'><img :src="imgUrl+item.img"/></li>      
+                        </ul>  -->
                     </div> 
                 </card>
                 <divider > <div ref='guigInfo'>规格参数</div>   </divider>
                 <card >
                     <div slot="content" class="card-demo-flex card-demo-content01">
                         <ul class="chanping">
-                        <li v-for="(item,index) in dataDetail.attribute" :key='index'>
-                            <span class="name left" >{{item.name}}:</span>
-                            <span class="value left">{{item.value}}</span>
-                        </li>      
+                          <li v-for="(item,index) in dataDetail.parameter" :key='index'>
+                              <span class="name left" >{{item.name}}:</span>
+                              <span class="value left">{{item.value}}</span>
+                          </li>      
                         </ul> 
                     </div> 
-                </card>    
+                </card>   
+                   <divider > <div ref="buyInfo">款式图片</div></divider>
+                <card >
+                    <div slot="content" class="card-demo-flex card-demo-content01" v-for="(item,index) in dataDetail.images" :key="index" >
+                        <div ><img :src="item" alt=""></div>
+                    </div> 
+                </card>   
                 <divider > <div ref="buyInfo">卖家信息</div></divider>
                 <card >
                     <div slot="content" class="card-demo-flex card-demo-content01">
-                        <div v-html="dataDetail.desc"></div>
+                        <!-- <div>公司信息:{{dataDetail.enterprise.companyName}}</div> -->
                     </div> 
                 </card>    
         </div>
@@ -37,18 +44,18 @@
                         <div class="topdetail">请选择款式</div>
                 </div>
                 
-                <div class="kuanshicontent clearfix" @click="handleks(1)">
+                <div class="kuanshicontent clearfix" @click="handleks(1)" v-for="(item,index) in dataDetail.style" :key="index">
                     <div class="left">
-                            <div class="ksname">款式名称12346</div>
-                            <div class="ksdetail">库存100件 <span>¥1500/100件</span></div>
+                            <div class="ksname">{{item.name}}</div>
+                            <div class="ksdetail">库存:{{item.stock}} <span>¥{{item.price}}/100件</span></div>
                     </div>
                     <div class="right">
-                            <div class="xinghao">型号：102155</div> 
-                            <div class="ksnum"><x-number  v-model="ksnum" :min="0" @on-change="change" width='30px'></x-number></div>
+                            <div class="xinghao">型号：{{item.code}}{{item.id}}</div> 
+                            <div class="ksnum"><x-number  v-model="item.deliveryNum" :min="item.deliveryNum" @on-change="change" width='30px'></x-number></div>
                     </div>
                 </div>
                 
-                <div class="kuanshicontent clearfix">
+                <!-- <div class="kuanshicontent clearfix">
                     <div class="left">
                             <div class="ksname">款式名称12346</div>
                             <div class="ksdetail">库存100件 <span>¥1500/100件</span></div>
@@ -68,7 +75,7 @@
                             <div class="xinghao">型号：102155</div> 
                             <div class="ksnum"><x-number  v-model="ksnum" :min="0" @on-change="change" width='30px'></x-number></div>
                     </div>
-                </div>
+                </div> -->
         </div>
         
      
@@ -98,10 +105,10 @@
             <div class="left pic" @click='goxq'>
                 图文详情
             </div>
-            <div class="left star">
-                收藏
+            <div class="left star" @click="addinCar">
+                加入购物车
             </div>
-            <div class="left goumai">
+            <div class="left goumai" @click="gotobuy">
                 购买
             </div>
         </div>
@@ -135,7 +142,8 @@ export default {
       isCollect: false,
       buydist: 0,
       guigdist: 0,
-      ksnum: 0
+      ksnum: 0,
+      styleId:[]
     };
   },
   components: {
@@ -152,6 +160,15 @@ export default {
     Alert
   },
   methods: {
+    getdata(){
+                this.$axios.get('/index/goods_detail',{goodsId:this.$route.query.id}).then(res => {
+                    this.dataDetail = res.data;
+                 
+                    this.buydist = this.$refs.buyInfo.offsetTop;
+                    this.guigdist = this.$refs.guigInfo.offsetTop;
+                    console.log(this.buydist, this.guigdist);
+                  });
+    },
     change(val) {
     },
     gobuyInfo() {
@@ -177,22 +194,47 @@ export default {
         }
       });
     },
-    addCar() {
-      var date = new Date();
-      var dataForAddCar = {};
-      dataForAddCar.id = this.dataDetail.id;
-      dataForAddCar.name = this.dataDetail.name;
-      dataForAddCar.img = "http://cn01.alicdn.sasa.com/" + this.dataDetail.img;
-      dataForAddCar.storeName = this.dataDetail.storeName;
-      dataForAddCar.price = this.dataDetail.price;
-      dataForAddCar.title = this.dataDetail.productTitle;
-      dataForAddCar.time = date;
-      console.log(dataForAddCar);
-      localStorage.setItem("addcar", JSON.stringify(dataForAddCar));
-      this.showModule();
-      setTimeout(() => {
-        AlertModule.hide();
-      }, 3000);
+    addinCar(hot) {
+      // var date = new Date();
+      // var dataForAddCar = {};
+      // dataForAddCar.id = this.dataDetail.id;
+      // dataForAddCar.name = this.dataDetail.name;
+      // dataForAddCar.img = "http://cn01.alicdn.sasa.com/" + this.dataDetail.img;
+      // dataForAddCar.storeName = this.dataDetail.storeName;
+      // dataForAddCar.price = this.dataDetail.price;
+      // dataForAddCar.title = this.dataDetail.productTitle;
+      // dataForAddCar.time = date;
+      // console.log(dataForAddCar);
+      // localStorage.setItem("addcar", JSON.stringify(dataForAddCar));
+      // this.showModule();
+      // setTimeout(() => {
+      //   AlertModule.hide();
+      // }, 3000);
+       var styleAll=this.dataDetail.style;
+       var styleId=[];
+        for(var i in styleAll){
+            styleId.push({"styleId":styleAll[i].id,"number":styleAll[i].deliveryNum});
+        };
+            console.log(styleId)
+        styleId=JSON.stringify(styleId);    
+                    // console.log(this.dataDetail);
+        this.$axios.post('/user/order/add_goods',{shopCart:styleId}).then(
+            res=>{
+              if(res.code=='OK')
+              this.$vux.toast.show({'text':'加入购物车成功'})
+            }
+        );
+    },
+    gotobuy(){
+        var styleAll=this.dataDetail.style;
+        var styleId=[];
+        for(var i in styleAll){
+            styleId.push({"styleId":styleAll[i].id,"number":styleAll[i].deliveryNum});
+        };
+            console.log(styleId)
+        styleId=JSON.stringify(styleId);    
+      // [{"styleId":"b047","number":8},{"styleId":"bhoL","number":4}]
+      this.$router.push({path:'/order/orderDetailnoId',query:{shopCard:styleId}})
     },
     goback() {
       window.history.go(-1);
@@ -219,17 +261,18 @@ export default {
     },
   },
   created() {
-    var goodsdetail =
-      "static/data/details/" +
-      this.$route.query.id +
-      "/getProductDetailInfo.json";
-    this.$axios.get(goodsdetail).then(res => {
-      this.dataDetail = res.data;
-      console.log(this.dataDetail);
-      this.buydist = this.$refs.buyInfo.offsetTop;
-      this.guigdist = this.$refs.guigInfo.offsetTop;
-      console.log(this.buydist, this.guigdist);
-    });
+    this.getdata();
+    // var goodsdetail =
+    //   "static/data/homeDetail/" +
+    //   this.$route.query.id +
+    //   "/getProductDetailInfo.json";
+    // this.$axios.get(goodsdetail).then(res => {
+    //   this.dataDetail = res.data;
+    //   console.log(this.dataDetail);
+    //   this.buydist = this.$refs.buyInfo.offsetTop;
+    //   this.guigdist = this.$refs.guigInfo.offsetTop;
+    //   console.log(this.buydist, this.guigdist);
+    // });
   },
   mounted() {
     this.$nextTick(() => {});
@@ -402,5 +445,6 @@ strong {
   margin-left: -13px;
   margin-top: -8px;
 }
+.homeDetail img{width: 100%;}
 </style>
 

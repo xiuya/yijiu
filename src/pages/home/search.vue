@@ -2,17 +2,17 @@
     <div id="search" >
         	<div class="search" >
                 
-                <tab :line-width=2  active-color='#fc378c' v-model="index">
-                    <tab-item class="vux-center" :selected="tabName === item" v-for="(item, index) in tabGoods" @click="tabName= item" :key="index">{{item}}</tab-item>
+                <tab :line-width=2  active-color='' v-model="index" v-if='shopStore'>
+                    <tab-item class="vux-center" :selected="tabName === item.typeName" v-for="(item, index) in tabGoods" @click="tabName= item.typeName" :key="index">{{item.typeName}}</tab-item>
                 </tab>
-                <tab :line-width=2  active-color='#fc378c' v-model="indexsec">
+                <tab :line-width=2  active-color='' v-model="indexsec">
                     <tab-item class="vux-center" :selected="tabName === item" v-for="(item, indexsec) in tabberGoods" @click="tabName= item" :key="indexsec">{{item}}</tab-item>
                 </tab>
                 <form class="search-bar clear ">
-                    <span class="left" @click="cancel">取消</span>
+                    <!-- <span class="left" @click="cancel">取消</span> -->
                     <input type="search" placeholder="保湿" class="left "  v-model="key">
-                    <i class="iconfont icon-sousuo search-btn" @click="addHistory()"></i>
-                        <search
+                    <i class="iconfont icon-sousuo search-btn" @click="search(indexsec)"></i>
+                        <!-- <search
                                         @result-click="resultClick"
                                         @on-change="getResult"
                                         :results="results"
@@ -23,33 +23,30 @@
                                         @on-focus="onFocus"
                                         @on-cancel="onCancel"
                                         @on-submit="onSubmit"
-                                        ref="search"></search>
+                                        ref="search"></search> -->
                 </form>
                   <swiper v-model="indexsec" height="100%" :show-dots="false">
                     <swiper-item :key="1">
                         <div class="tab-swiper vux-center">
                             <section class="search-main">
                                 <x-header :left-options="{showBack: false}" v-if='index!=0'>{{title_main}}</x-header>
-                                <h4 v-if='index==0'>搜索发现</h4>
-                                <ul v-if='index==0' class="clearfix tuijian">
-                                        <li v-for="(key,value) in tabberGoodsinfo"  :key="value" class="left ">
-                                            <a href="#classinfo" >{{key.name}}</a>
-                                        </li>
-                                </ul>
+                                <!-- <h4 v-if='venue_img.length>=0'>搜索发现</h4> -->
+                                <!-- <ul v-if='venue_img.length>=0' class="clearfix tuijian">
+                                         <router-link tag="li" :to='{path:"/shop/shopDetail",query:{credit_id:"2"}}' v-for="(key,value) in tabberGoodsinfo"  :key="value" class="left ">
+                                          {{key.name}}</router-link>
+                                </ul> -->
                                 <h4>推荐商品</h4>
                                 <div class="venue_box " ref="hotGoods">
                                     <ul class="hot-list clearfix" >
                                         <li v-for='(hot,index) in venue_img' :key="index" @click="goDetails(hot.id)">
-                                                        <img :src="imgUrl+hot.img"  :onerror="defaultImg"/>
-                                                <div class="producttagname" v-if='hot.killendtime'></div>
-                                                <div class="placename"  v-if='hot.placename'>{{hot.placename}}</div>
+                                                        <img :src="hot.thumbnail"  :onerror="defaultImg"/>
                                                 <div class="home-hotinfo">
-                                                <p><span >{{hot.storeName}}</span><span>{{hot.name}}</span></p>
+                                                <p><span>{{hot.name}}</span></p>
                                                 <div class="jg">
                                                     <span >￥{{hot?parseFloat(hot.price).toFixed(0):0}}</span>
-                                                    <span class="fr" style="padding-right:5px;">{{hot.commentcount}}件起售</span>
+                                                    <span class="fr" style="padding-right:5px;">{{hot.miniOrder}}件起售</span>
                                                 </div>
-                                                <p><span >卖点：</span><span>{{hot.name}}</span></p>
+                                                <p><span >卖点：</span><span>{{hot.sellerPoint}}</span></p>
                                                 </div>
                                                 <span class="add-car icon iconfont icon-gouwuche" @click.stop='addCar(hot)'></span>
                                         </li>
@@ -61,38 +58,37 @@
                          <swiper-item :key="2">
                         <div class="tab-swiper vux-center">
                             <section class="search-main">
-                                <h4>搜索ass发现</h4>
+                                <!-- <h4>搜索ass发现</h4>
                                 <ul class="clearfix tuijian">
-                                        <li v-for="(key,value) in tabberShopinfo"  :key="value" class="left ">
-                                            <a href="#classinfo" >{{key.name}}</a>
-                                        </li>
-                                </ul>
+                                          <router-link tag="li" :to='{path:"/shop/shopDetail",query:{credit_id:"2"}}' v-for="(key,value) in tabberShopinfo"  :key="value" class="left ">
+                                          {{key.name}}</router-link>
+                                </ul> -->
                                 <h4>推荐店铺</h4>
                                 <div class="venue_box venue_box_shop" ref="hotGoods">
                                     <ul class="hot-list clearfix hot-list-shop" >
-                                        <li v-for='(hot,index) in venue_img' :key="index" @click="goDetails(hot.id)">
+                                        <li v-for='(hot,index) in shoplist' :key="index" @click="goShop(hot.id)">
                                             <div class="shoplist-top">
-                                                <img :src="imgUrl+hot.img"  :onerror="defaultImg"/>
-                                                <div class="list_title">店铺名称1234</div>   
-                                                <div class="list_title_detail">共10件商品   销量88012</div> 
+                                                <img :src="hot.logo"  :onerror="defaultImg"/>
+                                                <div class="list_title">{{hot.name}}</div>   
+                                                <div class="list_title_detail">共{{hot.goodsNumber}}件商品   销量{{hot.salesVolume}}</div> 
                                              <router-link class="intoshop"  :to="{path:hot.placename,query:{credit_id:hot.placename}}"  >
                                                 进店</router-link>
                                             </div>    
                                             <div class="hot_list_info">
                                                 <div class="left_list_info">
                                                             <div class="list_info_main">
-                                                                <span >主营产品：</span><span>{{hot.name}}</span>
+                                                                <span >主营产品：</span><span>{{hot.majorProduct}}</span>
                                                             </div>
                                                             <div class="list_info_xz">
-                                                                <span >营业性质：</span><span>{{hot.name}}</span>
+                                                                <span >营业性质：</span><span>{{hot.businessNaturet}}</span>
                                                             </div>
                                                             <div class="list_info_address">
-                                                                <span >公司所在地址：</span><span>{{hot.name}}</span>
+                                                                <span >公司所在地址：</span><span>{{hot.companyAddress}}</span>
                                                             </div>
                                                 </div> 
                                                 <div class="right_list_info">
                                                             <div>
-                                                                <img :src="imgUrl+hot.img"  :onerror="defaultImg"/>
+                                                                <img :src="hot.goodsIamge"  :onerror="defaultImg"/>
                                                             </div>
                                                 </div>  
                                             </div>
@@ -117,7 +113,7 @@ import {
   FlexboxItem,
   Tab,
   TabItem,
-Search,
+  Search,
   XHeader
 } from "vux";
 
@@ -128,21 +124,10 @@ export default {
     return {
       defaultImg: 'this.src="' + require("@/assets/img/default.png") + '"',
       key: "",
+      // shopName:'',
       showSearch: false,
       tabberGoods: ["商品", "店铺"],
-      tabGoods: [
-        "全部",
-        "家居百货",
-        "家用电器",
-        "食品酒水",
-        "服装配饰",
-        "美妆个护",
-        "母婴用品",
-        "数码办公",
-        "汽车用品",
-        "精选箱包",
-        "户外用品"
-      ],
+      tabGoods: [{id: "", typeName: "全部"}],
       // tabberGoodsItem: [
       //   [
       //     { name: "热卖面膜" },
@@ -151,19 +136,18 @@ export default {
       //     { name: "母子用品" }
       //   ]
       // ],
+      tabName: "全部",
+      tabIndex:'',
       index: 0,
       indexsec: 0,
-      tabName: "全部",
-      tabberGoodsinfo: [
-        { name: "热卖面膜" },
-        { name: "幻彩化妆品" },
-        { name: "个人用品" }
-      ],
+      tabberGoodsinfo: [{ name: "热卖面膜" },{ name: "幻彩化妆品" },{ name: "个人用品" }],
       tabberShopinfo: [{ name: "店铺1" }, { name: "店铺2" }, { name: "店铺3" }],
       venue_img: [],
+      shoplist:[],
       title_main: "全部",
       results: [],
       value: "test",
+      shopStore:true,
     }
   },
   components: {
@@ -180,12 +164,13 @@ export default {
     // this.$axios.get("static/data/index/xs-hotSale1.json").then(res => {
     //   this.venue_img = res.data;
     // });
+    this.getfooterList();
   },
   mounted() {
-    this.tabName = this.$route.query.name;
-    console.log(this.index);
+    // this.tabName = this.$route.query.name;
+    // console.log(this.index);
   },
-  distoryed() {},
+  distoryed(){},
   methods: {
     addHistory() {},
     cancel() {
@@ -224,19 +209,62 @@ export default {
         })
       }
     return rs
-    } //搜索end
+    }, //搜索end
+     getfooterList(){
+        this.$axios.get('/goodsType/oneType').then(res=>{
+          if(res.code=='OK')
+          // this.tabGoods=res.data;
+          for(var item in res.data){
+              this.tabGoods.push(res.data[item]);
+          }
+          this.tabName=res.data[0].typeName;
+        })
+    },
+    search(type){
+      console.log(type)
+      if(type==0){
+          this.searchgoodsList();
+      }else{
+          this.searcshopList();
+      }
+
+    },
+    searchgoodsList(){
+        this.$axios.get('/index/goods',{name:this.key,typeId:this.tabIndex,currPage:1,}).then(res=>{
+              this.venue_img=res.data.records;
+        })
+    },
+    searcshopList(){
+         this.$axios.get('/index/shop',{name:this.key,currPage:1,}).then(res=>{
+              this.shoplist=res.data.records;
+        })
+
+    },
+    goShop(id){
+        this.$router.push({path:'/shop/shopDetail',query:{id:id}})
+    },
   },
   filters: {},
   watch: {
     index: function(val, oldval) {
       // console.log(val,oldval)
       if (val != 0) {
-        this.title_main = this.tabGoods[val];
+        this.title_main = this.tabGoods[val].typeName;
+        this.tabIndex=this.tabGoods[val].id;
         this.indexsec = 0;
         //  window.scroll(0, 0);
         // document.querySelector('.venue_box').scrollTop=0;
+      }else{
+        this.tabIndex='';
       }
-    }
+    },indexsec(val){
+      // console.log(val)
+        if(val==1){
+            this.shopStore=false;
+        }else{
+          this.shopStore=true;
+        }
+    },
   }
 };
 </script>
@@ -252,7 +280,7 @@ export default {
 }
 .search .search-bar .search-btn {
   position: absolute;
-  left: 3%;
+  right: 3%;
   font-size: 22px;
   top: 50%;
   transform: translateY(-50%);
@@ -275,7 +303,7 @@ export default {
 
 .search .search-bar span {
   position: absolute;
-  right: 7%;
+  // right: 7%;
   font-size: 14px;
   color: #010101;
 }
@@ -293,7 +321,7 @@ export default {
   color: #9d9d9d;
 }
 
-.search .search-main ul.tuijian li a {
+.search .search-main ul.tuijian li a,.search .search-main ul.tuijian li  {
   display: inline-block;
   padding: 6px 9px;
   color: #dbb58b;

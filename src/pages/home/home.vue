@@ -32,7 +32,7 @@
                         <div class="producttagname" v-if='hot.killendtime'></div>
                         <div class="placename"  v-if='hot.placename'>{{hot.placename}}</div>
                         <div class="home-hotinfo">
-                          <p><span >{{hot.storeName}}</span><span>{{hot.name}}</span></p>
+                          <p><span>{{hot.name}}</span></p>
                           <div class="jg">
                             <span >￥{{hot?parseFloat(hot.price).toFixed(0):0}}</span>
                             <span class="fr" style="padding-right:5px;">{{hot.miniOrder}}件起售</span>
@@ -308,10 +308,10 @@ export default {
       // arrCar.push(dataForAddCar);
       // localStorage.setItem("addcar", JSON.stringify(arrCar));
       // alert("加入购物车成功");
-          this.$axios.get('/user/order/add_goods',{styleId:hot}).then(
+          var styleId=JSON.stringify([{styleId:hot,number:1}]);
+          this.$axios.post('/user/order/add_goods',{shopCart:styleId}).then(
             res=>{
               if(res.code=='OK')
-              alert('加入购物车成功')
               this.$vux.toast.show({'text':'加入购物车成功'})
             }
           )
@@ -362,39 +362,39 @@ export default {
         // this.$refs.hotGoods.scrollToTop=0;
         switch (val) {
           case 0:
-            this.dataUrl = "static/data/index/pf-hotSale1.json";
+            // this.dataUrl = "static/data/index/pf-hotSale1.json";
             break;
           case 1:
-            this.dataUrl = "static/data/class/gerenhuli/rq.json";
+            // this.dataUrl = "static/data/class/gerenhuli/rq.json";
             break;
           case 2:
-            this.dataUrl = "static/data/class/gerenhuli/xs.json";
+            // this.dataUrl = "static/data/class/gerenhuli/xs.json";
             break;
           case 3:
-            this.dataUrl = "static/data/class/gerenhuli/pf.json";
+            // this.dataUrl = "static/data/class/gerenhuli/pf.json";
             break;
           case 4:
-            this.dataUrl = "static/data/class/gerenhuli/jq.json";
+            // this.dataUrl = "static/data/class/gerenhuli/jq.json";
             break;
           case 5:
-            this.dataUrl = "static/data/class/gerenhuli/zx.json";
+            // this.dataUrl = "static/data/class/gerenhuli/zx.json";
             break;
           case 6:
-            this.dataUrl = "static/data/class/mianmo/xs.json";
+            // this.dataUrl = "static/data/class/mianmo/xs.json";
             break;
           case 7:
-            this.dataUrl = "static/data/class/mianmo/pf.json";
+            // this.dataUrl = "static/data/class/mianmo/pf.json";
             break;
           case 8:
-            this.dataUrl = "static/data/class/mianmo/jq.json";
+            // this.dataUrl = "static/data/class/mianmo/jq.json";
             break;
           case 9:
-            this.dataUrl = "static/data/class/mianmo/zx.json";
+            // this.dataUrl = "static/data/class/mianmo/zx.json";
             break;
         }
-        this.$axios.get(this.dataUrl).then(res => {
-          this.hotSale = res.data;
-        });
+        // this.$axios.get(this.dataUrl).then(res => {
+        //   this.hotSale = res.data;
+        // });
       }
     }
   }

@@ -54,12 +54,14 @@ const user = {
         SET_PERSON_false(state,{msg}){
             console.log(msg,state,'resultfalse')
             state.saller=false;
-            state.redirectTo = '/cart';
+            localStorage.setItem('seller',false)
+            state.redirectTo = '/';
         },
         SET_PERSON_true(state,{msg}){
             console.log(msg,state,'resulttrue')
             state.saller=true;
-            state.redirectTo = '/goods';
+            localStorage.setItem('seller',true)
+            state.redirectTo = '/';
         }
     },
     actions: {
