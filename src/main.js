@@ -7,9 +7,10 @@ import store from '@/store/index'
 import 'babel-polyfill'
 import axios from '@/http/http'
 import moment from 'moment'
-// import { ConfirmPlugin } from 'vux'
+import VDragged from 'v-dragged'
 import { BrowserInfo } from "@/utils/utils.js"
 import {UploaderPost,Loading,}  from  "@/assets/js/upload.js"
+import { ToastPlugin,ConfirmPlugin,AlertPlugin} from 'vux'
 // import axios from 'axios'
 // import VueGesture from 'vue2-gesture'
 // const FastClick = require('fastclick')
@@ -17,13 +18,13 @@ import '@/assets/css/main.less';
 import '@/assets/font/iconfont.css';
 /* 移除移动端点击延迟 */
 // FastClick.attach(document.body)
-import { ToastPlugin,ConfirmPlugin,AlertPlugin} from 'vux'
 
 // Vue.use(VueGesture)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(AlertPlugin)
-
+Vue.use(VDragged) 
+// Vue.use(VueGesture) 
 //公用的弹窗(全局变量)
 Vue.prototype.showToast = function( showPositionValue,type,text,width="10em"){
   this.$vux.toast.show({
@@ -34,7 +35,6 @@ Vue.prototype.showToast = function( showPositionValue,type,text,width="10em"){
     position: 'middle'
   })
 }
-
 //公用alert confirm
 const Message = {};
 Message.install = () => {
@@ -73,29 +73,29 @@ Message.install = () => {
      }
      })*/
     },
-
-
 }
     Object.entries(msg).forEach(([method,fn]) => {
         Vue.prototype[method] = fn;
-})
+    })
 }
 Vue.use(Message)
-//router.beforeEach((to, from, next) => {
-//  if (to.meta.auth) { // 判断该路由是否需要登录权限
-//      if (localStorage.getItem('Token')) {
-//          next();
-//      } else {
-//          next({
-//              path: '/login',
-//              query: { redirect: to.fullPath }
-//          })
-//      }
-//  } else {
-//      next()
-//  }
-//});
+// 弹窗结束
 
+router.beforeEach((to, from, next) => {
+ if (to.meta.auth) { // 判断该路由是否需要登录权限
+     if (localStorage.getItem('Token')) {
+         next();
+     } else {
+         next({
+             path: '/login',
+             query: { redirect: to.fullPath }
+         })
+     }
+ } else {
+     next()
+ }
+});
+store.axios = axios;
 
 
 Vue.config.productionTip = false;

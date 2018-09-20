@@ -17,18 +17,23 @@ const initState = {
     msg: '',
     sendCodeErr: false,
     saller:false,
+    token:''
 }
 const user = {
     state: initState,
     mutations: {
-        LOGIN_SUCCESS(state, { result, msg }) {
-            //console.log(result);
-            localStorage.setItem('Token', result.Token);
-            localStorage.setItem('userInfo', JSON.stringify(result));
-            state.redirectTo = '/collectMoney';
-            state.msg = msg + (new Date()).valueOf();
+        LOGIN_SUCCESS(state,value) {
+            state.token=value;
+            console.log(state);
+            if(state.token){
+                localStorage.setItem('Token',state.token);
+            }
+            // localStorage.setItem('userInfo', JSON.stringify(result));
+            state.redirectTo = '/home';
+            // state.msg = msg + (new Date()).valueOf();
         },
         ERROR_MSG(state, { msg }) {
+            console.log(state)
             state.msg = msg + (new Date()).valueOf();
         },
         sendCode_err(state, { msg }) {
@@ -66,17 +71,18 @@ const user = {
     },
     actions: {
         login({ commit }, payload) {
-            // this.$http.post('/api/api/login', "data=" + JSON.stringify(payload))
-            //     .then(res => {
-            //         switch (res.data.code) {
-            //             case 1: //成功
-            //                 commit(LOGIN_SUCCESS, res.data)
-            //                 break;
-            //             default: //失败
-            //                 commit(ERROR_MSG, { msg: res.data.msg })
-            //                 break;
-            //         }
-            //     })
+            this.axios.post('/user/buyer/pdLogin', payload)
+                .then(res => {
+                    switch (res.code) {
+                        case 'OK': //成功
+                            console.log(res.data)
+                            commit(LOGIN_SUCCESS, res.data)
+                            break;
+                        default: //失败
+                            commit(ERROR_MSG, { msg: res.error })
+                            break;
+                    }
+                })
         },
         person({commit},payload){
             console.log(payload,'pay')

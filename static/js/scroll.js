@@ -32,7 +32,7 @@ var  downflag= 1;
 scrollDirect(function (direction) {
        if (direction == "down") {
            if (downflag) {
-              //  alert("我在下滑")
+               alert("我在下滑")
                $(".homefooter_wrap").css('display','none');
                downflag = 0;
                 upflag = 1;
@@ -40,7 +40,7 @@ scrollDirect(function (direction) {
        }
        if (direction == "up") {
            if (upflag) {
-              //  alert("我在上滑")
+               alert("我在上滑")
                $(".homefooter_wrap").css('display','block');
               downflag = 1;
                upflag = 0;

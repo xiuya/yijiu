@@ -36,7 +36,8 @@
                     </div> 
                 </card>    
         </div>
-        <div class="distancebetween"  @click='touchmove' ref='distance'></div>
+        <!-- <div class="distancebetween"  @click='touchmove' ref='distance' ></div> -->
+        <div class="distancebetween" v-dragged="onDragged" ref='distance' ></div>
 
         <div class="xiangqing-kuansi" ref='ks' >
                 <div class="kuanshititle">
@@ -143,7 +144,8 @@ export default {
       buydist: 0,
       guigdist: 0,
       ksnum: 0,
-      styleId:[]
+      styleId:[],
+      dragged:true,
     };
   },
   components: {
@@ -160,6 +162,27 @@ export default {
     Alert
   },
   methods: {
+     onDragged({ el, deltaX, deltaY, offsetX, offsetY, clientX, clientY, first, last }) {
+      if (first) {
+        this.dragged = true
+        return
+      }
+      if (last) {
+        this.dragged = false
+        return
+      }
+      // var l = +window.getComputedStyle(el)['left'].slice(0, -2) || 0
+      var t = +window.getComputedStyle(el)['top'].slice(0, -2) || 0
+      // el.style.left = l + deltaX + 'px'
+      console.log(t,'before')
+
+      if(t<200){t=200;}else if(t>500){t=500; }else{ t=t; }
+      el.style.top = t + deltaY + 'px';
+      console.log(t,deltaY)
+        this.$refs.distance.style.top=t + deltaY+'px';
+        this.$refs.detailWrap.style.height=t + deltaY+'px';
+        this.$refs.ks.style.top=t + deltaY+'px';
+    },
     getdata(){
                 this.$axios.get('/index/goods_detail',{goodsId:this.$route.query.id}).then(res => {
                     this.dataDetail = res.data;

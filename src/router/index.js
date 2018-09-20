@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import PageTransition from '@/components/PageTransition'
 
 /* home */
 const home = () =>
@@ -81,16 +81,17 @@ const setPwd = () =>
             return position
         }
     }; 
+ 
 Vue.use(Router)
 
 export default new Router({
     mode: 'hash',
     base: __dirname,
     scrollBehavior,
+    component: PageTransition,
     routes: [{
         path: '/',
         component: home,
-        
         children: [{
             path: '',
             redirect: { name: 'home' }
@@ -116,7 +117,7 @@ export default new Router({
             name: 'order',
             component: order,
             meta: {
-                auth: false,
+                auth:true,
             },
             children:[]
         },  {
@@ -151,7 +152,7 @@ export default new Router({
             name: 'my',
             component: my,
             meta: {
-                auth: false,
+                // auth: true,
             },
             children:[
 			    {
@@ -211,11 +212,17 @@ export default new Router({
     },{
         path: '/home/homeDetail',
         name: 'homeDetail',
-        component:homeDetail
+        component:homeDetail,
+        meta: {
+            auth: false,
+        }
     },{
         path: '/home/homeSearch',
         name: 'Search',
-        component:homeSearch
+        component:homeSearch,
+        meta: {
+            auth: false,
+        }
     },
     {
         path: '/order/orderDetail',

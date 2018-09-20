@@ -1,20 +1,27 @@
 import axios from 'axios'
 import store from './../store/index'
 import router from './../router'
-axios.defaults.baseURL = 'http://192.168.0.43:8080';
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.baseURL = 'http://192.168.0.174:8080';
+// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.timeout = 3000;
+const AUTH_TOKEN = localStorage.getItem('Token');
+const Qs = require("qs");
+
 
 
 let cancel, promiseArr = {}
 const CancelToken = axios.CancelToken;
 //请求拦截器
-        axios.interceptors.request.use(config => {
-//  const AUTH_TOKEN = localStorage.getItem('Token');
-//  if (AUTH_TOKEN) {
-//      config.headers['userId'] = AUTH_TOKEN
-//  }
-//  //发起请求时，取消掉当前正在进行的相同请求
+ axios.interceptors.request.use(config => {
+        if (AUTH_TOKEN) {
+            console.log(AUTH_TOKEN,'intercep')
+            // config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+            // config.headers['Access-Control-Allow-Origin'] = true;
+            // axios.defaults.headers.common['B-Auth-Token'] = `Bearer`+AUTH_TOKEN;
+            config.headers['B-Auth-Token']= AUTH_TOKEN;
+        }
+        console.log(config)
         if (promiseArr[config.url]) {
             promiseArr[config.url]('操作取消')
             promiseArr[config.url] = cancel
@@ -34,6 +41,7 @@ axios.interceptors.response.use(response => {
 
     if(response.data.code&&response.data.code == "401"){
         localStorage.clear();
+        router.replace({path:'login',query:{redirect:router.currentRoute.fullPath}})
     }
     return response.data
 }, error => {
@@ -59,7 +67,6 @@ axios.interceptors.response.use(response => {
 
 //设置请求超时 10s
 
-const Qs = require("qs");
 
 export default {
     //get请求

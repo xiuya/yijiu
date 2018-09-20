@@ -49,8 +49,8 @@ export default {
         return {
             // loginType:'smsCode',  //pwd
             index:0,
-            phone:'',
-            pwd:'',
+            phone:'18316443814',
+            pwd:'123456',
             smsCode:'',
             wait:60,
             disabled001:false,
@@ -69,6 +69,57 @@ export default {
     components: {
         Toast,Tab, TabItem, Swiper, SwiperItem,  XInput, Group, XButton, Box,XHeader,ToastPlugin,CheckIcon
     },
+
+    methods: {
+        // onItemClick(type){
+        //     this.loginType= type
+        // },
+        ...mapActions([
+            'login', 'sendcode','person'
+        ]),
+        // Toast(valueText){
+        //     this.showPositionValue=true;
+        //     this.toastText=valueText;
+        // },
+        confirmLogin(){
+            // this.person({seller:this.seller})
+            if(!this.phone) return this.$vux.toast.show({text: '手机号未填',type:'text'});
+            if(!/^1[34578]\d{9}$/.test(this.phone)) return  this.$vux.toast.show({text: '手机号格式不对',type:'text'});
+            if( !this.pwd) return this.$vux.toast.show({text: '登录密码未填',type:'text'});
+            let payload={accountNumber:this.phone,password:this.pwd};
+            this.login(payload);
+        },
+        // sendCode(){
+        //     if(!this.phone) return   this.$vux.toast.show({
+        //                 // title:'手机号未填',
+        //                 type: 'warn',
+        //                 text: '手机号未填'
+        //             });
+        //     if(!/^1[34578]\d{9}$/.test(this.phone)) return  this.$vux.toast.show({
+        //                 // title:'手机号未填',
+        //                 type: 'warn',
+        //                 text: '手机号格式不对'
+        //             });
+        //     this.sendcode({phone: this.phone});
+        //     const that = this;
+        //     function time() {
+        //         if (that.wait == 0 || that.user.sendCodeErr) {  //结束或错误重新开始
+        //             that.disabled001=false;            
+        //             that.codeWord="发送验证码";  
+        //             that.wait = 60;  
+        //         } else {  
+        //             that.disabled001=true;   
+        //             that.codeWord="重新发送(" + that.wait + ")";  
+        //             that.wait--;
+        //             setTimeout(function() {  
+        //                 time()  
+        //             },1000)  
+        //         }  
+        //     }
+        //     time();
+        // },
+        
+    },
     created() {
        //console.log(this.$store.getters.getUser)
     },
@@ -81,81 +132,22 @@ export default {
             }
         }); */
     },
-    methods: {
-        // onItemClick(type){
-        //     this.loginType= type
-        // },
-        ...mapActions([
-            'login', 'sendcode','person'
-        ]),
-        Toast(valueText){
-            this.showPositionValue=true;
-            this.toastText=valueText;
-        },
-        confirmLogin(){
-            this.person({seller:this.seller})
-            // if(!this.phone) return this.Toast('手机号未填');
-            // if(!/^1[34578]\d{9}$/.test(this.phone)) return Toast('手机号格式不对');
-            // if(this.loginType==='pwd' && !this.pwd) return Toast('登录密码未填');
-            // if(this.loginType==='smsCode' && !this.smsCode) return Toast('验证码未填');
-            // let payload;
-            // switch (this.loginType) {
-            //     case 'pwd':
-            //         payload={phone:this.phone,pwd:this.pwd,person:this.seller}
-            //         break;
-            //     default:
-            //         payload={phone:this.phone,smsCode:this.smsCode}
-            //         break;
-            // }
-            // this.login(payload)
-        },
-        sendCode(){
-            if(!this.phone) return   this.$vux.toast.show({
-                        // title:'手机号未填',
-                        type: 'warn',
-                        text: '手机号未填'
-                    });
-            if(!/^1[34578]\d{9}$/.test(this.phone)) return  this.$vux.toast.show({
-                        // title:'手机号未填',
-                        type: 'warn',
-                        text: '手机号格式不对'
-                    });
-            this.sendcode({phone: this.phone});
-            const that = this;
-            function time() {
-                if (that.wait == 0 || that.user.sendCodeErr) {  //结束或错误重新开始
-                    that.disabled001=false;            
-                    that.codeWord="发送验证码";  
-                    that.wait = 60;  
-                } else {  
-                    that.disabled001=true;   
-                    that.codeWord="重新发送(" + that.wait + ")";  
-                    that.wait--;
-                    setTimeout(function() {  
-                        time()  
-                    },1000)  
-                }  
-            }
-            time()
-        },
-        
-    },
     distoryed(){
 
     },
-    watch: {
+    watch:{
         // 'index'(){
         //     this.loginType = this.index==0?'smsCode':'pwd'
         // },
         'user.redirectTo'(){
-            this.$router.push('/')
-            // Toast(this.user.msg.replace(/\d+/,''));
-            // const from = this.$route.query.redirect;
-            // if(from) this.$router.replace({ path: from});
-            // else this.$router.replace({ path: this.user.redirectTo});
+            this.$router.push('/');
+            // this.$vux.toast.show({text: this.user.msg.replace(/\d+/,''),type:'text'});
+            const from = this.$route.query.redirect;console.log(from)
+            if(from) this.$router.replace({ path: from});
+            else this.$router.replace({ path: this.user.redirectTo});
         },
         'user.msg'(){
-            Toast(this.user.msg.replace(/\d+/,''))
+             this.$vux.toast.show({text: this.user.msg.replace(/\d+/,''),type:'text'});
         },
         // 'smsCode'(){
         //     if(this.loginType==='smsCode' && this.smsCode.length==4){

@@ -155,7 +155,6 @@ export default {
 </script>
 
 <style  scoped>
-#my-con2{}
 .info-list{font-size: 12px;text-align: left;color: #333;padding-left: 20px;line-height: 30px;}
 </style>
 <style>

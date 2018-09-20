@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="home" >
+        <div id="home" v-dragged="onDragged">
             <div class="topswiper" >
                       <Swiper :Swiperlist="swiperlist" :way='wayone'></Swiper>
             </div>
@@ -45,7 +45,7 @@
             </div>
             <!-- <div class="venue"></div> -->
                     
-               <div class="homefooter_wrap">
+               <div class="homefooter_wrap" ref="homefooter_wrap">
                 <div class="homefooter">
                     <!-- <tab  active-color='#2f9cff' v-model="footerindex" >
                         <tab-item class="vux-center"   v-for="(item, index) in homefooterList" @click=" footer2=item" :selected="footer2===item" :key="index">{{item}}</tab-item>
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+
 import { Flexbox, FlexboxItem, Tab, TabItem } from "vux";
 import banner2 from "../../../static/data/banner/2/0.jpg";
 import banner3 from "../../../static/data/banner/3/0.jpg";
@@ -266,6 +267,21 @@ export default {
     // this.timeOut=null;
   },
   methods: {
+       onDragged({ el, deltaX, deltaY, offsetX, offsetY, clientX, clientY, first, last }) {
+      if (first) {
+        this.dragged = true
+        return
+      }
+      if (last) {
+        this.dragged = false
+        return
+      }
+      var t = +window.getComputedStyle(el)['top'].slice(0, -2) || 0
+      console.log(t,deltaY)
+      if(deltaY<0){
+          this.$refs.homefooter_wrap.css.display=block;
+      }
+    },
     goodsList(){
         this.$axios.get("/index",{currPage:1}).then(res => {
           if(res.code=='OK'){
@@ -492,6 +508,7 @@ export default {
   color: #848c98;
   z-index: 50;
   width: 85%;
+  display: none;
 }
 .homefootet_search {
   position: fixed;

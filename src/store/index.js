@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import actions from './actions'
 import mutations from './mutations'
-
 import user from './modules/user';
 import card from './modules/card';
 
